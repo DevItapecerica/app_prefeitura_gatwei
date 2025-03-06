@@ -1,0 +1,36 @@
+# Node modules
+/node_modules/
+
+# Logs
+*.log
+logs/
+
+# Diretórios de builds
+/dist/
+/build/
+
+# Arquivos de dependências
+package-lock.json
+
+# Arquivos de configuração local do ambiente
+.env
+
+# Arquivos temporários do sistema operacional
+.DS_Store
+Thumbs.db
+
+# Diretórios de IDEs
+.vscode/
+.idea/
+
+# Arquivos de cache do npm
+.npm/
+
+# Arquivos de cache do yarn
+.yarn/
+
+# Arquivos de debug do Visual Studio Code
+.vscode/
+
+# Arquivos de teste
+/coverage/
