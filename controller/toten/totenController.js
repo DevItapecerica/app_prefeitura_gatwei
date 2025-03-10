@@ -1,18 +1,19 @@
 const { checkPermission } = require("../../middleware/checkPermission");
 const { verifyToken } = require("../../middleware/auth");
 const TOTEN_API = require("../../service/toten_api");
-const { pegarSenhas } = require("./toten");
+const { pegarSenhas, pegarSenhasToday } = require("./toten");
 
-SERVICE_ID = 5
+SERVICE_ID = 5;
 
 exports.getToten = async (request, reply) => {
   const token = request.headers.authorization.split(" ")[1];
   try {
     const user = await verifyToken(token);
-    await checkPermission(user.id, user.role, 6, ["admin", "tecnico"]);
+    await checkPermission(user.id, user.role, SERVICE_ID, ["admin", "tecnico", "gestor"]);
 
-    let senhas = await pegarSenhas(user);
-    reply.status(200).send({...senhas, ip: request.ip});
+    let data = await pegarSenhas(user);
+
+    reply.status(200).send({ ...data.senhas, ...data.status, ip: request.ip });
   } catch (error) {
     console.log(error);
     reply
@@ -22,12 +23,14 @@ exports.getToten = async (request, reply) => {
 };
 
 exports.getTodayToten = async (request, reply) => {
+  const token = request.headers.authorization.split(" ")[1];
   try {
-    const token = request.headers.authorization.split(" ")[1];
-    let response = await TOTEN_API.get("/today?dpto=2");
-    let senhas = response.data;
-    console.log(senhas);
-    reply.status(200).send(senhas);
+    const user = await verifyToken(token);
+    await checkPermission(user.id, user.role, SERVICE_ID, ["admin", "tecnico", "gestor", "user"]);
+
+    let senhas = await pegarSenhasToday(user);
+
+    reply.status(200).send({ ...senhas, ip: request.ip });
   } catch (error) {
     console.log(error);
     reply
@@ -35,3 +38,7 @@ exports.getTodayToten = async (request, reply) => {
       .send(error.message || "Erro ao buscar senhas");
   }
 };
+
+exports.postToten = async (request, reply) => {
+  reply.status(200).send(request.body)
+}

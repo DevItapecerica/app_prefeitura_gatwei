@@ -24,7 +24,7 @@ exports.getAll = async (token) => {
   try {
     const user = await verifyToken(token);
 
-    await checkPermission(user.id, user.role, seviceID, ["admin", "tecnico"]);
+    await checkPermission(user.id, user.role, seviceID, ["admin", "tecnico", "gestor", "user"]);
   
     const AllSetor = await DBSetor.findAll();
 

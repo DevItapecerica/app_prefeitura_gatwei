@@ -32,7 +32,7 @@ exports.getAll = async (user) => {
       ],
     });
 
-    return { demandas, scopo: user.role };
+    return { demandas };
   } catch (error) {
     throw {
       erro: error.status || 500,
@@ -72,7 +72,7 @@ exports.getUserDemanda = async (user) => {
         },
       ],
     });
-    return { userDemandas, scopo: user.role };
+    return { userDemandas };
   } catch (error) {
     throw {
       error: error.status || 500,

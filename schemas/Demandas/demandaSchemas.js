@@ -31,11 +31,7 @@ const demandasGetSchema = {
                 responsavel_user: null,
               },
             ],
-          },
-          scopo: {
-            type: "string",
-            example: "admin",
-          },
+          }
         },
       },
       401: {
@@ -141,11 +137,7 @@ const getUserDemandas = {
                 responsavel_user: "kadoia",
               },
             ],
-          },
-          scopo: {
-            type: "string",
-            example: "admin",
-          },
+          }
         },
       },
       401: {

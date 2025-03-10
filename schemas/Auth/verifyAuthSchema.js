@@ -8,6 +8,7 @@ const verifyAuthSchema = {
           type: "object",
           properties: {
             message: { type: "string", example: "Usuário okay" },
+            scopo: { type: "string", example: "admin" },
           },
         },
         401: {

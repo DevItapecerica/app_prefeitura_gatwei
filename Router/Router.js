@@ -59,6 +59,8 @@ async function routes(fastify, options) {
 
   //toten
   fastify.get('/toten', toten.getToten)
+  fastify.get('/toten/today', toten.getTodayToten)
+  fastify.post('/toten', toten.postToten)
 }
 
 module.exports = routes;

@@ -16,7 +16,7 @@ exports.verifyAuth = async (request, reply) => {
       throw { message: "Unauthorized", status: 401 };
     }
 
-    reply.status(200).send('Usuário authenticado');
+    reply.status(200).send({message: 'Usuário authenticado', scopo: verifyUser.role});
 
   } catch (error) {
     return reply.status(error.status || 500).send({ message: error.message || "Erro interno no servidor", error: error });

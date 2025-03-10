@@ -34,7 +34,7 @@ exports.pegarTodasDemandas = async (request, reply) => {
   }
 };
 
-exports.cadastrarDemandas = async (requestuest, reply) => {
+exports.cadastrarDemandas = async (request, reply) => {
     const token = request.headers.authorization.split(' ')[1];
 
   try {
@@ -48,10 +48,10 @@ exports.cadastrarDemandas = async (requestuest, reply) => {
 
     await verifyParam(
       ["patrimonio", "description", "prioridade"],
-      requestuest.body
+      request.body
     );
 
-    let target = requestuest.body;
+    let target = request.body;
 
     let message = await create(target, user.id);
 
@@ -63,15 +63,15 @@ exports.cadastrarDemandas = async (requestuest, reply) => {
   }
 };
 
-exports.deletarDemandas = async (requestuest, reply) => {
+exports.deletarDemandas = async (request, reply) => {
     const token = request.headers.authorization.split(' ')[1];
 
   try {
     const user = await verifyToken(token);
     await checkPermission(user.id, user.role, SERVICE_ID, ["admin"]);
 
-    verifyParam(["id"], requestuest.params);
-    const id = requestuest.params.id;
+    verifyParam(["id"], request.params);
+    const id = request.params.id;
 
     const deleted = await remove(id);
     reply
@@ -87,19 +87,19 @@ exports.deletarDemandas = async (requestuest, reply) => {
 //#endregion /demandas
 
 //#region /User
-exports.atualizarDemandas = async (requestuest, reply) => {
+exports.atualizarDemandas = async (request, reply) => {
     const token = request.headers.authorization.split(' ')[1];
 
   try {
     const user = await verifyToken(token);
 
-    verifyParam(["id"], requestuest.params);
+    verifyParam(["id"], request.params);
     verifyParam(
       ["patrimonio", "description", "prioridade", "status"],
-      requestuest.body
+      request.body
     );
-    let target = requestuest.body;
-    let id = requestuest.params.id;
+    let target = request.body;
+    let id = request.params.id;
 
     await checkPermission(user.id, user.role, SERVICE_ID, [
       "admin",
@@ -171,7 +171,7 @@ exports.atualizarDemandas = async (requestuest, reply) => {
   }
 };
 
-exports.historyDemandas = async (requestuest, reply) => {
+exports.historyDemandas = async (request, reply) => {
     const token = request.headers.authorization.split(' ')[1];
 
   try {
@@ -193,7 +193,7 @@ exports.historyDemandas = async (requestuest, reply) => {
   }
 };
 
-exports.pegarUserDemandas = async (requestuest, reply) => {
+exports.pegarUserDemandas = async (request, reply) => {
     const token = request.headers.authorization.split(' ')[1];
 
   try {
@@ -217,7 +217,7 @@ exports.pegarUserDemandas = async (requestuest, reply) => {
 
 //#endregion /User
 exports.assumirDemanda = async (request, reply) => {
-  const token = request.cookies.token;
+  const token = request.headers.authorization.split(' ')[1];
 
   try {
     await verifyParam(["id"], request.params);
@@ -236,7 +236,8 @@ exports.assumirDemanda = async (request, reply) => {
 };
 
 exports.finalizarDemanda = async (request, reply) => {
-  const token = request.cookies.token;
+      const token = request.headers.authorization.split(' ')[1];
+
 
   try {
     await verifyParam(["id"], request.params);

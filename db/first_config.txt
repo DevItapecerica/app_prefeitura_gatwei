@@ -10,8 +10,6 @@ insert into Services (name, description, url) values ('Demandas Ti', 'Demandas d
 
 insert into Services (name, description, url) values ('Setores', 'Gerenciamento de setores', '/setor');
 
-insert into Services (name, description, url) values ('Demandas Ti', 'Demandas do Ti', '/demandasti');
-
 insert into Permissions (user_id, service_id, active) values ('1', '1', true);
 
 insert into Permissions (user_id, service_id, active) values ('1', '2', true);
