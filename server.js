@@ -13,7 +13,7 @@ app.register(fastifyCors, {
   origin: true, // Specific allowed origin
   credentials: true, // Permite cookies e cabeçalhos de autenticação
   methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"] // Métodos permitidos
+  allowedHeaders: ["Content-Type", "Authorization"], // Métodos permitidos
 });
 
 app.register(fastifyCookie);
@@ -21,15 +21,28 @@ app.register(fastifyCookie);
 app.register(fastifySwagger, {
   openapi: {
     openapi: "3.0.0",
+    components: {
+      securitySchemes: {
+        JWTAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
     info: {
       title: "Test swagger",
-      description: "Testing the Fastify swagger API",
-      version: "0.1.0",
+      description: "API principal de consumo de microserviços",
+      version: "2.0.0",
     },
     servers: [
       {
-        url: "http://192.168.16.80:8000",
+        url: "http://192.168.16.13:8000",
         description: "Development server",
+      },
+      {
+        url: "http://192.168.16.80:8000",
+        description: "prodution server",
       },
     ],
   },

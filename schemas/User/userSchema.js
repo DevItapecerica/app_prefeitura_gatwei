@@ -1,18 +1,27 @@
-const { array } = require("zod");
-
 const getUserSchema = {
   schema: {
     description: "Pegue todos os usuários",
     tags: ["Users"],
+    headers: {
+      required: ["authorization"],
+      type: "object",
+      properties: {
+        authorization: {
+          type: "string",
+        },
+      },
+    },
+    security: [
+      {
+        JWTAuth: [],
+      },
+    ],
     response: {
       200: {
         description: "requisição bem sucedida",
         type: "object",
         properties: {
           users: {
-            type: "array",
-          },
-          setores: {
             type: "array",
           },
           roles: {
@@ -42,6 +51,14 @@ const postUserSchema = {
   schema: {
     description: "Pegue todos os usuários",
     tags: ["Users"],
+    headers: {
+      type: "object",
+      properties: {
+        Authorization: {
+          type: "string",
+        },
+      },
+    },
     body: {
       type: "object",
       required: ["name", "email", "ramal", "setor_id", "role"],
@@ -91,6 +108,14 @@ const getOneUserSchema = {
   schema: {
     description: "Pegue todos os usuários",
     tags: ["Users"],
+    headers: {
+      type: "object",
+      properties: {
+        Authorization: {
+          type: "string",
+        },
+      },
+    },
     response: {
       200: {
         description: "requisição bem sucedida",
@@ -99,23 +124,14 @@ const getOneUserSchema = {
           user: {
             type: "object",
             properties: {
-              id: { type: "integer" },
-              name: { type: "string" },
-              email: { type: "string" },
-              ramal: { type: "string" },
-              setor_id: { type: "integer" },
-              role: { type: "string" },
-              firstLogin: { type: "boolean" },
-              permission: {
-                type: "array",
-                items: {
-                  type: "object",
-                  properties: {
-                    service_id: { type: "integer" },
-                    active: { type: "boolean" },
-                  },
-                },
-              },
+              id: { type: "integer", example: 1 },
+              name: { type: "string", example: "João" },
+              email: { type: "string", example: "joao@gmail.com" },
+              ramal: { type: "string", example: "1234" },
+              password: { type: "string", example: "1234" },
+              setor_id: { type: "integer", example: 1 },
+              role: { type: "string", example: 'admin' },
+              firstLogin: { type: "boolean", example: true },
             },
           },
         },
@@ -142,9 +158,16 @@ const updateUserSchema = {
   schema: {
     description: "Atualizar usuário",
     tags: ["Users"],
+    headers: {
+      type: "object",
+      properties: {
+        Authorization: {
+          type: "string",
+        },
+      },
+    },
     body: {
       required: ["user"],
-
       type: "object",
       properties: {
         user: {
@@ -207,6 +230,14 @@ const deleteUserSchema = {
   schema: {
     description: "Deleta um usuário",
     tags: ["Users"],
+    headers: {
+      type: "object",
+      properties: {
+        Authorization: {
+          type: "string",
+        },
+      },
+    },
     response: {
       200: {
         description: "Usuário deletado com sucesso",

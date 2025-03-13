@@ -1,6 +1,5 @@
 const { checkPermission } = require("../../middleware/checkPermission");
-const { verifyToken } = require("../../middleware/auth");
-const TOTEN_API = require("../../service/toten_api");
+// const { verifyToken } = require("../../middleware/auth");
 const { pegarSenhas, pegarSenhasToday } = require("./toten");
 
 SERVICE_ID = 5;
@@ -8,7 +7,6 @@ SERVICE_ID = 5;
 exports.getToten = async (request, reply) => {
   const token = request.headers.authorization.split(" ")[1];
   try {
-    const user = await verifyToken(token);
     await checkPermission(user.id, user.role, SERVICE_ID, ["admin", "tecnico", "gestor"]);
 
     let data = await pegarSenhas(user);
@@ -25,7 +23,7 @@ exports.getToten = async (request, reply) => {
 exports.getTodayToten = async (request, reply) => {
   const token = request.headers.authorization.split(" ")[1];
   try {
-    const user = await verifyToken(token);
+    // const user = await verifyToken(token);
     await checkPermission(user.id, user.role, SERVICE_ID, ["admin", "tecnico", "gestor", "user"]);
 
     let senhas = await pegarSenhasToday(user);
