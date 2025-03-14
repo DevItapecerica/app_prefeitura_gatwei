@@ -10,7 +10,7 @@ const LOGIN_API = axios.create({
 
 LOGIN_API.interceptors.request.use(
   (config) => {
-    config.headers["authorization"] = process.env.LOGIN_API_KEY;
+    config.headers["x-api-key"] = process.env.LOGIN_API_KEY;
 
     return config;
   },

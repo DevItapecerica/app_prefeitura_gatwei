@@ -10,7 +10,7 @@ const TOTEN_API = axios.create({
 
 TOTEN_API.interceptors.request.use(
   (config) => {
-    config.headers["authorization"] = process.env.TOTEN_API_KEY;
+    config.headers["x-api-key"] = process.env.TOTEN_API_KEY;
 
     return config;
   },
