@@ -41,14 +41,7 @@ exports.getOneUser = async (request, reply) => {
 };
 
 exports.getAllUser = async (request, reply) => {
-  const token = request.headers["authorization"].split(" ")[1];
-  
   try {
-
-    await login_api.post('/authUser', {
-      token: token
-    })
-
     let users = await getAll(request.body)
 
     reply.status(200).send(users)
@@ -61,14 +54,7 @@ exports.getAllUser = async (request, reply) => {
 exports.atualizarUser = async (request, reply) => {};
 
 exports.deletarUser = async (request, reply) => {
-
-  const token = request.headers["authorization"].split(" ")[1];
-  
   try {
-    await login_api.post('/authUser', {
-      token: token
-    })
-
     await remove(request.params.id)
 
     reply.status(200).send('Usuário excluido com sucesso')

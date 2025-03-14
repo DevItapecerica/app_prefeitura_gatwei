@@ -1,25 +1,18 @@
 const login_api = require("../../service/login_api");
 
-exports.login = async (resquest, reply) => {
-  const { email, pwd } = resquest.body;
+exports.login = async (request, reply) => {
+  const { email, password } = request.body;
   try {
     const response = await login_api.post("/login", {
       email: email,
-      pwd: pwd,
+      password: password,
     });
     
     let login = response.data;
 
-    reply.status(200).send(login)
+    reply.status(200).send(login);
   } catch (error) {
-    switch (error.status) {
-      case 401:
-        reply.code(401).send({ message: "Invalid email or password" });
-        break;
-      default:
-        console.log(error)
-        reply.code(error.status || 500).send({ message: "Internal Server Error" });
-        break;
-    }
+    // O erro será tratado pelo hook onError
+    throw error.status; // Lançar o erro para que o middleware de erro o capture
   }
 };

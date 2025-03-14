@@ -1,28 +1,22 @@
 const DBUser = require("../../db/model/UserModel");
 const DBPermission = require("../../db/model/PermissionModel");
 const DBService = require("../../db/model/ServiceModel");
-const { verifyToken } = require("../../middleware/auth");
-const { checkPermission } = require("../../middleware/checkPermission");
-
-const seviceID = 2
 
 // Obtem todos os serviços independente do usuário
 exports.getAll = async (token) => {
   try {
-    const user = await verifyToken(token);
-    await checkPermission(user.id, user.role, seviceID, ['admin']);
-
     const AllServices = await DBService.findAll();
     return AllServices;
   } catch (error) {
-    throw { status: error.status || 500, message: error.message || "Erro ao obter serviços" };
+    // O erro será tratado pelo hook onError
+    throw error; // lançar o erro para que o middleware de erro o capture
+or; // Lançar o erro para que o middleware de erro o capture
   }
 };
 
 // Obtem todos os serviços do usuário
 exports.getOne = async (token) => {
   try {
-    const user = await verifyToken(token);
     // Verifica se o usuário é admin para ignorar a verificação de permissões de visualização
     if (user.role != "admin") {
       const services = await DBService.findAll({
@@ -38,7 +32,7 @@ exports.getOne = async (token) => {
           },
         },
       });
-            
+
       return services;
     } else {
       const services = await DBService.findAll({
@@ -53,17 +47,15 @@ exports.getOne = async (token) => {
       return services;
     }
   } catch (error) {
-    throw { status: error.status || 500, message: error.message || "Erro ao obter serviços" };
+    // O erro será tratado pelo hook onError
+    throw error;; // lançar o erro para que o middleware de erro o capture
+or; // Lançar o erro para que o middleware de erro o capture
   }
 };
 
 // Cria um novo serviço
 exports.create = async (token, service) => {
   try {
-    const user = await verifyToken(token);
-    // Função que verifica se o usuário tem permissão para criar
-    await checkPermission(user.id, user.role, seviceID, 'admin');
-
     const newService = await DBService.create({
       name: service.name,
       description: service.description,
@@ -80,17 +72,15 @@ exports.create = async (token, service) => {
       });
     }
   } catch (error) {
-    throw { status: 500, message: error.message || "Erro ao criar serviço" };
+    // O erro será tratado pelo hook onError
+    throw error;; // lançar o erro para que o middleware de erro o capture
+or; // Lançar o erro para que o middleware de erro o capture
   }
 };
 
 // Atualiza um serviço
 exports.update = async (token, service, paramId) => {
   try {
-    const user = await verifyToken(token);
-    // Função que verifica se o usuário tem permissão para editar
-    await checkPermission(user.id, user.role, seviceID, 'admin');
-
     const [updated] = await DBService.update(
       {
         name: service.name,
@@ -110,17 +100,15 @@ exports.update = async (token, service, paramId) => {
 
     return updated;
   } catch (error) {
-    throw { status: 500, message: error.message || "Erro ao atualizar serviço" };
+    // O erro será tratado pelo hook onError
+    throw error;; // lançar o erro para que o middleware de erro o capture
+or; // Lançar o erro para que o middleware de erro o capture
   }
 };
 
 // Remove um serviço
 exports.remove = async (token, paramId) => {
   try {
-    const user = await verifyToken(token);
-    // Função que verifica se o usuário tem permissão para deletar
-    await checkPermission(user.id, user.role, seviceID, 'admin');
-
     const destroy = await DBService.destroy({
       where: {
         id: paramId,
@@ -133,6 +121,8 @@ exports.remove = async (token, paramId) => {
 
     return destroy;
   } catch (error) {
-    throw { status: 500, message: error.message || "Erro ao remover serviço" };
+    // O erro será tratado pelo hook onError
+    throw error;; // lançar o erro para que o middleware de erro o capture
+or; // Lançar o erro para que o middleware de erro o capture
   }
 };

@@ -59,7 +59,7 @@ exports.update = async (userTarget, paramId) => {};
 // Remove um usuário
 exports.remove = async (paramId) => {
   try {
-    let response = await user_api.delete(`/user/delete/${paramId}`);
+    let response = await user_api.delete(`/user/${paramId}`);
     let result = response;
     return result;
     

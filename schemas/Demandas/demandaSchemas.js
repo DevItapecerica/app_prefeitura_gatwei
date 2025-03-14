@@ -31,21 +31,49 @@ const demandasGetSchema = {
                 responsavel_user: null,
               },
             ],
-          }
+          },
+        },
+      },
+      400: {
+        description: "Erro no 400",
+        type: "object",
+        properties: {
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Bad Request" },
+          message: { type: "string", example: "Bad Request" },
         },
       },
       401: {
-        description: "Sem autorização",
+        description: "Erro no 401",
         type: "object",
         properties: {
-          message: { type: "string", example: "Sem autorização" },
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Unauthorized" },
+          message: {
+            type: "string",
+            example: "Você não está autorizado a acessar este serviço.",
+          },
+        },
+      },
+      404: {
+        description: "Erro no 404",
+        type: "object",
+        properties: {
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Not Found" },
+          message: {
+            type: "string",
+            example: "A serviço solicitada não foi encontrada.",
+          },
         },
       },
       500: {
-        description: "Erro interno no servidor",
+        description: "Erro interno",
         type: "object",
         properties: {
-          message: { type: "string", example: "Erro interno no servidor" },
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Server Error" },
+          message: { type: "string", example: "Erro interno no Servidor" },
         },
       },
     },
@@ -78,24 +106,46 @@ const demandasPostSchema = {
           },
         },
       },
-      401: {
-        description: "Sem autorização para realizar o cadastro",
+      400: {
+        description: "Erro no 400",
         type: "object",
         properties: {
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Bad Request" },
+          message: { type: "string", example: "Bad Request" },
+        },
+      },
+      401: {
+        description: "Erro no 401",
+        type: "object",
+        properties: {
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Unauthorized" },
           message: {
             type: "string",
-            example: "Sem autorização",
+            example: "Você não está autorizado a acessar este serviço.",
+          },
+        },
+      },
+      404: {
+        description: "Erro no 404",
+        type: "object",
+        properties: {
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Not Found" },
+          message: {
+            type: "string",
+            example: "A serviço solicitada não foi encontrada.",
           },
         },
       },
       500: {
-        description: "Erro interno no servidor",
+        description: "Erro interno",
         type: "object",
         properties: {
-          message: {
-            type: "string",
-            example: "Erro interno no servidor.",
-          },
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Server Error" },
+          message: { type: "string", example: "Erro interno no Servidor" },
         },
       },
     },
@@ -137,21 +187,49 @@ const getUserDemandas = {
                 responsavel_user: "kadoia",
               },
             ],
-          }
+          },
+        },
+      },
+      400: {
+        description: "Erro no 400",
+        type: "object",
+        properties: {
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Bad Request" },
+          message: { type: "string", example: "Bad Request" },
         },
       },
       401: {
-        description: "Sem autorização",
+        description: "Erro no 401",
         type: "object",
         properties: {
-          message: { type: "string", example: "Sem autorização" },
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Unauthorized" },
+          message: {
+            type: "string",
+            example: "Você não está autorizado a acessar este serviço.",
+          },
+        },
+      },
+      404: {
+        description: "Erro no 404",
+        type: "object",
+        properties: {
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Not Found" },
+          message: {
+            type: "string",
+            example: "A serviço solicitada não foi encontrada.",
+          },
         },
       },
       500: {
-        description: "Erro interno no servidor",
+        description: "Erro interno",
         type: "object",
         properties: {
-          message: { type: "string", example: "Erro interno no servidor" },
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Server Error" },
+          message: { type: "string", example: "Erro interno no Servidor" },
         },
       },
     },
@@ -173,22 +251,46 @@ const demandasDeleteSchema = {
           },
         },
       },
-      401: {
-        description: "Sem autorização para excluir a demanda",
+      400: {
+        description: "Erro no 400",
+        type: "object",
         properties: {
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Bad Request" },
+          message: { type: "string", example: "Bad Request" },
+        },
+      },
+      401: {
+        description: "Erro no 401",
+        type: "object",
+        properties: {
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Unauthorized" },
           message: {
             type: "string",
-            message: "Sem permissão para excluir a demanda",
+            example: "Você não está autorizado a acessar este serviço.",
+          },
+        },
+      },
+      404: {
+        description: "Erro no 404",
+        type: "object",
+        properties: {
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Not Found" },
+          message: {
+            type: "string",
+            example: "A serviço solicitada não foi encontrada.",
           },
         },
       },
       500: {
-        description: "Problemas internos no servidor",
+        description: "Erro interno",
+        type: "object",
         properties: {
-          message: {
-            type: "string",
-            message: "Problemas internos no servidor",
-          },
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Server Error" },
+          message: { type: "string", example: "Erro interno no Servidor" },
         },
       },
     },
@@ -209,24 +311,46 @@ const assumirDemandasSchema = {
           message: { type: "string", message: "Demanda assumida com sucesso" },
         },
       },
-      401: {
-        description: "Sem permissçao para assumir demandas",
+      400: {
+        description: "Erro no 400",
         type: "object",
         properties: {
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Bad Request" },
+          message: { type: "string", example: "Bad Request" },
+        },
+      },
+      401: {
+        description: "Erro no 401",
+        type: "object",
+        properties: {
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Unauthorized" },
           message: {
             type: "string",
-            example: "Sem permissão para assumir demandas",
+            example: "Você não está autorizado a acessar este serviço.",
+          },
+        },
+      },
+      404: {
+        description: "Erro no 404",
+        type: "object",
+        properties: {
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Not Found" },
+          message: {
+            type: "string",
+            example: "A serviço solicitada não foi encontrada.",
           },
         },
       },
       500: {
-        description: "Problemas internos no servidor",
+        description: "Erro interno",
         type: "object",
         properties: {
-          message: {
-            type: "string",
-            example: "Problemas internos no servidor",
-          },
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Server Error" },
+          message: { type: "string", example: "Erro interno no Servidor" },
         },
       },
     },
@@ -260,24 +384,46 @@ const updateUserDemandas = {
           },
         },
       },
-      401: {
-        description: "Sem permissao para Atualizar a demanda",
+      400: {
+        description: "Erro no 400",
         type: "object",
         properties: {
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Bad Request" },
+          message: { type: "string", example: "Bad Request" },
+        },
+      },
+      401: {
+        description: "Erro no 401",
+        type: "object",
+        properties: {
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Unauthorized" },
           message: {
             type: "string",
-            example: "Sem permissão para Atualizar a demanda",
+            example: "Você não está autorizado a acessar este serviço.",
+          },
+        },
+      },
+      404: {
+        description: "Erro no 404",
+        type: "object",
+        properties: {
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Not Found" },
+          message: {
+            type: "string",
+            example: "A serviço solicitada não foi encontrada.",
           },
         },
       },
       500: {
-        description: "Problemas internos no servidor",
+        description: "Erro interno",
         type: "object",
         properties: {
-          message: {
-            type: "string",
-            example: "Problemas internos no servidor",
-          },
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Server Error" },
+          message: { type: "string", example: "Erro interno no Servidor" },
         },
       },
     },
@@ -300,24 +446,46 @@ const finalizarDemandaSchema = {
           },
         },
       },
-      401: {
-        description: "Sem permissao para finalizar a demanda",
+      400: {
+        description: "Erro no 400",
         type: "object",
         properties: {
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Bad Request" },
+          message: { type: "string", example: "Bad Request" },
+        },
+      },
+      401: {
+        description: "Erro no 401",
+        type: "object",
+        properties: {
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Unauthorized" },
           message: {
             type: "string",
-            example: "Sem permissão para finalizar a demanda",
+            example: "Você não está autorizado a acessar este serviço.",
+          },
+        },
+      },
+      404: {
+        description: "Erro no 404",
+        type: "object",
+        properties: {
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Not Found" },
+          message: {
+            type: "string",
+            example: "A serviço solicitada não foi encontrada.",
           },
         },
       },
       500: {
-        description: "Problemas internos no servidor",
+        description: "Erro interno",
         type: "object",
         properties: {
-          message: {
-            type: "string",
-            example: "Problemas internos no servidor",
-          },
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Server Error" },
+          message: { type: "string", example: "Erro interno no Servidor" },
         },
       },
     },
@@ -368,24 +536,52 @@ const demandasGetHistory = {
           },
         },
       },
-      401: {
-        description: "Sem autorização",
+
+      400: {
+        description: "Erro no 400",
         type: "object",
         properties: {
-          message: { type: "string", example: "Sem autorização" },
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Bad Request" },
+          message: { type: "string", example: "Bad Request" },
+        },
+      },
+      401: {
+        description: "Erro no 401",
+        type: "object",
+        properties: {
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Unauthorized" },
+          message: {
+            type: "string",
+            example: "Você não está autorizado a acessar este serviço.",
+          },
+        },
+      },
+      404: {
+        description: "Erro no 404",
+        type: "object",
+        properties: {
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Not Found" },
+          message: {
+            type: "string",
+            example: "A serviço solicitada não foi encontrada.",
+          },
         },
       },
       500: {
-        description: "Erro interno no servidor",
+        description: "Erro interno",
         type: "object",
         properties: {
-          message: { type: "string", example: "Erro interno no servidor" },
+          statusCode: { type: "integer", example: 400 },
+          error: { type: "string", example: "Server Error" },
+          message: { type: "string", example: "Erro interno no Servidor" },
         },
       },
     },
   },
 };
-
 
 module.exports = {
   demandasGetSchema,
