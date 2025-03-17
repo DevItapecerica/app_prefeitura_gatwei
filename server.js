@@ -54,39 +54,56 @@ app.register(fastifySwaggerUi, {
 });
 
 // Usando o hook onError para tratamento global de erros
-app.setErrorHandler( (error, request, reply) => {
+app.setErrorHandler((error, request, reply) => {
   app.log.error(error); // Log do erro para debugar
 
   const statusCode = error.status || 500;
-
-  // Verifica o tipo de erro e responde com o status adequado
-  if (statusCode === 400) {
-    reply.status(400).send({
-      statusCode: 400,
-      error: "Bad Request",
-      message: "Bad Request",
-    });
-  } else if (statusCode === 404) {
-    reply.status(404).send({
-      statusCode: 404,
-      error: "Not Found",
-      message: "A serviço solicitada não foi encontrada.",
-    });
-  } else if (statusCode === 401) {
-    reply.status(401).send({
-      statusCode: 401,
-      error: "Unauthorized",
-      message: "Você não está autorizado a acessar este serviço.",
-    });
-  } else {
-    reply.status(500).send({
-      statusCode: 500,
-      error: "Server Error",
-      message: "Erro interno no servidor.",
-    });
+  let messageError =
+    error.response?.data.message || error.message || "Erro desconhecido";
+  switch (statusCode) {
+    case 400:
+      reply.status(statusCode).send({
+        statusCode: statusCode,
+        error: "Server Error",
+        message: "Bad Request " + messageError,
+      });
+      break;
+    case 401:
+      reply.status(statusCode).send({
+        statusCode: statusCode,
+        error: "Server Error",
+        message: "Unauthorized " + messageError,
+      });
+      break;
+    case 403:
+      reply.status(statusCode).send({
+        statusCode: statusCode,
+        error: "Server Error",
+        message: "Ação não permitida " + messageError,
+      });
+      break;
+    case 404:
+      reply.status(statusCode).send({
+        statusCode: statusCode,
+        error: "Server Error",
+        message: "Not found " + messageError,
+      });
+      break;
+    case 500:
+      reply.status(statusCode).send({
+        statusCode: statusCode,
+        error: "Server Error",
+        message: "Internal server error " + messageError,
+      });
+      break;
+    default:
+      reply.status(statusCode).send({
+        statusCode: statusCode,
+        error: "Server Error",
+        message: "Internal server error " + messageError,
+      });
   }
 });
-
 
 app.register(router);
 

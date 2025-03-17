@@ -4,12 +4,12 @@ const User = require("../controller/AdminUser/adminUserController");
 // const demandasTi = require("../controller/DemandasTi/demandasTiController");
 // const alterPwd = require("../controller/UserSttings/alterPwdController");
 const login = require("../controller/Auth/login");
-const verifyAuth = require('../controller/Auth/authUser')
+const verifyAuth = require("../controller/Auth/authUser");
 const toten = require("../controller/toten/totenController");
 
-const loginSchema = require('../schemas/Auth/loginSchema')
-const verifyAuthSchema = require('../schemas/Auth/verifyAuthSchema')
-const UserSchema = require('../schemas/User/userSchema')
+const loginSchema = require("../schemas/Auth/loginSchema");
+const verifyAuthSchema = require("../schemas/Auth/verifyAuthSchema");
+const UserSchema = require("../schemas/User/userSchema");
 
 const auth = require("../middleware/authJWT");
 
@@ -47,6 +47,12 @@ async function routes(fastify, options) {
     handler: User.deletarUser,
   });
 
+  fastify.route({
+    method: "put",
+    url: "/user/:id",
+    preHandler: [auth],
+    handler: User.atualizarUser,
+  });
   // fastify.put("/user/:id", userSchema.updateUserSchema, User.atualizarUser);
 
   // 📌 Services
@@ -81,11 +87,10 @@ async function routes(fastify, options) {
   // Verificar Usuário
   fastify.get("/authUser", verifyAuthSchema, verifyAuth.authUser);
 
-
   //toten
-  fastify.get('/toten', toten.getToten)
-  fastify.get('/toten/today', toten.getTodayToten)
-  fastify.post('/toten', toten.postToten)
+  fastify.get("/toten", toten.getToten);
+  fastify.get("/toten/today", toten.getTodayToten);
+  fastify.post("/toten", toten.postToten);
 }
 
 module.exports = routes;

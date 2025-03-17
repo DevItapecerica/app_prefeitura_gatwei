@@ -4,7 +4,6 @@ const axios = require("axios");
 const USER_API = axios.create({
   baseURL: "http://localhost:8002",
   headers: {
-    "Content-Type": "application/json",
   },
 });
 

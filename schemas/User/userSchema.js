@@ -2,15 +2,6 @@ const getUserSchema = {
   schema: {
     description: "Pegue todos os usuários",
     tags: ["Users"],
-    headers: {
-      required: ["authorization"],
-      type: "object",
-      properties: {
-        authorization: {
-          type: "string",
-        },
-      },
-    },
     security: [
       {
         JWTAuth: [],
@@ -51,14 +42,7 @@ const postUserSchema = {
   schema: {
     description: "Pegue todos os usuários",
     tags: ["Users"],
-    headers: {
-      type: "object",
-      properties: {
-        Authorization: {
-          type: "string",
-        },
-      },
-    },
+    
     body: {
       type: "object",
       required: ["name", "email", "ramal", "setor_id", "role"],
@@ -108,14 +92,6 @@ const getOneUserSchema = {
   schema: {
     description: "Pegue todos os usuários",
     tags: ["Users"],
-    headers: {
-      type: "object",
-      properties: {
-        Authorization: {
-          type: "string",
-        },
-      },
-    },
     response: {
       200: {
         description: "requisição bem sucedida",
@@ -158,14 +134,6 @@ const updateUserSchema = {
   schema: {
     description: "Atualizar usuário",
     tags: ["Users"],
-    headers: {
-      type: "object",
-      properties: {
-        Authorization: {
-          type: "string",
-        },
-      },
-    },
     body: {
       required: ["user"],
       type: "object",
@@ -230,14 +198,6 @@ const deleteUserSchema = {
   schema: {
     description: "Deleta um usuário",
     tags: ["Users"],
-    headers: {
-      type: "object",
-      properties: {
-        Authorization: {
-          type: "string",
-        },
-      },
-    },
     response: {
       200: {
         description: "Usuário deletado com sucesso",

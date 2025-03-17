@@ -54,7 +54,17 @@ exports.getAll = async () => {
 };
 
 // Atualiza um usuário
-exports.update = async (userTarget, paramId) => {};
+exports.update = async (id, param) => {
+  try {
+    await user_api.put(`/user/${id}`, {
+      user: {
+        ...param,
+      },
+    });
+  } catch (error) {
+    throw error
+  }
+};
 
 // Remove um usuário
 exports.remove = async (paramId) => {
@@ -62,11 +72,9 @@ exports.remove = async (paramId) => {
     let response = await user_api.delete(`/user/${paramId}`);
     let result = response;
     return result;
-    
   } catch (error) {
     throw {
-      message:
-        error.message || "erro ao buscar o usuário",
+      message: error.message || "erro ao buscar o usuário",
       status: error.status,
     };
   }

@@ -18,7 +18,7 @@ exports.cadastrarUser = async (request, reply) => {
     reply.status(200).send('usuário criado com sucesso')
     
   } catch (error) {
-    reply.status(error.status || 500).send(error.response?.data || error.message || "Erro ao cadastrar usuário");
+    throw error
   }
 };
 
@@ -36,7 +36,7 @@ exports.getOneUser = async (request, reply) => {
     reply.status(200).send(user)
     
   } catch (error) {
-    reply.status(error.status || 500).send(error.response?.data || error.message || "Erro ao cadastrar usuário");
+    throw error
   }
 };
 
@@ -47,11 +47,20 @@ exports.getAllUser = async (request, reply) => {
     reply.status(200).send(users)
     
   } catch (error) {
-    reply.status(error.status || 500).send(error.response.data || error.message || "Erro ao cadastrar usuário");
+    throw error
   }
 };
 
-exports.atualizarUser = async (request, reply) => {};
+exports.atualizarUser = async (request, reply) => {
+  try {
+    await update(request.params.id, request.body);
+    
+    reply.status(200).send('Atualizado com sucesso');
+
+  } catch (error) {
+    throw error
+  }
+};
 
 exports.deletarUser = async (request, reply) => {
   try {
@@ -60,6 +69,6 @@ exports.deletarUser = async (request, reply) => {
     reply.status(200).send('Usuário excluido com sucesso')
     
   } catch (error) {
-    reply.status(error.status || 500).send(error.response.data || error.message || "Erro ao cadastrar usuário");
+    throw error
   }
 };
