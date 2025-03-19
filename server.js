@@ -55,11 +55,12 @@ app.register(fastifySwaggerUi, {
 
 // Usando o hook onError para tratamento global de erros
 app.setErrorHandler((error, request, reply) => {
-  app.log.error(error); // Log do erro para debugar
 
-  const statusCode = error.status || 500;
+  console.log(error)
+  const statusCode = error?.status || 500;
+
   let messageError =
-    error.response?.data.message || error.message || "Erro desconhecido";
+    error?.response?.data.message || error?.message || "Erro desconhecido";
   switch (statusCode) {
     case 400:
       reply.status(statusCode).send({

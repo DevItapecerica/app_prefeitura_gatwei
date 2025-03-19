@@ -2,6 +2,7 @@
   "name": "Gerenciamento_Prefeitura",
   "version": "1.0.0",
   "description": "API para gestão e controle de serviços na Prefeitura",
+  "main": "server.js",
   "dependencies": {
     "@fastify/cookie": "^11.0.2",
     "@fastify/cors": "^10.0.2",

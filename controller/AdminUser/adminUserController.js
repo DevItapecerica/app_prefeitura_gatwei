@@ -6,13 +6,12 @@ const serviceID = 1;
 
 exports.cadastrarUser = async (request, reply) => {
   const token = request.headers["authorization"].split(" ")[1];
-  
   try {
-
+    
     await login_api.post('/authUser', {
       token: token
     })
-
+    
     await create(request.body)
 
     reply.status(200).send('usuário criado com sucesso')

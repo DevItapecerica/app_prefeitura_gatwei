@@ -13,6 +13,6 @@ exports.login = async (request, reply) => {
     reply.status(200).send(login);
   } catch (error) {
     // O erro será tratado pelo hook onError
-    throw error.status; // Lançar o erro para que o middleware de erro o capture
+    throw error; // Lançar o erro para que o middleware de erro o capture
   }
 };

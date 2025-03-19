@@ -4,7 +4,7 @@ const user_api = require("../../service/user_api");
 exports.create = async (userTarget) => {
   try {
     let { name, email, ramal, setor_id, role } = userTarget;
-
+    
     await user_api.post("/user", {
       name: name,
       email: email,
@@ -13,11 +13,7 @@ exports.create = async (userTarget) => {
       role: role,
     });
   } catch (error) {
-    throw {
-      message:
-        error.response.data || error.message || "erro ao criar o usuário",
-      status: error.status,
-    };
+    throw error;
   }
 };
 

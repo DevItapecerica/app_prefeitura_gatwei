@@ -3,7 +3,7 @@ const DBPermission = require("../../db/model/PermissionModel");
 const DBService = require("../../db/model/ServiceModel");
 
 // Obtem todos os serviços independente do usuário
-exports.getAll = async (token) => {
+exports.getAll = async () => {
   try {
     const AllServices = await DBService.findAll();
     return AllServices;
