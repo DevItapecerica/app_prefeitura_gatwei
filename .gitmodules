@@ -1,0 +1,12 @@
+[submodule "Setor_MS"]
+	path = Setor_MS
+	url = https://github.com/Kadoia614/Setor_MS
+[submodule "MicroServices/Services_MS"]
+	path = MicroServices/Services_MS
+	url = https://github.com/Kadoia614/Services_MS
+[submodule "MicroServices/Login_MS"]
+	path = MicroServices/Login_MS
+	url = https://github.com/Kadoia614/Login_MS
+[submodule "MicroServices/User_MS"]
+	path = MicroServices/User_MS
+	url = git@github.com:Kadoia614/User_MS.git
