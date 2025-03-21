@@ -5,7 +5,7 @@ const fastifyCookie = require("@fastify/cookie");
 const fastifySwagger = require("@fastify/swagger");
 const fastifySwaggerUi = require("@fastify/swagger-ui");
 
-const router = require("./Router/Router");
+const userRouter = require("./Router/userRouter")
 
 const app = fastify();
 
@@ -106,7 +106,7 @@ app.setErrorHandler((error, request, reply) => {
   }
 });
 
-app.register(router);
+app.register(userRouter)
 
 const port = 8000;
 

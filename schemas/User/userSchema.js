@@ -14,6 +14,15 @@ const getUserSchema = {
         properties: {
           users: {
             type: "array",
+            properties: {
+              id: { type: "integer", example: 1 },
+              name: { type: "string", example: "kadoia" },
+              email: { type: "string", example: "email@dominio.com.br" },
+              ramal: { type: "string", example: "1234" },
+              setor_id: { type: "integer", example: 1 },
+              role: { type: "string", example: "admin" },
+              firstLogin: { type: "boolean", example: true },
+            },
           },
           roles: {
             type: "array",
@@ -42,7 +51,7 @@ const postUserSchema = {
   schema: {
     description: "Pegue todos os usuários",
     tags: ["Users"],
-    
+
     body: {
       type: "object",
       required: ["name", "email", "ramal", "setor_id", "role"],
@@ -59,17 +68,13 @@ const postUserSchema = {
         description: "requisição bem sucedida",
         type: "object",
         properties: {
-          users: {
-            type: "array",
-          },
-          setores: {
-            type: "array",
-          },
-          roles: {
-            type: "array",
+          message: {
+            type: "string",
+            example: "usuário criado com sucesso",
           },
         },
       },
+
       401: {
         description: "Sem autorização",
         type: "object",
@@ -77,6 +82,15 @@ const postUserSchema = {
           message: { type: "string", example: "Sem permissão" },
         },
       },
+
+      403: {
+        description: "Sem autorização",
+        type: "object",
+        properties: {
+          message: { type: "string", example: "Ação não permitida" },
+        },
+      },
+
       500: {
         description: "Erro interno no servidor",
         type: "object",
@@ -101,12 +115,11 @@ const getOneUserSchema = {
             type: "object",
             properties: {
               id: { type: "integer", example: 1 },
-              name: { type: "string", example: "João" },
-              email: { type: "string", example: "joao@gmail.com" },
+              name: { type: "string", example: "kadoia" },
+              email: { type: "string", example: "email@dominio.com.br" },
               ramal: { type: "string", example: "1234" },
-              password: { type: "string", example: "1234" },
               setor_id: { type: "integer", example: 1 },
-              role: { type: "string", example: 'admin' },
+              role: { type: "string", example: "admin" },
               firstLogin: { type: "boolean", example: true },
             },
           },
