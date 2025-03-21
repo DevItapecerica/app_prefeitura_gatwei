@@ -4,7 +4,7 @@ const fastifyCookie = require("@fastify/cookie");
 
 const fastifySwagger = require("@fastify/swagger");
 const fastifySwaggerUi = require("@fastify/swagger-ui");
-const SwaggerConfig = require("./config/swagger.config")
+const SwaggerConfig = require("./config/swaggerConfig")
 
 const userRouter = require("./Router/userRouter")
 
