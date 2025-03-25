@@ -8,6 +8,7 @@ const SwaggerConfig = require("./config/swaggerConfig");
 require('dotenv').config({path: `${__dirname}/config/.env`});
 
 const userRouter = require("./Router/userRouter");
+const setorRouter = require("./Router/setorRouter");
 
 const app = fastify();
 const port = process.env.APPLICATION_PORT || 8000;
@@ -22,12 +23,9 @@ app.register(fastifyCors, {
 
 app.register(fastifyCookie);
 
-app.register(fastifySwagger, SwaggerConfig.config);
+app.register(fastifySwagger, SwaggerConfig.swaggerConfig(port));
 
-app.register(fastifySwaggerUi, {
-  routePrefix: "/docs",
-  exposeRoute: true,
-});
+app.register(fastifySwaggerUi, SwaggerConfig.swaggerUiConfig);
 
 // Usando o hook onError para tratamento global de erros
 app.setErrorHandler((error, request, reply) => {
@@ -82,6 +80,7 @@ app.setErrorHandler((error, request, reply) => {
 });
 
 app.register(userRouter);
+app.register(setorRouter);
 
 const start = () => {
   try {

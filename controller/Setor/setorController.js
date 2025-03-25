@@ -1,71 +1,29 @@
-const { getAll, create, update, remove } = require("./setor");
-const { verifyParam } = require("../../middleware/verifyParam");
+const setor_api = require('../../service/setor_api');
 
-exports.pegarSetor = async (request, reply) => {
-    const token = request.headers.authorization.split(' ')[1];
-
+const getSetores = async (request, reply) => {
   try {
-    const message = await getAll(token);
+    const response = await setor_api.get('/setor');
 
-    return reply.status(201).send({setores: message});
+    let setores = response.data
+    reply.status(200).send(setores);
   } catch (error) {
-    return reply
-      .status(error.status || 500)
-      .send(error.message || "problemas internos");
+    throw error;
   }
-};
-
-exports.cadastrarSetor = async (request, reply) => {
-    const token = request.headers.authorization.split(' ')[1];
-
-  try {
-    verifyParam(["name", "description"], request.body.setor);
-    await create(token, request.body.setor);
-
-    reply.status(200).send("Serviço cadatrado com sucesso");
-  } catch (error) {
-    reply
-      .status(error.status || 500)
-      .send({ message: error.message || "Problemas no servidor" });
-  }
-};
-
-exports.atualizarSetor = async (request, reply) => {
-        const token = request.headers.authorization.split(' ')[1];
-      
-      try {
-        verifyParam(["id"], request.params);
-        verifyParam(["name", "description"], request.body.setor);
-        const updated = await update(token, request.body.setor, request.params.id);  
-    
-        if (updated) {
-          reply.status(200).send("Serviço atualizado com sucesso");
-        } else {
-          reply.status(404).send("Não houve alterações");
-        }
-      } catch (error) {
-        reply
-          .status(error.status || 500)
-          .send({ message: error.message || "Problemas no servidor..." });
-      }
 }
 
+const getOneSetor = async (request, reply) => {
+  try {
+    let id = request.params.id;
+    const response = await setor_api.get(`/setor/${id}`);
 
-exports.deletarSetor = async (request, reply) => {
-      const token = request.headers.authorization.split(' ')[1];
-    
-    try {
-      verifyParam(["id"], request.params);
-      const removed = await remove(token, request.params.id);  
-  
-      if (removed) {
-        reply.status(200).send("Serviço apagado com sucesso");
-      } else {
-        reply.status(404).send("Não houve alterações");
-      }
-    } catch (error) {
-      reply
-        .status(error.status || 500)
-        .send({ message: error.message || "Problemas no servidor..." });
-    }
+    let setor = response.data
+    reply.status(200).send(setor);
+  } catch (error) {
+    throw error;
+  }
+}
+
+module.exports = {
+  getSetores,
+  getOneSetor,
 }
