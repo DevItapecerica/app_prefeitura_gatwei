@@ -1,9 +1,7 @@
-const { getAll, getOne, update, remove } = require("./adminUser");
-
 const user_api = require("../../service/user_api");
 
 
-exports.cadastrarUser = async (request, reply) => {
+const cadastrarUser = async (request, reply) => {
   try {
     let user = request.body.user;
 
@@ -20,7 +18,7 @@ exports.cadastrarUser = async (request, reply) => {
   }
 };
 
-exports.getOneUser = async (request, reply) => {
+const getOneUser = async (request, reply) => {
   try {
     let id = request.params.id
     let response = await user_api.get(`/user/${id}`)
@@ -33,7 +31,7 @@ exports.getOneUser = async (request, reply) => {
   }
 };
 
-exports.getAllUser = async (request, reply) => {
+const getAllUser = async (request, reply) => {
   try {
     let response = await user_api.get(`/user`)
     let users = response.data
@@ -45,7 +43,7 @@ exports.getAllUser = async (request, reply) => {
   }
 };
 
-exports.atualizarUser = async (request, reply) => {
+const atualizarUser = async (request, reply) => {
   try {
     let id = request.params.id
     let user = request.body.user;
@@ -62,7 +60,7 @@ exports.atualizarUser = async (request, reply) => {
   }
 };
 
-exports.deletarUser = async (request, reply) => {
+const deletarUser = async (request, reply) => {
   try {
     let id = request.params.id
     await user_api.delete(`/user/${id}`)
@@ -73,3 +71,11 @@ exports.deletarUser = async (request, reply) => {
     throw error
   }
 };
+
+module.exports = {
+  cadastrarUser,
+  getOneUser,
+  getAllUser,
+  atualizarUser,
+  deletarUser
+}

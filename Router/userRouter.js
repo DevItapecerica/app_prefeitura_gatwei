@@ -1,4 +1,4 @@
-const User = require("../controller/AdminUser/adminUserController");
+const User = require("../controller/User/UserController");
 const UserSchema = require("../schema/userSchema");
 const auth = require("../middleware/authJWT");
 

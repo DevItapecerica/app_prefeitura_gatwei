@@ -2,7 +2,7 @@ require("dotenv").config();
 const axios = require("axios");
 
 const LOGIN_API = axios.create({
-  baseURL: "http://localhost:8001",
+  baseURL: process.env.LOGIN_API_HOST,
   headers: {
     "Content-Type": "application/json",
   },

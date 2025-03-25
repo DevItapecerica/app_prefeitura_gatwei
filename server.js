@@ -4,11 +4,14 @@ const fastifyCookie = require("@fastify/cookie");
 
 const fastifySwagger = require("@fastify/swagger");
 const fastifySwaggerUi = require("@fastify/swagger-ui");
-const SwaggerConfig = require("./config/swaggerConfig")
+const SwaggerConfig = require("./config/swaggerConfig");
+require('dotenv').config({path: `${__dirname}/config/.env`});
 
-const userRouter = require("./Router/userRouter")
+const userRouter = require("./Router/userRouter");
 
 const app = fastify();
+const port = process.env.APPLICATION_PORT || 8000;
+
 
 app.register(fastifyCors, {
   origin: true, // Specific allowed origin
@@ -28,8 +31,7 @@ app.register(fastifySwaggerUi, {
 
 // Usando o hook onError para tratamento global de erros
 app.setErrorHandler((error, request, reply) => {
-
-  console.log(error)
+  console.log(error);
   const statusCode = error?.status || 500;
 
   let messageError =
@@ -79,9 +81,7 @@ app.setErrorHandler((error, request, reply) => {
   }
 });
 
-app.register(userRouter)
-
-const port = 8000;
+app.register(userRouter);
 
 const start = () => {
   try {
