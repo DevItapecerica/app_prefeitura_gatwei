@@ -1,18 +1,17 @@
-const { getAll, getOne, create, update, remove } = require("./adminUser");
+const { getAll, getOne, update, remove } = require("./adminUser");
 
-const login_api = require('../../service/login_api')
+const user_api = require("../../service/user_api");
 
-const serviceID = 1;
 
 exports.cadastrarUser = async (request, reply) => {
-  const token = request.headers["authorization"].split(" ")[1];
   try {
-    
-    await login_api.post('/authUser', {
-      token: token
-    })
-    
-    await create(request.body)
+    let user = request.body.user;
+
+    await user_api.post("/user", {
+      user: {
+        ...user,
+      },
+    });
 
     reply.status(200).send('usuário criado com sucesso')
     
@@ -22,15 +21,10 @@ exports.cadastrarUser = async (request, reply) => {
 };
 
 exports.getOneUser = async (request, reply) => {
-  const token = request.headers["authorization"].split(" ")[1];
-  
   try {
-
-    await login_api.post('/authUser', {
-      token: token
-    })
-
-    let user = await getOne(request.params.id)
+    let id = request.params.id
+    let response = await user_api.get(`/user/${id}`)
+    let user = response.data
 
     reply.status(200).send(user)
     
@@ -41,7 +35,8 @@ exports.getOneUser = async (request, reply) => {
 
 exports.getAllUser = async (request, reply) => {
   try {
-    let users = await getAll(request.body)
+    let response = await user_api.get(`/user`)
+    let users = response.data
 
     reply.status(200).send(users)
     
@@ -52,9 +47,15 @@ exports.getAllUser = async (request, reply) => {
 
 exports.atualizarUser = async (request, reply) => {
   try {
-    await update(request.params.id, request.body);
-    
-    reply.status(200).send('Atualizado com sucesso');
+    let id = request.params.id
+    let user = request.body.user;
+
+    await user_api.put(`/user/${id}`, {
+      user: {
+        ...user,
+      },
+    });
+    reply.status(200).send('usuário atualizado com sucesso')
 
   } catch (error) {
     throw error
@@ -63,7 +64,8 @@ exports.atualizarUser = async (request, reply) => {
 
 exports.deletarUser = async (request, reply) => {
   try {
-    await remove(request.params.id)
+    let id = request.params.id
+    await user_api.delete(`/user/${id}`)
 
     reply.status(200).send('Usuário excluido com sucesso')
     
