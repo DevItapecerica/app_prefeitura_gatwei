@@ -12,6 +12,12 @@ const swaggerConfig = (port) => {
             name: "x-api-key",
             description: "Use a chave de API no cabeçalho como 'x-api-key'",
           },
+          JWTToken: {
+            type: "http",
+            scheme: "bearer",
+            bearerFormat: "JWT",
+            description: "Use o JWT no cabeçalho como 'Authorization: Bearer <token>'",
+          },
         },
       },
       info: {

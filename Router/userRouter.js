@@ -8,7 +8,7 @@ const userRouter = async (fastify, options) => {
   fastify.route({
     method: "GET",
     url: "/user",
-    Schema: UserSchema.getUserSchema,
+    schema: UserSchema.getUserSchema,
     preHandler: [auth],
     handler: User.getAllUser,
   });
@@ -17,7 +17,7 @@ const userRouter = async (fastify, options) => {
   fastify.route({
     method: "GET",
     url: "/user/:id",
-    Schema: UserSchema.getOneUserSchema,
+    schema: UserSchema.getOneUserSchema,
     preHandler: [auth],
     handler: User.getOneUser,
   });
@@ -26,7 +26,7 @@ const userRouter = async (fastify, options) => {
   fastify.route({
     method: "post",
     url: "/user",
-    Schema: UserSchema.postUserSchema,
+    schema: UserSchema.postUserSchema,
     preHandler: [auth],
     handler: User.cadastrarUser,
   });
@@ -35,7 +35,7 @@ const userRouter = async (fastify, options) => {
   fastify.route({
     method: "delete",
     url: "/user/:id",
-    Schema: UserSchema.deleteUserSchema,
+    schema: UserSchema.deleteUserSchema,
     preHandler: [auth],
     handler: User.deletarUser,
   });
@@ -44,7 +44,7 @@ const userRouter = async (fastify, options) => {
   fastify.route({
     method: "put",
     url: "/user/:id",
-    Schema: UserSchema.updateUserSchema,
+    schema: UserSchema.updateUserSchema,
     preHandler: [auth],
     handler: User.atualizarUser,
   });

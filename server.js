@@ -4,11 +4,12 @@ const fastifyCookie = require("@fastify/cookie");
 
 const fastifySwagger = require("@fastify/swagger");
 const fastifySwaggerUi = require("@fastify/swagger-ui");
-const SwaggerConfig = require("./config/swaggerConfig");
+const SwaggerOptions = require("./config/swaggerConfig");
 require('dotenv').config({path: `${__dirname}/config/.env`});
 
 const userRouter = require("./Router/userRouter");
 const setorRouter = require("./Router/setorRouter");
+const serviceRouter = require("./Router/serviceRouter");
 
 const app = fastify();
 const port = process.env.APPLICATION_PORT || 8000;
@@ -23,13 +24,12 @@ app.register(fastifyCors, {
 
 app.register(fastifyCookie);
 
-app.register(fastifySwagger, SwaggerConfig.swaggerConfig(port));
+app.register(fastifySwagger, SwaggerOptions.swaggerConfig(port));
 
-app.register(fastifySwaggerUi, SwaggerConfig.swaggerUiConfig);
+app.register(fastifySwaggerUi, SwaggerOptions.swaggerUiConfig);
 
 // Usando o hook onError para tratamento global de erros
 app.setErrorHandler((error, request, reply) => {
-  console.log(error);
   const statusCode = error?.status || 500;
 
   let messageError =
@@ -81,6 +81,7 @@ app.setErrorHandler((error, request, reply) => {
 
 app.register(userRouter);
 app.register(setorRouter);
+app.register(serviceRouter);
 
 const start = () => {
   try {

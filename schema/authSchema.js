@@ -1,7 +1,7 @@
 const authSchema = {
   description: "Verificação de usuário",
   tags: ["Auth"],
-  security: [{ APIKey: [] }],
+  security: [{ APIKey: [], JWTToken: [] }],
   body: {
     type: "object",
     required: ["token"],

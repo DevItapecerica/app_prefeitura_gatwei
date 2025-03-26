@@ -1,29 +1,20 @@
-const { response } = require("../../Login_MS/schema/authSchema");
-
 const getServices = {
   description: "Retorna todos os serviços",
   type: "object",
   tags: ["Services"],
-  security: [{ APIKey: [] }],
-  headers: {
-    type: "object",
-    required: ["x-api-key"],
-    properties: {
-      "x-api-key": { type: "string" },
-    },
-  },
+  security: [{ APIKey: [], JWTToken: [] }],
   response: {
     200: {
-      description: "Verificação bem sucedido",
+      description: "Lista de setores",
       type: "object",
       properties: {
         services: {
           type: "array",
           example: {
             id: 1,
-            name: "Serviço 1",
-            description: "Descrição do serviço 1",
-            url: "/admin",
+            name: "Tecnologia",
+            description: "Setor de tecnologia",
+            url: "https://tecnologia.com",
           },
         },
       },
@@ -77,7 +68,7 @@ const getOneService = {
   description: "Retorna o serviço pelo ID",
   type: "object",
   tags: ["Services"],
-  security: [{ APIKey: [] }],
+  security: [{ APIKey: [], JWTToken: [] }],
   headers: {
     type: "object",
     required: ["x-api-key"],
@@ -151,7 +142,7 @@ const postServices = {
   description: "Cria um serviço",
   type: "object",
   tags: ["Services"],
-  security: [{ APIKey: [] }],
+  security: [{ APIKey: [], JWTToken: [] }],
   headers: {
     type: "object",
     required: ["x-api-key"],
@@ -239,7 +230,7 @@ const updateServices = {
   description: "Atualiza um serviço",
   type: "object",
   tags: ["Services"],
-  security: [{ APIKey: [] }],
+  security: [{ APIKey: [], JWTToken: [] }],
   body: {
     type: "object",
     required: ["service"],
@@ -315,7 +306,7 @@ const deleteService = {
   description: "Exclude um serviço",
   type: "object",
   tags: ["Services"],
-  security: [{ APIKey: [] }],
+  security: [{ APIKey: [], JWTToken: [] }],
   headers: {
     type: "object",
     required: ["x-api-key"],
@@ -377,4 +368,10 @@ const deleteService = {
   },
 };
 
-module.exports = { getServices, getOneService, postServices, updateServices, deleteService   };
+module.exports = {
+  getServices,
+  getOneService,
+  postServices,
+  updateServices,
+  deleteService,
+};

@@ -23,7 +23,47 @@ const getOneSetor = async (request, reply) => {
   }
 }
 
+const createSetor = async (request, reply) => {
+  try {
+    let setor = request.body.setor;
+    const response = await setor_api.post('/setor', {setor});
+
+    reply.status(200).send(response.data);
+  }
+  catch (error) {
+    throw error;
+  }
+}
+
+const  updateSetor = async (request, reply) => {
+  try {
+    let id = request.params.id;
+    let setor = request.body.setor;
+    const response = await setor_api.put(`/setor/${id}`, {setor});
+
+    reply.status(204);
+  } catch (error) {
+    throw error;
+  }
+}
+
+const deleteSetor = async (request, reply) => {
+  try {
+    let id = request.params.id;
+    const response = await setor_api.delete(`/setor/${id}`);
+
+    reply.status(204);
+  } catch (error) {
+    throw error;
+  }
+}
+
+
 module.exports = {
   getSetores,
   getOneSetor,
+  createSetor,
+  updateSetor,
+  deleteSetor,
+
 }

@@ -1,6 +1,6 @@
 const getSetores = {
   tags: ["Setores"],
-  security: [{ APIKey: [] }],
+  security: [{ APIKey: [], JWTToken: [] }],
   response: {
     200: {
       description: "Lista de setores",
@@ -63,7 +63,7 @@ const getSetores = {
 
 const getOneSetor = {
   tags: ["Setores"],
-  security: [{ APIKey: [] }],
+  security: [{ APIKey: [], JWTToken: [] }],
   response: {
     200: {
       description: "Lista de setores",
@@ -130,12 +130,13 @@ const getOneSetor = {
 const postSetor = {
   tags: ["Setores"],
   description: "Cria um novo setor",
-  security: [{ APIKey: [] }],
+  security: [{ APIKey: [], JWTToken: [] }],
   body: {
     type: "object",
     required: ["setor"],
     properties: {
       setor: {
+        type: "object",
         required: ["name", "description"],
         properties: {
           name: { type: "string" },
@@ -210,12 +211,13 @@ const postSetor = {
 const updateSetor = {
   tags: ["Setores"],
   description: "Cria um novo setor",
-  security: [{ APIKey: [] }],
+  security: [{ APIKey: [], JWTToken: [] }],
   body: {
     type: "object",
     required: ["setor"],
     properties: {
       setor: {
+        type: "object",
         required: ["name", "description"],
         properties: {
           name: { type: "string" },
@@ -225,15 +227,8 @@ const updateSetor = {
     },
   },
   responses: {
-    201: {
+    204: {
       description: "Setor atualizado com sucesso",
-      type: "object",
-      properties: {
-        message: {
-          type: "string",
-          example: "Setor atualizado com sucesso",
-        },
-      },
     },
     400: {
       description: "Erro no 400",
@@ -282,24 +277,10 @@ const updateSetor = {
 
 const deleteSetor = {
   tags: ["Setores"],
-  security: [{ APIKey: [] }],
+  security: [{ APIKey: [], JWTToken: [] }],
   response: {
-    200: {
+    204: {
       description: "Lista de setores",
-      type: "object",
-      properties: {
-        setor: {
-          type: "object",
-          properties: {
-            id: { type: "integer", example: 1 },
-            name: { type: "string", example: "Tecnologia" },
-            description: {
-              type: "string",
-              example: "Setor para gerenciamento do sistema",
-            },
-          },
-        },
-      },
     },
     400: {
       description: "Erro no 400",

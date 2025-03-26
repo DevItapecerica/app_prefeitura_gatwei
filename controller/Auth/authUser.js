@@ -1,8 +1,13 @@
 const login_api = require("../../service/login_api");
 
 exports.authUser = async (request, reply) => {
-  const token = request.headers["authorization"].split(" ")[1];
+  let token = request.headers.authorization.replace("Bearer ", "");
   try {
+    if(!token){
+      let error = new Error('Token não informado')
+      error.status = 400
+      throw error
+    }
     let response = await login_api.post('/authUser', {
       token: token
     })

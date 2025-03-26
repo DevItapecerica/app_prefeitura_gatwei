@@ -2,7 +2,12 @@ const login_api = require("../service/login_api");
 
 const authJWT = async (request, reply) => {
   try {
-    const token = request.headers.authorization?.split(" ")[1] || request.headers.authorization;
+    let token = request.headers.authorization?.replace("Bearer ", "") ;
+    
+    if (!token) {
+      throw { status: 401, message: "Token não informado" };
+    }
+
     await login_api.post("/authUser", {
       token: token,
     });
