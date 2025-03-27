@@ -147,6 +147,7 @@ const postServices = {
           name: { type: "string" },
           description: { type: "string" },
           url: { type: "string" },
+
         },
       },
     },
@@ -233,15 +234,8 @@ const updateServices = {
     },
   },
   response: {
-    201: {
+    204: {
       description: "Update bem sucedido",
-      type: "object",
-      properties: {
-        message: {
-          type: "string",
-          example: "Serviço atualizado com sucesso",
-        },
-      },
     },
     400: {
       description: "Erro no 400",
@@ -294,12 +288,8 @@ const deleteService = {
   tags: ["Services"],
   security: [{ APIKey: [] }],
   response: {
-    200: {
+    204: {
       description: "Excluido com sucesso",
-      type: "object",
-      properties: {
-        message: { type: "string", example: "Serviço excluído com sucesso" },
-      },
     },
 
     400: {

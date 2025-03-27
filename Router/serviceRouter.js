@@ -26,6 +26,23 @@ const serviceRouter = (fastify, options) => {
     preHandler: [auth],
     handler: Service.createService,
   });
+
+  fastify.route({
+    method: "PUT",
+    url: "/service/:id",
+    schema: serviceSchema.updateServices,
+    preHandler: [auth],
+    handler: Service.updateService,
+  })
+
+  fastify.route({
+    method: "DELETE",
+    url: "/service/:id",
+    schema: serviceSchema.deleteService,
+    preHandler: [auth],
+    handler: Service.deleteService,
+  });
+
 };
 
 module.exports = serviceRouter;

@@ -1,8 +1,8 @@
-const service_api = require('../../service/service_api')
+const service_api = require("../../service/service_api");
 
 const getAllServices = async (request, reply) => {
   try {
-    let response = await service_api.get('/service');
+    let response = await service_api.get("/service");
     let services = response.data;
 
     reply.status(200).send(services);
@@ -25,13 +25,15 @@ const getService = async (request, reply) => {
 
 const createService = async (request, reply) => {
   try {
+
+
     let service = request.body.service;
     let response = await service_api.post(`/service`, {
       service
     });
     let serviceResult = response.data;
 
-    reply.status(200).send({serviceResult});
+    reply.status(200).send({ serviceResult });
   } catch (error) {
     throw error;
   }
@@ -39,6 +41,25 @@ const createService = async (request, reply) => {
 
 const updateService = async (request, reply) => {
   try {
+    try {
+      let service = request.body.service;
+      let permissions = request.body.service.permissions
+      let id = request.params.id;
+      await service_api.put(`/service/${id}`, {
+        service: {
+          name: service.name,
+          description: service.description,
+          url: service.url,
+        }
+      });
+
+      await service_api.put(`/service/${id}/permissions`, {})
+      console.log(id, {permissions})
+
+      reply.status(204);
+    } catch (error) {
+      throw error;
+    }
   } catch (error) {
     throw error;
   }
@@ -46,6 +67,10 @@ const updateService = async (request, reply) => {
 
 const deleteService = async (request, reply) => {
   try {
+    let id = request.params.id;
+    await service_api.delete(`/service/${id}`);
+
+    reply.status(204);
   } catch (error) {
     throw error;
   }
