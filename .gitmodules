@@ -14,3 +14,7 @@
 	path = MicroServices/Services_MS
 	url = git@github.com:Kadoia614/Services_MS.git
 	branch = Desenvolvimento
+[submodule "MicroServices/Permissions_MS"]
+	path = MicroServices/Permissions_MS
+	url = git@github.com:Kadoia614/Permissions_MS.git
+	branch = Desenvolvimento
