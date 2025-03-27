@@ -5,7 +5,7 @@ const getAllServices = async (request, reply) => {
     let response = await service_api.get('/service');
     let services = response.data;
 
-    reply.status(200).send({services});
+    reply.status(200).send(services);
   } catch (error) {
     throw error;
   }
@@ -17,7 +17,7 @@ const getService = async (request, reply) => {
     let response = await service_api.get(`/service/${id}`);
     let services = response.data;
 
-    reply.status(200).send({services});
+    reply.status(200).send(services);
   } catch (error) {
     throw error;
   }

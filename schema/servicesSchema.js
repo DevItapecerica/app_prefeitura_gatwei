@@ -2,19 +2,19 @@ const getServices = {
   description: "Retorna todos os serviços",
   type: "object",
   tags: ["Services"],
-  security: [{ APIKey: [], JWTToken: [] }],
+  security: [{ APIKey: [] }],
   response: {
     200: {
-      description: "Lista de setores",
+      description: "Verificação bem sucedido",
       type: "object",
       properties: {
         services: {
           type: "array",
           example: {
             id: 1,
-            name: "Tecnologia",
-            description: "Setor de tecnologia",
-            url: "https://tecnologia.com",
+            name: "Serviço 1",
+            description: "Descrição do serviço 1",
+            url: "/admin",
           },
         },
       },
@@ -68,20 +68,13 @@ const getOneService = {
   description: "Retorna o serviço pelo ID",
   type: "object",
   tags: ["Services"],
-  security: [{ APIKey: [], JWTToken: [] }],
-  headers: {
-    type: "object",
-    required: ["x-api-key"],
-    properties: {
-      "x-api-key": { type: "string" },
-    },
-  },
+  security: [{ APIKey: [] }],
   response: {
     200: {
       description: "Verificação bem sucedido",
       type: "object",
       properties: {
-        service: {
+        services: {
           type: "object",
           properties: {
             id: { type: "integer", example: 1 },
@@ -142,14 +135,7 @@ const postServices = {
   description: "Cria um serviço",
   type: "object",
   tags: ["Services"],
-  security: [{ APIKey: [], JWTToken: [] }],
-  headers: {
-    type: "object",
-    required: ["x-api-key"],
-    properties: {
-      "x-api-key": { type: "string" },
-    },
-  },
+  security: [{ APIKey: [] }],
   body: {
     type: "object",
     required: ["service"],
@@ -230,7 +216,7 @@ const updateServices = {
   description: "Atualiza um serviço",
   type: "object",
   tags: ["Services"],
-  security: [{ APIKey: [], JWTToken: [] }],
+  security: [{ APIKey: [] }],
   body: {
     type: "object",
     required: ["service"],
@@ -306,14 +292,7 @@ const deleteService = {
   description: "Exclude um serviço",
   type: "object",
   tags: ["Services"],
-  security: [{ APIKey: [], JWTToken: [] }],
-  headers: {
-    type: "object",
-    required: ["x-api-key"],
-    properties: {
-      "x-api-key": { type: "string" },
-    },
-  },
+  security: [{ APIKey: [] }],
   response: {
     200: {
       description: "Excluido com sucesso",

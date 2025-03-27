@@ -4,16 +4,22 @@ const loginSchema = {
   security: [{ APIKey: [] }],
   body: {
     type: "object",
-    required: ["email", "password"],
+    required: ["credentials"],
     properties: {
-      email: {
-        type: "string",
-        // format: "email",
-      },
-      password: {
-        type: "string",
-        minLength: 6,
-        maxLength: 255,
+      credentials: {
+        type: "object",
+        required: ["email", "password"],
+        properties: {
+          email: {
+            type: "string",
+            // format: "email",
+          },
+          password: {
+            type: "string",
+            minLength: 6,
+            maxLength: 255,
+          },
+        },
       },
     },
   },
@@ -46,7 +52,10 @@ const loginSchema = {
       properties: {
         statusCode: { type: "integer", example: 400 },
         error: { type: "string", example: "Unauthorized" },
-        message: { type: "string", example: "Você não está autorizado a acessar este serviço." },
+        message: {
+          type: "string",
+          example: "Você não está autorizado a acessar este serviço.",
+        },
       },
     },
     404: {
@@ -55,7 +64,10 @@ const loginSchema = {
       properties: {
         statusCode: { type: "integer", example: 400 },
         error: { type: "string", example: "Not Found" },
-        message: { type: "string", example: "A serviço solicitada não foi encontrada." },
+        message: {
+          type: "string",
+          example: "A serviço solicitada não foi encontrada.",
+        },
       },
     },
     500: {

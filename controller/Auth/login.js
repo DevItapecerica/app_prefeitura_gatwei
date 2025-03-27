@@ -1,13 +1,12 @@
 const login_api = require("../../service/login_api");
 
-exports.login = async (request, reply) => {
-  const { email, password } = request.body;
+const login = async (request, reply) => {
+  const payload = request.body.credentials;
   try {
     const response = await login_api.post("/login", {
-      email: email,
-      password: password,
+      ...payload
     });
-    
+
     let login = response.data;
 
     reply.status(200).send(login);
@@ -16,3 +15,5 @@ exports.login = async (request, reply) => {
     throw error; // Lançar o erro para que o middleware de erro o capture
   }
 };
+
+module.exports = { login };

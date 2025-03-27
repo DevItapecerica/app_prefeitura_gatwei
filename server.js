@@ -10,6 +10,7 @@ require('dotenv').config({path: `${__dirname}/config/.env`});
 const userRouter = require("./Router/userRouter");
 const setorRouter = require("./Router/setorRouter");
 const serviceRouter = require("./Router/serviceRouter");
+const authenticateRouter = require('./Router/authenticateRouter')
 
 const app = fastify();
 const port = process.env.APPLICATION_PORT || 8000;
@@ -82,6 +83,7 @@ app.setErrorHandler((error, request, reply) => {
 app.register(userRouter);
 app.register(setorRouter);
 app.register(serviceRouter);
+app.register(authenticateRouter);
 
 const start = () => {
   try {
