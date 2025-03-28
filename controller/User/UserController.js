@@ -1,15 +1,23 @@
 const user_api = require("../../service/user_api");
+const permission_api = require('../../service/permissions_api')
 
 
 const cadastrarUser = async (request, reply) => {
   try {
     let user = request.body.user;
 
-    await user_api.post("/user", {
-      user: {
-        ...user,
-      },
-    });
+    let response = await permission_api.get('/roles');
+    let permissions = response.data
+
+
+    await console.log("permissions: ", permissions)
+    await console.log("user: ", user)
+
+    // await user_api.post("/user", {
+    //   user: {
+    //     ...user,
+    //   },
+    // });
 
     reply.status(200).send('usuário criado com sucesso')
     
