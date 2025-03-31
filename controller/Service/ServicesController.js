@@ -33,8 +33,6 @@ const createService = async (request, reply) => {
     });
     let serviceResult = response.data;
 
-    console.log(serviceResult.service.id)
-
     let permissions = await permissions_api.post(`/permission/service`, {
       service: {
         service_id: serviceResult.service.id,
@@ -63,7 +61,7 @@ const updateService = async (request, reply) => {
         },
       });
 
-      await service_api.put(`/service/${id}/permissions`, {});
+      await service_api.put(`/permissions/service/${id}`, {permissions});
       console.log(id, { permissions });
 
       reply.status(204);

@@ -4,7 +4,6 @@ const auth = require("../middleware/authJWT");
 
 const userRouter = async (fastify, options) => {
   // 📌 Users
-  // fastify.get("/user", UserSchema.getUserSchema, User.getAllUser);
   fastify.route({
     method: "GET",
     url: "/user",
@@ -13,7 +12,6 @@ const userRouter = async (fastify, options) => {
     handler: User.getAllUser,
   });
 
-  // fastify.get("/user/:id", UserSchema.getOneUserSchema, User.getOneUser);
   fastify.route({
     method: "GET",
     url: "/user/:id",
@@ -22,7 +20,6 @@ const userRouter = async (fastify, options) => {
     handler: User.getOneUser,
   });
 
-  // fastify.post("/user", User.cadastrarUser);
   fastify.route({
     method: "post",
     url: "/user",
@@ -31,7 +28,6 @@ const userRouter = async (fastify, options) => {
     handler: User.cadastrarUser,
   });
 
-  // fastify.delete("/user/:id", UserSchema.deleteUserSchema, User.deletarUser);
   fastify.route({
     method: "delete",
     url: "/user/:id",
@@ -40,7 +36,6 @@ const userRouter = async (fastify, options) => {
     handler: User.deletarUser,
   });
 
-  // fastify.put("/user/:id", userSchema.updateUserSchema, User.atualizarUser);
   fastify.route({
     method: "put",
     url: "/user/:id",
