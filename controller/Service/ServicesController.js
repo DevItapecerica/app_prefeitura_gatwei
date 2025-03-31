@@ -1,4 +1,5 @@
 const service_api = require("../../service/service_api");
+const permissions_api = require("../../service/permissions_api");
 
 const getAllServices = async (request, reply) => {
   try {
@@ -25,15 +26,24 @@ const getService = async (request, reply) => {
 
 const createService = async (request, reply) => {
   try {
-
-
     let service = request.body.service;
+
     let response = await service_api.post(`/service`, {
-      service
+      service,
     });
     let serviceResult = response.data;
 
-    reply.status(200).send({ serviceResult });
+    console.log(serviceResult.service.id)
+
+    let permissions = await permissions_api.post(`/permission/service`, {
+      service: {
+        service_id: serviceResult.service.id,
+      },
+    });
+
+    reply
+      .status(200)
+      .send({ ...serviceResult, message: permissions.data.message });
   } catch (error) {
     throw error;
   }
@@ -43,18 +53,18 @@ const updateService = async (request, reply) => {
   try {
     try {
       let service = request.body.service;
-      let permissions = request.body.service.permissions
+      let permissions = request.body.service.permissions;
       let id = request.params.id;
       await service_api.put(`/service/${id}`, {
         service: {
           name: service.name,
           description: service.description,
           url: service.url,
-        }
+        },
       });
 
-      await service_api.put(`/service/${id}/permissions`, {})
-      console.log(id, {permissions})
+      await service_api.put(`/service/${id}/permissions`, {});
+      console.log(id, { permissions });
 
       reply.status(204);
     } catch (error) {

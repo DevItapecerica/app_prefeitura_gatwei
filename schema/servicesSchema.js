@@ -166,6 +166,10 @@ const postServices = {
             url: { type: "string", example: "/admin" },
           },
         },
+        message: {
+          type: "string",
+          example: "Serviço criado com sucesso.",
+        }
       },
     },
     400: {
