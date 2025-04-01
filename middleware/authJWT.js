@@ -8,9 +8,12 @@ const authJWT = async (request, reply) => {
       throw { status: 401, message: "Token não informado" };
     }
 
-    await login_api.post("/authUser", {
+    let decodedUserResponse = await login_api.post("/authUser", {
       token: token,
     });
+
+    let decodedUser = decodedUserResponse.data.user
+    request.user = decodedUser
 
   } catch (error) {
 

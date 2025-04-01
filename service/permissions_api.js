@@ -5,7 +5,7 @@ const axios = require("axios");
 const PERMISSION_API = axios.create({
   baseURL: process.env.PERMISSION_API_HOST,
   headers: {
-    "Content-Type": "application/json",
+    // "Content-Type": "application/json",
   },
 });
 

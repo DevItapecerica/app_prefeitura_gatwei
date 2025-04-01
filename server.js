@@ -31,7 +31,6 @@ app.register(fastifySwaggerUi, SwaggerOptions.swaggerUiConfig);
 
 // Usando o hook onError para tratamento global de erros
 app.setErrorHandler((error, request, reply) => {
-  console.error(error);
   const statusCode = error?.status || 500;
 
   let messageError =
