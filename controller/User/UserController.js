@@ -1,5 +1,7 @@
 const user_api = require("../../service/user_api");
 const permission_api = require("../../service/permissions_api");
+const role_api = require("../../service/permissions_api");
+const setor_api = require("../../service/setor_api");
 const {verifyPermission} = require('../../utils/verifyPermission')
 
 const SERVICE = 1;
@@ -64,10 +66,17 @@ const getAllUser = async (request, reply) => {
       throw { status: 401, message: "You do not have permission to access this resource." }
     }
 
-    let response = await user_api.get(`/user`);
-    let usersTarget = response.data;
+    let responseUser = await user_api.get(`/user`);
+    let responseSetor = await setor_api.get('/setor');
+    let responseRole = await role_api.get('/roles');
+    let usersTarget = responseUser.data;
+    let setores = responseSetor.data;
+    let roles = responseRole.data;
 
-    reply.status(200).send(usersTarget);
+    console.log(setores)
+    console.log(roles)
+
+    reply.status(200).send({...usersTarget, ...setores, ...roles});
   } catch (error) {
     throw error;
   }

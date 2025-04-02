@@ -24,7 +24,7 @@ const getAllServices = async (request, reply) => {
 
     let roles = await permissions_api.get(`/roles`);
 
-    let role_id = roles.data.find((role) => role.name === user.role).id;
+    let role_id = roles.data.roles.find((role) => role.name === user.role).id;
 
     if (!role_id) {
       throw { status: 500, message: "Role not found" };
@@ -67,7 +67,7 @@ const getUserServices = async (request, reply) => {
     let roles = await permissions_api.get(`/roles`);
     let userServices = [];
 
-    let role_id = roles.data.find((role) => role.name === user.role).id;
+    let role_id = roles.data.roles.find((role) => role.name === user.role).id;
 
     if (!role_id) {
       throw { status: 500, message: "Role not found" };

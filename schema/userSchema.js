@@ -18,6 +18,9 @@ const getUserSchema = {
             firstLogin: { type: "boolean", example: true },
           },
         },
+        setores: {
+          type: "array",
+        },
         roles: {
           type: "array",
         },
