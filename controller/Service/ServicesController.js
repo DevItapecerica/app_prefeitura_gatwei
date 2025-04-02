@@ -7,6 +7,7 @@ const SERVICE = 3;
 const getAllServices = async (request, reply) => {
   try {
     let user = request.user;
+    let servicePermission = [];
     let authorized = await verifyPermission(user, SERVICE, request.method);
 
     if (!authorized) {
@@ -16,6 +17,48 @@ const getAllServices = async (request, reply) => {
       };
     }
 
+    let serviceResponse = await service_api.get("/service");
+    let services = serviceResponse.data;
+    let permissionsResponse = await permissions_api.get(`/permission/service`);
+    let permissions = permissionsResponse.data;
+
+    let roles = await permissions_api.get(`/roles`);
+
+    let role_id = roles.data.find((role) => role.name === user.role).id;
+
+    if (!role_id) {
+      throw { status: 500, message: "Role not found" };
+    }
+
+    services.forEach((service) => {
+      permissions.forEach((permission) => {
+        if (permission.service_id === service.id) {
+          servicePermission = [...servicePermission, permission];
+          service.permission = servicePermission;
+        }
+      });
+      servicePermission = [];
+    });
+
+    reply.status(200).send({ services });
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getUserServices = async (request, reply) => {
+  try {
+    let user = request.user;
+    let authorized = await verifyPermission(user, SERVICE, request.method);
+
+    if (!authorized) {
+      throw {
+        status: 401,
+        message: "You do not have permission to access this resource.",
+      };
+    }
+
+    //gerenciamento de api request's
     let serviceResponse = await service_api.get("/service");
     let services = serviceResponse.data;
     let permissionsResponse = await permissions_api.get(`/permission/service`);
@@ -40,9 +83,7 @@ const getAllServices = async (request, reply) => {
       }
     });
 
-
-
-    reply.status(200).send({services: userServices});
+    reply.status(200).send({ services: userServices });
   } catch (error) {
     throw error;
   }
@@ -63,7 +104,6 @@ const getService = async (request, reply) => {
     }
     let response = await service_api.get(`/service/${id}`);
     let services = response.data;
-
 
     reply.status(200).send(services);
   } catch (error) {
@@ -108,9 +148,9 @@ const updateService = async (request, reply) => {
   try {
     try {
       let service = request.body.service;
-      let permissions = request.body.service.permissions;
+      let permissions = request.body.service.permission;
       let id = request.params.id;
-
+      console.log(permissions);
       let user = request.user;
 
       let authorized = await verifyPermission(user, SERVICE, request.method);
@@ -131,7 +171,6 @@ const updateService = async (request, reply) => {
       });
 
       await permissions_api.put(`/permission/service/${id}`, { permissions });
-
       reply.status(204);
     } catch (error) {
       throw error;
@@ -170,4 +209,5 @@ module.exports = {
   createService,
   updateService,
   deleteService,
+  getUserServices,
 };
