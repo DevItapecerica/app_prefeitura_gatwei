@@ -1,40 +1,32 @@
 const fastify = require("fastify");
-const fastifyCors = require("@fastify/cors");
-const fastifyCookie = require("@fastify/cookie");
-
+const cors = require("@fastify/cors");
 const fastifySwagger = require("@fastify/swagger");
 const fastifySwaggerUi = require("@fastify/swagger-ui");
-const SwaggerOptions = require("./config/swaggerConfig");
 require('dotenv').config({path: `${__dirname}/config/.env`});
 
-const userRouter = require("./Router/userRouter");
-const setorRouter = require("./Router/setorRouter");
-const serviceRouter = require("./Router/serviceRouter");
-const authenticateRouter = require('./Router/authenticateRouter')
+const {swaggerConfig, swaggerUiConfig} = require('./config/swaggerConfig');
+const { corsConfig } = require("./config/corsConfig");
+
+const routes = require("./router/demandasRouter");
+
+const port = process.env.APPLICATION_PORT || 8006;
 
 const app = fastify();
-const port = process.env.APPLICATION_PORT || 8000;
 
+app.register(cors, corsConfig);
 
-app.register(fastifyCors, {
-  origin: true, // Specific allowed origin
-  credentials: true, // Permite cookies e cabeçalhos de autenticação
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"], // Métodos permitidos
-});
+app.register(fastifySwagger, swaggerConfig(port));
+app.register(fastifySwaggerUi, swaggerUiConfig);
 
-app.register(fastifyCookie);
-
-app.register(fastifySwagger, SwaggerOptions.swaggerConfig(port));
-
-app.register(fastifySwaggerUi, SwaggerOptions.swaggerUiConfig);
 
 // Usando o hook onError para tratamento global de erros
 app.setErrorHandler((error, request, reply) => {
-  const statusCode = error?.status || 500;
-
+  console.log(error)
+  const statusCode = error.status || error.statusCode || 500;
   let messageError =
-    error?.response?.data.message || error?.message || "Erro desconhecido";
+    error.response?.data.message || error.name || error.message || "Erro desconhecido";
+  // Verifica o tipo de erro e responde com o status adequado
+  
   switch (statusCode) {
     case 400:
       reply.status(statusCode).send({
@@ -54,7 +46,7 @@ app.setErrorHandler((error, request, reply) => {
       reply.status(statusCode).send({
         statusCode: statusCode,
         error: "Server Error",
-        message: "Ação não permitida " + messageError,
+        message: "Forbidden " + messageError,
       });
       break;
     case 404:
@@ -80,10 +72,8 @@ app.setErrorHandler((error, request, reply) => {
   }
 });
 
-app.register(userRouter);
-app.register(setorRouter);
-app.register(serviceRouter);
-app.register(authenticateRouter);
+app.register(routes);
+
 
 const start = () => {
   try {

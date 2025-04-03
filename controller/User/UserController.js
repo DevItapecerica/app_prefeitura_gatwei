@@ -2,7 +2,7 @@ const user_api = require("../../service/user_api");
 const permission_api = require("../../service/permissions_api");
 const role_api = require("../../service/permissions_api");
 const setor_api = require("../../service/setor_api");
-const {verifyPermission} = require('../../utils/verifyPermission')
+const { verifyPermission } = require("../../utils/verifyPermission");
 
 const SERVICE = 1;
 const cadastrarUser = async (request, reply) => {
@@ -12,18 +12,14 @@ const cadastrarUser = async (request, reply) => {
     let response = await permission_api.get("/roles");
     let permissions = response.data;
 
-    await console.log("permissions: ", permissions);
-    await console.log("user: ", userTarget);
-
-    const isValid = permissions.some((permission) => {
-      return permission.name === userTarget.role;
+    const isValid = permissions.roles.some((permission) => {
+      return permission.id == userTarget.role_id;
     });
 
     if (!isValid) {
       throw { status: 403, message: "Role not found" };
     }
 
-    console.log("isvalid: ", isValid);
     await user_api.post("/user", {
       user: {
         ...userTarget,
@@ -39,12 +35,15 @@ const cadastrarUser = async (request, reply) => {
 const getOneUser = async (request, reply) => {
   try {
     let id = request.params.id;
-    let user = request.user
+    let user = request.user;
 
-    let authorized = await verifyPermission(user, SERVICE, request.method) 
+    let authorized = await verifyPermission(user, SERVICE, request.method);
 
-    if(!authorized){
-      throw { status: 401, message: "You do not have permission to access this resource." }
+    if (!authorized) {
+      throw {
+        status: 401,
+        message: "You do not have permission to access this resource.",
+      };
     }
 
     let response = await user_api.get(`/user/${id}`);
@@ -58,25 +57,25 @@ const getOneUser = async (request, reply) => {
 
 const getAllUser = async (request, reply) => {
   try {
-    let user = request.user
+    let user = request.user;
 
-    let authorized = await verifyPermission(user, SERVICE, request.method) 
+    let authorized = await verifyPermission(user, SERVICE, request.method);
 
-    if(!authorized){
-      throw { status: 401, message: "You do not have permission to access this resource." }
+    if (!authorized) {
+      throw {
+        status: 401,
+        message: "You do not have permission to access this resource.",
+      };
     }
 
     let responseUser = await user_api.get(`/user`);
-    let responseSetor = await setor_api.get('/setor');
-    let responseRole = await role_api.get('/roles');
+    let responseSetor = await setor_api.get("/setor");
+    let responseRole = await role_api.get("/roles");
     let usersTarget = responseUser.data;
     let setores = responseSetor.data;
     let roles = responseRole.data;
 
-    console.log(setores)
-    console.log(roles)
-
-    reply.status(200).send({...usersTarget, ...setores, ...roles});
+    reply.status(200).send({ ...usersTarget, ...setores, ...roles });
   } catch (error) {
     throw error;
   }
@@ -86,12 +85,26 @@ const atualizarUser = async (request, reply) => {
   try {
     let id = request.params.id;
     let userTarget = request.body.user;
-    let user = request.user
+    let user = request.user;
 
-    let authorized = await verifyPermission(user, SERVICE, request.method) 
+    let authorized = await verifyPermission(user, SERVICE, request.method);
 
-    if(!authorized){
-      throw { status: 401, message: "You do not have permission to access this resource." }
+    if (!authorized) {
+      throw {
+        status: 401,
+        message: "You do not have permission to access this resource.",
+      };
+    }
+
+    let response = await permission_api.get("/roles");
+    let permissions = response.data;
+
+    const isValid = permissions.roles.some((permission) => {
+      return permission.id == userTarget.role_id;
+    });
+
+    if (!isValid) {
+      throw { status: 403, message: "Role not found" };
     }
 
     await user_api.put(`/user/${id}`, {
@@ -99,6 +112,7 @@ const atualizarUser = async (request, reply) => {
         ...userTarget,
       },
     });
+
     reply.status(200).send("usuário atualizado com sucesso");
   } catch (error) {
     throw error;
@@ -108,12 +122,15 @@ const atualizarUser = async (request, reply) => {
 const deletarUser = async (request, reply) => {
   try {
     let id = request.params.id;
-    let user = request.user
+    let user = request.user;
 
-    let authorized = await verifyPermission(user, SERVICE, request.method) 
+    let authorized = await verifyPermission(user, SERVICE, request.method);
 
-    if(!authorized){
-      throw { status: 401, message: "You do not have permission to access this resource." }
+    if (!authorized) {
+      throw {
+        status: 401,
+        message: "You do not have permission to access this resource.",
+      };
     }
 
     await user_api.delete(`/user/${id}`);

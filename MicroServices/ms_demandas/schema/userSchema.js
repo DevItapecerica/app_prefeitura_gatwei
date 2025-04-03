@@ -1,6 +1,7 @@
 const getUserSchema = {
+  description: "Pegue todos os usuários",
   tags: ["Users"],
-  security: [{ APIKey: [], JWTToken: [] }],
+  security: [{ APIKey: [] }],
   response: {
     200: {
       description: "requisição bem sucedida",
@@ -17,9 +18,6 @@ const getUserSchema = {
             role_id: { type: "integer", example: 1 },
             firstLogin: { type: "boolean", example: true },
           },
-        },
-        setores: {
-          type: "array",
         },
         roles: {
           type: "array",
@@ -62,7 +60,7 @@ const getUserSchema = {
 const postUserSchema = {
   description: "Pegue todos os usuários",
   tags: ["Users"],
-  security: [{ APIKey: [], JWTToken: [] }],
+  security: [{ APIKey: [] }],
   body: {
     type: "object",
     required: ["user"],
@@ -134,8 +132,9 @@ const postUserSchema = {
 };
 
 const getOneUserSchema = {
+  description: "Pegue todos os usuários",
   tags: ["Users"],
-  security: [{ APIKey: [], JWTToken: [] }],
+  security: [{ APIKey: [] }],
   response: {
     200: {
       description: "requisição bem sucedida",
@@ -195,7 +194,7 @@ const getOneUserSchema = {
 const updateUserSchema = {
   description: "Atualizar usuário",
   tags: ["Users"],
-  security: [{ APIKey: [], JWTToken: [] }],
+  security: [{ APIKey: [] }],
   body: {
     required: ["user"],
     type: "object",
@@ -261,7 +260,7 @@ const updateUserSchema = {
 const deleteUserSchema = {
   description: "Deleta um usuário",
   tags: ["Users"],
-  security: [{ APIKey: [], JWTToken: [] }],
+  security: [{ APIKey: [] }],
   response: {
     200: {
       description: "Usuário deletado com sucesso",

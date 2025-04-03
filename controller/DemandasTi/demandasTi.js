@@ -204,7 +204,6 @@ exports.updateAssume = async (id, user) => {
       }
     );
 
-    console.log(user.id);
     return updated;
   } catch (error) {
     throw {

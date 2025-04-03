@@ -17,6 +17,13 @@ const getServices = {
             url: "/admin",
           },
         },
+        roles: {
+          type: "array",
+          example: {
+            id: 1,
+            name: "Papel 1",
+          },
+        },
       },
     },
     400: {
@@ -147,7 +154,6 @@ const postServices = {
           name: { type: "string" },
           description: { type: "string" },
           url: { type: "string" },
-
         },
       },
     },
@@ -169,7 +175,7 @@ const postServices = {
         message: {
           type: "string",
           example: "Serviço criado com sucesso.",
-        }
+        },
       },
     },
     400: {

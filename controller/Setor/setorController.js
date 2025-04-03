@@ -1,4 +1,5 @@
 const setor_api = require('../../service/setor_api');
+const user_api = require('../../service/user_api');
 const {verifyPermission} = require('../../utils/verifyPermission')
 
 
@@ -93,7 +94,12 @@ const deleteSetor = async (request, reply) => {
     if(!authorized){
       throw { status: 401, message: "You do not have permission to access this resource." }
     }
+
+    if (id === 1){
+      throw { status: 400, message: "You cannot delete the default setor." }
+    }
     await setor_api.delete(`/setor/${id}`);
+    await user_api.delete(`/user/setor/${id}`);
 
     reply.status(204);
   } catch (error) {
