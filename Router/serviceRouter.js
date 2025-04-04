@@ -14,7 +14,7 @@ const serviceRouter = (fastify, options) => {
   fastify.route({
     method: "GET",
     url: "/service/user",
-    schema: serviceSchema.getServices,
+    // schema: serviceSchema.getServices,
     preHandler: [auth],
     handler: Service.getUserServices,
   });

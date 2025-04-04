@@ -32,7 +32,32 @@ async function routes(fastify, options) {
     url: "/demandas/setor/:id",
     preHandler: [auth],
     // schema: schema.getSetorDemandas,
-    handler: Demandas.getSetorDemandas,
+    handler: Demandas.getHistoryDemandas,
+  });
+
+  fastify.route({
+    method: "GET",
+    url: "/demandas/history",
+    preHandler: [auth],
+    // schema: schema.getOneDemandas,
+    handler: Demandas.getOneDemandas,
+  });
+
+  fastify.route({
+    method: "GET",
+    url: "/demandas/history/setor/:id",
+    preHandler: [auth],
+    // schema: schema.getOneDemandas,
+    handler: Demandas.getOneDemandas,
+  });
+
+
+  fastify.route({
+    method: "GET",
+    url: "/demandas/history/user/:id",
+    preHandler: [auth],
+    // schema: schema.getOneDemandas,
+    handler: Demandas.getOneDemandas,
   });
 
   // fastify.route({

@@ -23,8 +23,11 @@ const getAllServices = async (request, reply) => {
     let permissions = permissionsResponse.data;
 
     let roles = await permissions_api.get(`/roles`);
+    console.log(roles.data.roles);
+    console.log(user.role);
 
-    let role_id = roles.data.roles.find((role) => role.name === user.role).id;
+    let role_id = roles.data.roles.find((role) => role.id == user.role).id;
+
 
     if (!role_id) {
       throw { status: 500, message: "Role not found" };
@@ -67,7 +70,7 @@ const getUserServices = async (request, reply) => {
     let roles = await permissions_api.get(`/roles`);
     let userServices = [];
 
-    let role_id = roles.data.roles.find((role) => role.name === user.role).id;
+    let role_id = user.role;
 
     if (!role_id) {
       throw { status: 500, message: "Role not found" };
@@ -76,12 +79,14 @@ const getUserServices = async (request, reply) => {
     services.forEach((service) => {
       let userPermission = permissions.find(
         (permission) =>
-          permission.role_id === role_id && permission.service_id === service.id
+          permission.role_id == role_id && permission.service_id === service.id
       );
-      if (userPermission?.read) {
+    if (userPermission?.read) {
         userServices = [...userServices, service];
       }
     });
+
+    console.log(userServices)
 
     reply.status(200).send({ services: userServices });
   } catch (error) {
@@ -105,7 +110,7 @@ const getService = async (request, reply) => {
     let response = await service_api.get(`/service/${id}`);
     let services = response.data;
 
-    reply.status(200).send(services);
+    reply.status(200).send({services});
   } catch (error) {
     throw error;
   }

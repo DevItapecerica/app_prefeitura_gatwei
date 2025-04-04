@@ -1,38 +1,4 @@
-const { checkPermission } = require("../../middleware/checkPermission");
-const { verifyToken } = require("../../middleware/auth");
-const { verifyParam } = require("../../middleware/verifyParam");
-const DBDemandas = require("../../db/model/demandasModel");
-const {
-  getAll,
-  create,
-  update,
-  remove,
-  getHistory,
-  updateAssume,
-  getUserDemanda,
-  updateFinalizar
-} = require("./demandasTi");
 
-const SERVICE_ID = 4;
-
-//#region /demandas
-exports.pegarTodasDemandas = async (request, reply) => {
-  const token = request.headers.authorization.split(' ')[1];
-
-
-  try {
-    const user = await verifyToken(token);
-    await checkPermission(user.id, user.role, SERVICE_ID, ["admin", "tecnico"]);
-
-    const message = await getAll(user);
-
-    reply.status(200).send({ demandas: message.demandas, scopo: message.scopo });
-  } catch (error) {
-    reply
-      .status(error.status || 500)
-      .send(error.message || "Erro ao buscar demandas");
-  }
-};
 
 exports.cadastrarDemandas = async (request, reply) => {
     const token = request.headers.authorization.split(' ')[1];
@@ -60,27 +26,6 @@ exports.cadastrarDemandas = async (request, reply) => {
     reply
       .status(error.status || 500)
       .send(error.message || "Erro ao buscar demandas");
-  }
-};
-
-exports.deletarDemandas = async (request, reply) => {
-    const token = request.headers.authorization.split(' ')[1];
-
-  try {
-    const user = await verifyToken(token);
-    await checkPermission(user.id, user.role, SERVICE_ID, ["admin"]);
-
-    verifyParam(["id"], request.params);
-    const id = request.params.id;
-
-    const deleted = await remove(id);
-    reply
-      .status(200)
-      .send({ message: "Demanda excluida com sucesso", scopo: user.role });
-  } catch (error) {
-    reply
-      .status(error.status || 500)
-      .send({ message: error.message || "Erro interno no servidor" });
   }
 };
 
@@ -192,65 +137,3 @@ exports.historyDemandas = async (request, reply) => {
       .send(error.message || "Erro ao buscar demandas");
   }
 };
-
-exports.pegarUserDemandas = async (request, reply) => {
-    const token = request.headers.authorization.split(' ')[1];
-
-  try {
-    const user = await verifyToken(token);
-
-    await checkPermission(user.id, user.role, SERVICE_ID, [
-      "tecnico",
-      "user",
-      "gestor",
-    ]);
-
-    const message = await getUserDemanda(user);
-
-    reply.status(200).send({ userDemandas: message.userDemandas, scopo: message.scopo });
-  } catch (error) {
-    reply
-      .status(error.status || 500)
-      .send(error.message || "Erro ao buscar demandas");
-  }
-};
-
-//#endregion /User
-exports.assumirDemanda = async (request, reply) => {
-  const token = request.headers.authorization.split(' ')[1];
-
-  try {
-    await verifyParam(["id"], request.params);
-    let id = request.params.id;
-    const user = await verifyToken(token);
-    await checkPermission(user.id, user.role, SERVICE_ID, ["tecnico"]);
-
-    let updated = await updateAssume(id, user);
-
-    reply.status(200).send(updated);
-  } catch (error) {
-    reply
-      .status(error.status || 500)
-      .send(error.message || "Erro ao buscar demandas");
-  }
-};
-
-exports.finalizarDemanda = async (request, reply) => {
-      const token = request.headers.authorization.split(' ')[1];
-
-
-  try {
-    await verifyParam(["id"], request.params);
-    let id = request.params.id;
-    const user = await verifyToken(token);
-    await checkPermission(user.id, user.role, SERVICE_ID, ["tecnico"]);
-
-    let finalizada = await updateFinalizar(id);
-
-    reply.status(200).send('demanda finalizada com sucesso');
-  } catch (error) {
-    reply
-      .status(error.status || 500)
-      .send(error.message || "Erro ao buscar demandas");
-  }
-}

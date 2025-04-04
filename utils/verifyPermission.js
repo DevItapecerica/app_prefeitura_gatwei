@@ -1,13 +1,11 @@
 const permissions_api = require("../service/permissions_api");
 
 const verifyPermission = async (user, service, methode) => {
-  let roles = await permissions_api.get("/roles");
+
   let permissions = await permissions_api.get(`/permission/service/${service}`);
 
-  const role_id = roles.data.roles.find((role) => role.name == user.role).id;
-
   let roles_permission = permissions.data.find(
-    (permission) => permission.role_id === role_id
+    (permission) => permission.role_id == user.role
   );
 
   switch (methode) {

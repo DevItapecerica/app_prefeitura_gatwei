@@ -64,7 +64,7 @@ const createSetor = async (request, reply) => {
   }
 }
 
-const  updateSetor = async (request, reply) => {
+const updateSetor = async (request, reply) => {
   try {
     let id = request.params.id;
     let user = request.user
@@ -76,7 +76,7 @@ const  updateSetor = async (request, reply) => {
     }
 
     let setor = request.body.setor;
-    const response = await setor_api.put(`/setor/${id}`, {setor});
+    await setor_api.put(`/setor/${id}`, {setor});
 
     reply.status(204);
   } catch (error) {

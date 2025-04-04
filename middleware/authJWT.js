@@ -14,7 +14,6 @@ const authJWT = async (request, reply) => {
 
     let decodedUser = decodedUserResponse.data.user
     request.user = decodedUser
-
   } catch (error) {
 
     throw error; // Lançar o erro para que o middleware de erro o capture
