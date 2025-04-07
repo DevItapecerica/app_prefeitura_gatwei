@@ -10,6 +10,7 @@ require('dotenv').config({path: `${__dirname}/config/.env`});
 const userRouter = require("./Router/userRouter");
 const setorRouter = require("./Router/setorRouter");
 const serviceRouter = require("./Router/serviceRouter");
+const demandasRouter = require("./Router/demandasRouter");
 const authenticateRouter = require('./Router/authenticateRouter')
 
 const app = fastify();
@@ -32,7 +33,7 @@ app.register(fastifySwaggerUi, SwaggerOptions.swaggerUiConfig);
 // Usando o hook onError para tratamento global de erros
 app.setErrorHandler((error, request, reply) => {
   console.log("--------------------------------------------------")
-  console.log(error)
+  // console.log(error)
   console.log("--------------------------------------------------")
   const statusCode = error?.status || 500;
 
@@ -86,6 +87,7 @@ app.setErrorHandler((error, request, reply) => {
 app.register(userRouter);
 app.register(setorRouter);
 app.register(serviceRouter);
+app.register(demandasRouter);
 app.register(authenticateRouter);
 
 const start = () => {

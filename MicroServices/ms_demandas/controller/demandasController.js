@@ -1,10 +1,11 @@
+const { Op } = require("sequelize");
 const db_demandas = require("../db/model/demandasModel");
 
 const getDemandas = async (request, reply) => {
   try {
     let demandas = await db_demandas.findAll();
 
-    reply.status(200).send({ demandas });
+    reply.status(200).send(demandas);
   } catch (error) {
     throw error;
   }
@@ -14,18 +15,28 @@ const getOneDemandas = async (request, reply) => {
   let id = request.params.id;
   let demandas = await db_demandas.findByPk(id);
 
-  reply.status(200).send({ demandas });
+  if (!demandas) {
+    throw {
+      status: 404,
+      message: "Demanda não encontrada.",
+    };
+  }
+  
+  reply.status(200).send( demandas );
 };
 
 const getUserDemandas = async (request, reply) => {
   let id = request.params.id;
   let demandas = await db_demandas.findAll({
     where: {
-      user_id: id,
+      [Op.or]: [
+        { user_id: id },
+        { responsavel: id },
+      ],
     },
   });
 
-  reply.status(200).send({ demandas });
+  reply.status(200).send( demandas );
 };
 
 const getSetorDemandas = async (request, reply) => {
@@ -85,12 +96,13 @@ const deleteDemandas = async (request, reply) => {
 };
 
 const assumeDemandas = async (request, reply) => {
-  let demandaId = request.params.demandaid;
-  let userId = request.params.userid;
+  let demandaId = request.params.id;
+  let responsavel = request.body.responsavel;
 
   await db_demandas.update(
     {
-      responsavel: userId,
+      responsavel: responsavel,
+      status: 1
     },
     {
       where: {
@@ -119,10 +131,13 @@ const finishDemandas = (request, reply) => {
 };
 
 const postDemandas = async (request, reply) => {
-  let { patrimonio, description, prioridade } = request.body;
+  let { patrimonio, description, prioridade } = request.body.demanda;
   let user = request.body.user;
 
-  await db_demandas.create({
+  console.log("user", user);
+  console.log("demanda", request.body.demanda);
+
+  const newDemanda = await db_demandas.create({
     user_id: user.id,
     setor_id: user.setor_id,
     patrimonio,
@@ -131,7 +146,7 @@ const postDemandas = async (request, reply) => {
     status: 0,
   });
 
-  reply.status(201).send("Demanda criada");
+  reply.status(201).send(newDemanda);
 };
 
 const updateDemandas = async (request, reply) => {
@@ -154,7 +169,7 @@ const updateDemandas = async (request, reply) => {
     }
   );
 
-  reply.status(200).send("Demanda atualizada");
+  reply.status(204);
 };
 
 
