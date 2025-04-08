@@ -1,9 +1,15 @@
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 const db_demandas = require("../db/model/demandasModel");
 
 const getDemandas = async (request, reply) => {
   try {
-    let demandas = await db_demandas.findAll();
+    let demandas = await db_demandas.findAll({
+      where: {
+        status: {
+          [Op.ne]: 3, // status diferente de 3
+        },
+      },
+    });
 
     reply.status(200).send(demandas);
   } catch (error) {
@@ -21,101 +27,157 @@ const getOneDemandas = async (request, reply) => {
       message: "Demanda não encontrada.",
     };
   }
-  
-  reply.status(200).send( demandas );
+
+  reply.status(200).send(demandas);
 };
 
 const getUserDemandas = async (request, reply) => {
   let id = request.params.id;
-  let demandas = await db_demandas.findAll({
+  const demandas = await db_demandas.findAll({
     where: {
-      [Op.or]: [
-        { user_id: id },
-        { responsavel: id },
+      [Op.and]: [
+        {
+          [Op.or]: [{ user_id: id }, { responsavel: id }],
+        },
+        {
+          status: {
+            [Op.ne]: 3, // status diferente de 3
+          },
+        },
       ],
     },
   });
 
-  reply.status(200).send( demandas );
+  reply.status(200).send(demandas);
 };
 
 const getSetorDemandas = async (request, reply) => {
   let id = request.params.id;
-  let demandas = await db_demandas.findAll({
+  
+  const demandas = await db_demandas.findAll({
     where: {
-      setor_id: id,
+      [Op.and]: [
+        { setor_id: id },
+        {
+          status: {
+            [Op.ne]: 3, // Exclui status 3
+          },
+        },
+      ],
     },
   });
 
-  reply.status(200).send({ demandas });
+ 
+  console.log('---------------------------------------------------')
+
+  console.log('as demandas são: ', demandas);
+
+  console.log('---------------------------------------------------')
+
+
+  reply.status(200).send({demandas});
 };
 
 const getHistoryDemandas = async (request, reply) => {
-  let demandas = await db_demandas.findAll({
-    where: {
-      status: 3,
-    },
-  });
+  try {
+    let demandas = await db_demandas.findAll({
+      where: {
+        status: 3,
+      },
+    });
 
-  reply.status(200).send({ demandas });
-}
+    reply.status(200).send(demandas);
+  } catch (error) {
+    throw error;
+  }
+};
 
 const getUserHistoryDemandas = async (request, reply) => {
   let id = request.params.id;
   let demandas = await db_demandas.findAll({
     where: {
-      user_id: id,
-      status: 3,
+      [Op.and]: [
+        {
+          [Op.or]: [{ responsavel: id }, { user_id: id }],
+        },
+        {
+          status: 3,
+        },
+      ],
     },
   });
 
-  reply.status(200).send({ demandas });
-}
+  reply.status(200).send(demandas);
+};
 
 const getSetorHistoryDemandas = async (request, reply) => {
-  let id = request.params.id;
-  let demandas = await db_demandas.findAll({
-    where: {
-      setor_id: id,
-      status: 3,
-    },
-  });
+  try {
+    let id = request.params.id;
 
-  reply.status(200).send({ demandas });
-}
+    let demandas = await db_demandas.findAll({
+      where: {
+        [Op.and]: [{ setor_id: id }, { status: 3 }],
+      },
+    });
+    reply.status(200).send(demandas);
+  } catch (error) {
+    throw error;
+  }
+};
 
 const deleteDemandas = async (request, reply) => {
   let id = request.params.id;
   let demandas = await db_demandas.destroy({
     where: {
-      setor_id: id,
+      id: id,
     },
   });
 
-  reply.status(200).send({ demandas });
+  reply.status(200).send(demandas);
 };
 
 const assumeDemandas = async (request, reply) => {
-  let demandaId = request.params.id;
-  let responsavel = request.body.responsavel;
+  try {
+    let demandaId = request.params.id;
+    let responsavel = request.body.responsavel;
 
-  await db_demandas.update(
-    {
-      responsavel: responsavel,
-      status: 1
-    },
-    {
-      where: {
-        id: demandaId,
-      },
+    let demanda = await db_demandas.findByPk(demandaId);
+
+    if (demanda.responsavel != null) {
+      throw { status: 403, message: "Demanda já está atribuída a outro setor" };
     }
-  );
 
-  reply.status(204);
+    await db_demandas.update(
+      {
+        responsavel: responsavel,
+        status: 1,
+      },
+      {
+        where: {
+          id: demandaId,
+        },
+      }
+    );
+
+    reply.status(204);
+  } catch (error) {
+    throw error;
+  }
 };
 
-const finishDemandas = (request, reply) => {
+const finishDemandas = async (request, reply) => {
   let id = request.params.id;
+  let user = request.body.user;
+
+  let demanda = await db_demandas.findByPk(id);
+
+  if (demanda.responsavel != user && demanda.user_id != user) {
+    throw {
+      status: 401,
+      message: "Essa demanda não está sob sua responsabilidade",
+    };
+  }
+
   db_demandas.update(
     {
       status: 3,
@@ -171,7 +233,6 @@ const updateDemandas = async (request, reply) => {
 
   reply.status(204);
 };
-
 
 module.exports = {
   getDemandas,

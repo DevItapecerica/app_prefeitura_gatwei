@@ -1,5 +1,6 @@
 const { verifyPermission } = require("../../utils/verifyPermission");
 const user_api = require("../../service/user_api");
+const setor_api = require("../../service/setor_api");
 const demandas_api = require("../../service/demandas_api");
 
 const SERVICE = 102;
@@ -8,7 +9,6 @@ const getDemandas = async (request, reply) => {
   try {
     let user = request.user;
 
-    console.log("user", user);
     let authorized = await verifyPermission(user, SERVICE, request.method);
 
     if (!authorized) {
@@ -17,10 +17,12 @@ const getDemandas = async (request, reply) => {
         message: "You do not have permission to access this resource.",
       };
     }
-    let demandas;
-    let response;
+    let demandas = null;
+    let response = null;
 
-    console.log(user);
+    const setorResponse = await setor_api.get("/setor");
+    const setores = setorResponse.data;
+
     switch (user.role) {
       case "1":
         response = await demandas_api.get(`/demandas`);
@@ -37,14 +39,21 @@ const getDemandas = async (request, reply) => {
         let setor = userData.setor_id;
         response = await demandas_api.get(`/demandas/setor/${setor}`);
 
-        demandas = response.data;
+        demandas = response.data.demandas;
+        console.log("---------------------------------------------------");
+
+        console.log("as demandas são: ", demandas);
+
+        console.log("---------------------------------------------------");
+        break;
       default:
         response = await demandas_api.get(`/demandas/user/${user.id}`);
         demandas = response.data;
         break;
     }
 
-    reply.status(200).send({ demandas });
+    console.log(response.data.demandas)
+    reply.status(200).send({ demandas, setores});
   } catch (error) {
     throw error;
   }
@@ -73,7 +82,6 @@ const getUserDemandas = async (request, reply) => {
   try {
     let user = request.user;
 
-    console.log("user", user);
     let authorized = await verifyPermission(user, SERVICE, request.method);
 
     if (!authorized) {
@@ -82,99 +90,69 @@ const getUserDemandas = async (request, reply) => {
         message: "You do not have permission to access this resource.",
       };
     }
-
+    const setorResponse = await setor_api.get("/setor");
+    const setores = setorResponse.data;
     let response = await demandas_api.get(`/demandas/user/${user.id}`);
     let demandas = response.data;
 
-    reply.status(200).send({ demandas });
-  } catch (error) {
-    throw error;
-  }
-};
-
-const getSetorDemandas = async (request, reply) => {
-  try {
-    let user = request.user;
-
-    console.log("user", user);
-    let authorized = await verifyPermission(user, SERVICE, request.method);
-
-    if (!authorized) {
-      throw {
-        status: 401,
-        message: "You do not have permission to access this resource.",
-      };
-    }
-
-    let userResponse = await user_api.get(`/user/${user.id}`);
-    let userData = userResponse.data.user;
-
-    let setor = userData.setor_id;
-    let response = await demandas_api.get(`/demandas/setor/${setor}`);
-    
-    let demandas = response.data;
-
-    reply.status(200).send({ demandas });
+    reply.status(200).send({ demandas, setores });
   } catch (error) {
     throw error;
   }
 };
 
 const getHistoryDemandas = async (request, reply) => {
-  let user = request.user;
+  try {
+    let user = request.user;
 
-  let authorized = await verifypermission(user, service, request.method);
+    let authorized = await verifyPermission(user, SERVICE, request.method);
 
-  if (!authorized) {
-    throw {
-      status: 401,
-      message: "you do not have permission to access this resource.",
-    };
+    if (!authorized) {
+      throw {
+        status: 401,
+        message: "You do not have permission to access this resource.",
+      };
+    }
+
+    let demandas;
+    let response;
+
+    const setorResponse = await setor_api.get("/setor");
+    const setores = setorResponse.data;
+    switch (user.role) {
+      case "1":
+        response = await demandas_api.get(`/demandas/history`);
+        demandas = response.data;
+        break;
+      case "2":
+        response = await demandas_api.get(`/demandas/history`);
+        demandas = response.data;
+        break;
+      case "3":
+        let userResponse = await user_api.get(`/user/${user.id}`);
+        let userData = userResponse.data.user;
+
+        let setor = userData.setor_id;
+        response = await demandas_api.get(`/demandas/history/setor/${setor}`);
+
+        demandas = response.data;
+        break;
+        default:
+        response = await demandas_api.get(`/demandas/history/user/${user.id}`);
+        demandas = response.data;
+        break;
+    }
+
+    reply.status(200).send({ demandas, setores });
+  } catch (error) {
+    throw error;
   }
-  let { id } = request.user;
-  let { setor_id } = request.query;
-
-  let demandas = await demandas_api.getHistoryDemandas(id, setor_id);
-
-  reply.status(200).send({ demandas });
-};
-const getUserHistoryDemandas = async (request, reply) => {
-  let user = request.user;
-
-  let authorized = await verifypermission(user, service, request.method);
-
-  if (!authorized) {
-    throw {
-      status: 401,
-      message: "you do not have permission to access this resource.",
-    };
-  }
-  let id = request.params.id;
-  let demandas = await demandas_api.getUserHistoryDemandas(id);
-
-  reply.status(200).send({ demandas });
-};
-const getSetorHistoryDemandas = async (request, reply) => {
-  let user = request.user;
-
-  let authorized = await verifypermission(user, service, request.method);
-
-  if (!authorized) {
-    throw {
-      status: 401,
-      message: "you do not have permission to access this resource.",
-    };
-  }
-  let id = request.params.id;
-  let demandas = await demandas_api.getUserHistoryDemandas(id);
-
-  reply.status(200).send({ demandas });
 };
 
 const deleteDemandas = async (request, reply) => {
   let user = request.user;
 
-  let authorized = await verifypermission(user, service, request.method);
+  let authorized = await verifyPermission(user, SERVICE, request.method);
 
   if (!authorized) {
     throw {
@@ -266,7 +244,7 @@ const assumeDemandas = async (request, reply) => {
 const finishDemandas = async (request, reply) => {
   let user = request.user;
 
-  let authorized = await verifypermission(user, service, request.method);
+  let authorized = await verifyPermission(user, SERVICE, request.method);
 
   if (!authorized) {
     throw {
@@ -275,22 +253,20 @@ const finishDemandas = async (request, reply) => {
     };
   }
   let id = request.params.id;
-  let { setor_id } = request.body;
 
-  let demandas = await demandas_api.finishDemandas(id, setor_id);
+  let demandas = await demandas_api.put(`/demandas/${id}/finish`, {
+    user: user.id,
+  });
 
-  reply.status(200).send({ demandas });
+  reply.status(204);
 };
 
 module.exports = {
   getDemandas,
   getOneDemandas,
   getUserDemandas,
-  getSetorDemandas,
 
   getHistoryDemandas,
-  getUserHistoryDemandas,
-  getSetorHistoryDemandas,
 
   deleteDemandas,
   updateDemandas,

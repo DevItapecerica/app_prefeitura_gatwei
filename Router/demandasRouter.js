@@ -36,22 +36,6 @@ async function routes(fastify, options) {
   });
 
   fastify.route({
-    method: "GET",
-    url: "/demandas/history/setor/:id",
-    preHandler: [auth],
-    // schema: schema.getOneDemandas,
-    handler: Demandas.getSetorHistoryDemandas,
-  });
-
-  fastify.route({
-    method: "GET",
-    url: "/demandas/history/user/:id",
-    preHandler: [auth],
-    // schema: schema.getOneDemandas,
-    handler: Demandas.getUserHistoryDemandas,
-  });
-
-  fastify.route({
     method: "delete",
     url: "/demandas/:id",
     preHandler: [auth],

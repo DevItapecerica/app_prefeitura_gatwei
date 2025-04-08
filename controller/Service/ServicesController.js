@@ -52,14 +52,6 @@ const getAllServices = async (request, reply) => {
 const getUserServices = async (request, reply) => {
   try {
     let user = request.user;
-    let authorized = await verifyPermission(user, SERVICE, request.method);
-
-    if (!authorized) {
-      throw {
-        status: 401,
-        message: "You do not have permission to access this resource.",
-      };
-    }
 
     //gerenciamento de api request's
     let serviceResponse = await service_api.get("/service");
