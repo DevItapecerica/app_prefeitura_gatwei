@@ -12,6 +12,14 @@ const roleRouter = (fastify, opt) => {
     url: "/roles",
     handler: Role.getRoles,
   });
+
+  fastify.route({
+    method: "PUT",
+    url: "/roles/:id",
+    handler: Role.updateRoles,
+  });
+
+
 };
 
 module.exports = roleRouter;

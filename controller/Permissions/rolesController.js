@@ -23,7 +23,25 @@ const getRoles = async (request, reply) => {
     reply.status(200).send(roles);
 }
 
+const updateRoles = async (request, reply) =>{
+    let id = request.params.id
+    let {name} = request.body.role;
+    const servicesResponse = await service_api.get('/service');
+    const services = servicesResponse.data;
+
+    await roles_api.put(`/roles/${id}`, {
+        role: {
+            name: name,
+        }
+    })
+    console.log(services)
+    reply.status(201).send('Created role');
+}
+
+
+
 module.exports = {
     createRoles,
-    getRoles
+    getRoles,
+    updateRoles
 }
