@@ -18,7 +18,7 @@ const createRoles = async (request, reply) =>{
 
 const getRoles = async (request, reply) => {
 
-    const responseRoles = roles_api.get("/roles");
+    const responseRoles = await roles_api.get("/roles");
     const roles = responseRoles.data;
     reply.status(200).send(roles);
 }
