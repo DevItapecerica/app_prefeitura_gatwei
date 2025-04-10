@@ -10,7 +10,7 @@ const roleRouter = (fastify, opt) => {
   fastify.route({
     method: "get",
     url: "/roles",
-    handler: Role.getRole,
+    handler: Role.getRoles,
   });
 };
 
