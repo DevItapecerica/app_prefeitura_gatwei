@@ -1,7 +1,7 @@
 const service_api = require("../../service/service_api"); 
 const roles_api = require("../../service/permissions_api");
 
-const createRole = async (request, reply) =>{
+const createRoles = async (request, reply) =>{
     let {name} = request.body.role;
     const servicesResponse = await service_api.get('/service');
     const services = servicesResponse.data;
@@ -16,6 +16,14 @@ const createRole = async (request, reply) =>{
     reply.status(201).send('Created role');
 }
 
+const getRole = async (request, reply) => {
+
+    const responseRoles = roles_api.get("/roles");
+    const roles = responseRoles.data;
+    reply.status(200).send(roles);
+}
+
 module.exports = {
-    createRole
+    createRoles,
+    getRoles
 }
