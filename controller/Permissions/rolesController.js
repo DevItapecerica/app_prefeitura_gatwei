@@ -6,7 +6,7 @@ const createRole = async (request, reply) =>{
     const servicesResponse = await service_api.get('/service');
     const services = servicesResponse.data;
 
-    await roles_api.post({
+    await roles_api.post("/roles", {
         role: {
             name: name,
         },
