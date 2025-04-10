@@ -11,6 +11,7 @@ const userRouter = require("./Router/userRouter");
 const setorRouter = require("./Router/setorRouter");
 const serviceRouter = require("./Router/serviceRouter");
 const demandasRouter = require("./Router/demandasRouter");
+const roleRouter = require("./Router/roleRouter")
 const authenticateRouter = require('./Router/authenticateRouter')
 
 const app = fastify();
@@ -88,6 +89,7 @@ app.register(userRouter);
 app.register(setorRouter);
 app.register(serviceRouter);
 app.register(demandasRouter);
+app.register(roleRouter);
 app.register(authenticateRouter);
 
 const start = () => {
