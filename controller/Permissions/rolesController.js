@@ -35,7 +35,7 @@ const updateRoles = async (request, reply) =>{
         }
     })
     console.log(services)
-    reply.status(201).send('Created role');
+    reply.status(201).send('updated role');
 }
 
 
