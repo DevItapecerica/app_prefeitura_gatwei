@@ -34,12 +34,7 @@ const getDemandas = async (request, reply) => {
         let setor = userData.setor_id;
         response = await demandas_api.get(`/demandas/setor/${setor}`);
 
-        demandas = response.data.demandas;
-        console.log("---------------------------------------------------");
-
-        console.log("as demandas são: ", demandas);
-
-        console.log("---------------------------------------------------");
+        demandas = response.data;
         break;
       default:
         response = await demandas_api.get(`/demandas/user/${user.id}`);
@@ -48,7 +43,7 @@ const getDemandas = async (request, reply) => {
     }
 
     console.log(response.data.demandas)
-    reply.status(200).send({ demandas, setores});
+    reply.status(200).send({ ...demandas, ...setores});
   } catch (error) {
     throw error;
   }
@@ -63,7 +58,7 @@ const getOneDemandas = async (request, reply) => {
     let id = request.params.id;
     let response = await demandas_api.get(`/demandas/${id}`);
     let demandas = response.data;
-    reply.status(200).send({ demandas });
+    reply.status(200).send({ ...demandas });
   } catch (error) {
     throw error;
   }
@@ -80,7 +75,7 @@ const getUserDemandas = async (request, reply) => {
     let response = await demandas_api.get(`/demandas/user/${user.id}`);
     let demandas = response.data;
 
-    reply.status(200).send({ demandas, setores });
+    reply.status(200).send({ ...demandas, ...setores });
   } catch (error) {
     throw error;
   }
@@ -99,6 +94,7 @@ const getHistoryDemandas = async (request, reply) => {
 
     const setorResponse = await setor_api.get("/setor");
     const setores = setorResponse.data;
+
     switch (user.role) {
       case "1":
         response = await demandas_api.get(`/demandas/history`);
@@ -123,7 +119,7 @@ const getHistoryDemandas = async (request, reply) => {
         break;
     }
 
-    reply.status(200).send({ demandas, setores });
+    reply.status(200).send({ ...demandas, ...setores });
   } catch (error) {
     throw error;
   }

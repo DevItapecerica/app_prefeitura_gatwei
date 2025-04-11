@@ -17,7 +17,8 @@ const getAllServices = async (request, reply) => {
     let permissionsResponse = await permissions_api.get(`/permission/service`);
     let permissions = permissionsResponse.data;
 
-    let roles = await permissions_api.get(`/roles`);
+    let rolesResponse = await permissions_api.get(`/roles`);
+    let roles = rolesResponse.data;
 
     let role_id = roles.data.find((role) => role.id == user.role).id;
 
@@ -36,7 +37,7 @@ const getAllServices = async (request, reply) => {
       servicePermission = [];
     });
 
-    reply.status(200).send({ services, roles: roles.data });
+    reply.status(200).send({ ...services, ...roles });
   } catch (error) {
     throw error;
   }
@@ -73,7 +74,7 @@ const getUserServices = async (request, reply) => {
 
     console.log(userServices)
 
-    reply.status(200).send({ services: userServices });
+    reply.status(200).send(...userServices);
   } catch (error) {
     throw error;
   }
@@ -90,7 +91,7 @@ const getService = async (request, reply) => {
     let response = await service_api.get(`/service/${id}`);
     let services = response.data;
 
-    reply.status(200).send({services});
+    reply.status(200).send(...services);
   } catch (error) {
     throw error;
   }
@@ -110,7 +111,6 @@ const createService = async (request, reply) => {
     });
     
     let serviceResult = response.data;
-console.log(serviceResult)
     let permissions = await permissions_api.post(`/permission/service`, {
       service: {
         service_id: serviceResult.service.id,
