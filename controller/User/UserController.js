@@ -65,9 +65,7 @@ const getAllUser = async (request, reply) => {
     let setores = responseSetor.data;
     let roles = responseRole.data;
 
-    console.log(setores)
-
-    reply.status(200).send({ usersTarget, setores, roles });
+    reply.status(200).send({ ...usersTarget, ...setores, ...roles });
   } catch (error) {
     throw error;
   }
@@ -100,7 +98,7 @@ const atualizarUser = async (request, reply) => {
       },
     });
 
-    reply.status(200).send("usuário atualizado com sucesso");
+    reply.status(204);
   } catch (error) {
     throw error;
   }
@@ -117,7 +115,7 @@ const deletarUser = async (request, reply) => {
 
     await user_api.delete(`/user/${id}`);
 
-    reply.status(200).send("Usuário excluido com sucesso");
+    reply.status(204);
   } catch (error) {
     throw error;
   }
