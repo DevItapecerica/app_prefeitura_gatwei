@@ -6,6 +6,8 @@ const createRoles = async (request, reply) =>{
     const servicesResponse = await service_api.get('/service');
     const services = servicesResponse.data;
 
+    let authorized = await verifyPermission(user, SERVICE, request.method);
+
     await roles_api.post("/roles", {
         role: {
             name: name,
@@ -17,6 +19,7 @@ const createRoles = async (request, reply) =>{
 }
 
 const getRoles = async (request, reply) => {
+    let authorized = await verifyPermission(user, SERVICE, request.method);
 
     const responseRoles = await roles_api.get("/roles");
     const roles = responseRoles.data;
@@ -24,6 +27,8 @@ const getRoles = async (request, reply) => {
 }
 
 const updateRoles = async (request, reply) =>{
+    let authorized = await verifyPermission(user, SERVICE, request.method);
+
     let id = request.params.id
     let {name} = request.body.role;
     const servicesResponse = await service_api.get('/service');
@@ -39,9 +44,20 @@ const updateRoles = async (request, reply) =>{
 }
 
 
+const deleteRoles = async (request, reply) =>{
+    let authorized = await verifyPermission(user, SERVICE, request.method);
+
+    let id = request.params.id
+
+    await roles_api.delete(`/roles/${id}`)
+    reply.status(201).send('updated role');
+}
+
+
 
 module.exports = {
     createRoles,
     getRoles,
-    updateRoles
+    updateRoles,
+    deleteRoles
 }
