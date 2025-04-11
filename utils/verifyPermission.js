@@ -3,7 +3,7 @@ const permissions_api = require("../service/permissions_api");
 const verifyPermission = async (user, service, methode) => {
   let permissions = await permissions_api.get(`/permission/service/${service}`);
 
-  let roles_permission = permissions.data.find(
+  let roles_permission = permissions.data.permissions.find(
     (permission) => permission.role_id == user.role
   );
 
