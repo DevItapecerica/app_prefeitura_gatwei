@@ -20,7 +20,7 @@ const getAllServices = async (request, reply) => {
     let rolesResponse = await permissions_api.get(`/roles`);
     let roles = rolesResponse.data.roles;
 
-    let role_id = roles.data.find((role) => role.id == user.role).id;
+    let role_id = roles.find((role) => role.id == user.role).id;
 
 
     if (!role_id) {
@@ -49,9 +49,9 @@ const getUserServices = async (request, reply) => {
 
     //gerenciamento de api request's
     let serviceResponse = await service_api.get("/service");
-    let services = serviceResponse.data;
+    let services = serviceResponse.data.services;
     let permissionsResponse = await permissions_api.get(`/permission/service`);
-    let permissions = permissionsResponse.data;
+    let permissions = permissionsResponse.data.permissions;
 
     let roles = await permissions_api.get(`/roles`);
     let userServices = [];

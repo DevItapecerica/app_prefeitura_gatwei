@@ -43,7 +43,7 @@ const getDemandas = async (request, reply) => {
     }
 
     console.log(response.data.demandas)
-    reply.status(200).send({ ...demandas, ...setores});
+    reply.status(200).send({ demandas, ...setores});
   } catch (error) {
     throw error;
   }
@@ -75,7 +75,7 @@ const getUserDemandas = async (request, reply) => {
     let response = await demandas_api.get(`/demandas/user/${user.id}`);
     let demandas = response.data;
 
-    reply.status(200).send({ ...demandas, ...setores });
+    reply.status(200).send({ demandas, ...setores });
   } catch (error) {
     throw error;
   }
@@ -119,7 +119,7 @@ const getHistoryDemandas = async (request, reply) => {
         break;
     }
 
-    reply.status(200).send({ ...demandas, ...setores });
+    reply.status(200).send({ demandas, ...setores });
   } catch (error) {
     throw error;
   }
