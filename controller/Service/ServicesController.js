@@ -8,14 +8,9 @@ const getAllServices = async (request, reply) => {
   try {
     let user = request.user;
     let servicePermission = [];
-    let authorized = await verifyPermission(user, SERVICE, request.method);
+    await verifyPermission(user, SERVICE, request.method);
 
-    if (!authorized) {
-      throw {
-        status: 401,
-        message: "You do not have permission to access this resource.",
-      };
-    }
+
 
     let serviceResponse = await service_api.get("/service");
     let services = serviceResponse.data;
@@ -89,14 +84,9 @@ const getService = async (request, reply) => {
     let id = request.params.id;
     let user = request.user;
 
-    let authorized = await verifyPermission(user, SERVICE, request.method);
+    await verifyPermission(user, SERVICE, request.method);
 
-    if (!authorized) {
-      throw {
-        status: 401,
-        message: "You do not have permission to access this resource.",
-      };
-    }
+
     let response = await service_api.get(`/service/${id}`);
     let services = response.data;
 
@@ -111,14 +101,9 @@ const createService = async (request, reply) => {
     let service = request.body.service;
     let user = request.user;
 
-    let authorized = await verifyPermission(user, SERVICE, request.method);
+    await verifyPermission(user, SERVICE, request.method);
 
-    if (!authorized) {
-      throw {
-        status: 401,
-        message: "You do not have permission to access this resource.",
-      };
-    }
+
 
     let response = await service_api.post(`/service`, {
       service,
@@ -148,15 +133,9 @@ const updateService = async (request, reply) => {
       let id = request.params.id;
       let user = request.user;
 
-      let authorized = await verifyPermission(user, SERVICE, request.method);
+      await verifyPermission(user, SERVICE, request.method);
 
-      if (!authorized) {
-        throw {
-          status: 401,
-          message: "You do not have permission to access this resource.",
-        };
-      }
-
+      
       await service_api.put(`/service/${id}`, {
         service: {
           name: service.name,
@@ -180,14 +159,9 @@ const deleteService = async (request, reply) => {
     let id = request.params.id;
     let user = request.user;
 
-    let authorized = await verifyPermission(user, SERVICE, request.method);
+    await verifyPermission(user, SERVICE, request.method);
 
-    if (!authorized) {
-      throw {
-        status: 401,
-        message: "You do not have permission to access this resource.",
-      };
-    }
+
 
     await service_api.delete(`/service/${id}`);
     await permissions_api.delete(`/permission/service/${id}`);

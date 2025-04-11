@@ -15,6 +15,7 @@ const verifyPermission = async (user, service, methode) => {
           message: "You don't have the right to read this service",
         };
       }
+      break;
     case "POST":
       if (!roles_permission.write) {
         throw {
@@ -22,6 +23,8 @@ const verifyPermission = async (user, service, methode) => {
           message: "You don't have the right to write this service",
         };
       }
+      break;
+
     case "PUT":
       if (!roles_permission.edit) {
         throw {
@@ -29,6 +32,8 @@ const verifyPermission = async (user, service, methode) => {
           message: "You don't have the right to edit this service",
         };
       }
+      break;
+
     case "DELETE":
       if (!roles_permission.del) {
         throw {
@@ -36,6 +41,8 @@ const verifyPermission = async (user, service, methode) => {
           message: "You don't have the right to del this service",
         };
       }
+      break;
+
     default:
       return false;
   }

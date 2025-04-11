@@ -37,14 +37,9 @@ const getOneUser = async (request, reply) => {
     let id = request.params.id;
     let user = request.user;
 
-    let authorized = await verifyPermission(user, SERVICE, request.method);
+    await verifyPermission(user, SERVICE, request.method);
 
-    if (!authorized) {
-      throw {
-        status: 401,
-        message: "You do not have permission to access this resource.",
-      };
-    }
+
 
     let response = await user_api.get(`/user/${id}`);
     let userTarget = response.data;
@@ -59,14 +54,9 @@ const getAllUser = async (request, reply) => {
   try {
     let user = request.user;
 
-    let authorized = await verifyPermission(user, SERVICE, request.method);
+    await verifyPermission(user, SERVICE, request.method);
 
-    if (!authorized) {
-      throw {
-        status: 401,
-        message: "You do not have permission to access this resource.",
-      };
-    }
+
 
     let responseUser = await user_api.get(`/user`);
     let responseSetor = await setor_api.get("/setor");
@@ -74,6 +64,8 @@ const getAllUser = async (request, reply) => {
     let usersTarget = responseUser.data;
     let setores = responseSetor.data;
     let roles = responseRole.data;
+
+    console.log(setores)
 
     reply.status(200).send({ usersTarget, setores, roles });
   } catch (error) {
@@ -87,14 +79,9 @@ const atualizarUser = async (request, reply) => {
     let userTarget = request.body.user;
     let user = request.user;
 
-    let authorized = await verifyPermission(user, SERVICE, request.method);
+    await verifyPermission(user, SERVICE, request.method);
 
-    if (!authorized) {
-      throw {
-        status: 401,
-        message: "You do not have permission to access this resource.",
-      };
-    }
+
 
     let response = await permission_api.get("/roles");
     let permissions = response.data;
@@ -124,14 +111,9 @@ const deletarUser = async (request, reply) => {
     let id = request.params.id;
     let user = request.user;
 
-    let authorized = await verifyPermission(user, SERVICE, request.method);
+    await verifyPermission(user, SERVICE, request.method);
 
-    if (!authorized) {
-      throw {
-        status: 401,
-        message: "You do not have permission to access this resource.",
-      };
-    }
+
 
     await user_api.delete(`/user/${id}`);
 

@@ -6,7 +6,7 @@ const createRoles = async (request, reply) =>{
     const servicesResponse = await service_api.get('/service');
     const services = servicesResponse.data;
 
-    let authorized = await verifyPermission(user, SERVICE, request.method);
+    await verifyPermission(user, SERVICE, request.method);
 
     await roles_api.post("/roles", {
         role: {
@@ -19,7 +19,7 @@ const createRoles = async (request, reply) =>{
 }
 
 const getRoles = async (request, reply) => {
-    let authorized = await verifyPermission(user, SERVICE, request.method);
+    await verifyPermission(user, SERVICE, request.method);
 
     const responseRoles = await roles_api.get("/roles");
     const roles = responseRoles.data;
@@ -27,7 +27,7 @@ const getRoles = async (request, reply) => {
 }
 
 const updateRoles = async (request, reply) =>{
-    let authorized = await verifyPermission(user, SERVICE, request.method);
+    await verifyPermission(user, SERVICE, request.method);
 
     let id = request.params.id
     let {name} = request.body.role;
@@ -45,7 +45,7 @@ const updateRoles = async (request, reply) =>{
 
 
 const deleteRoles = async (request, reply) =>{
-    let authorized = await verifyPermission(user, SERVICE, request.method);
+    await verifyPermission(user, SERVICE, request.method);
 
     let id = request.params.id
 

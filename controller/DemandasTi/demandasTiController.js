@@ -9,14 +9,9 @@ const getDemandas = async (request, reply) => {
   try {
     let user = request.user;
 
-    let authorized = await verifyPermission(user, SERVICE, request.method);
+    await verifyPermission(user, SERVICE, request.method);
 
-    if (!authorized) {
-      throw {
-        status: 401,
-        message: "You do not have permission to access this resource.",
-      };
-    }
+
     let demandas = null;
     let response = null;
 
@@ -62,14 +57,9 @@ const getOneDemandas = async (request, reply) => {
   try {
     let user = request.user;
 
-    let authorized = await verifyPermission(user, SERVICE, request.method);
+    await verifyPermission(user, SERVICE, request.method);
 
-    if (!authorized) {
-      throw {
-        status: 401,
-        message: "You do not have permission to access this resource.",
-      };
-    }
+
     let id = request.params.id;
     let response = await demandas_api.get(`/demandas/${id}`);
     let demandas = response.data;
@@ -82,14 +72,9 @@ const getUserDemandas = async (request, reply) => {
   try {
     let user = request.user;
 
-    let authorized = await verifyPermission(user, SERVICE, request.method);
+    await verifyPermission(user, SERVICE, request.method);
 
-    if (!authorized) {
-      throw {
-        status: 401,
-        message: "You do not have permission to access this resource.",
-      };
-    }
+
     const setorResponse = await setor_api.get("/setor");
     const setores = setorResponse.data;
     let response = await demandas_api.get(`/demandas/user/${user.id}`);
@@ -105,14 +90,9 @@ const getHistoryDemandas = async (request, reply) => {
   try {
     let user = request.user;
 
-    let authorized = await verifyPermission(user, SERVICE, request.method);
+    await verifyPermission(user, SERVICE, request.method);
 
-    if (!authorized) {
-      throw {
-        status: 401,
-        message: "You do not have permission to access this resource.",
-      };
-    }
+
 
     let demandas;
     let response;
@@ -152,14 +132,9 @@ const getHistoryDemandas = async (request, reply) => {
 const deleteDemandas = async (request, reply) => {
   let user = request.user;
 
-  let authorized = await verifyPermission(user, SERVICE, request.method);
+  await verifyPermission(user, SERVICE, request.method);
 
-  if (!authorized) {
-    throw {
-      status: 401,
-      message: "you do not have permission to access this resource.",
-    };
-  }
+
   let id = request.params.id;
   let demandas = await demandas_api.deleteDemandas(id);
 
@@ -170,14 +145,9 @@ const updateDemandas = async (request, reply) => {
   let user = request.user;
   let demandaId = request.params.id;
 
-  let authorized = await verifyPermission(user, SERVICE, request.method);
+  await verifyPermission(user, SERVICE, request.method);
 
-  if (!authorized) {
-    throw {
-      status: 401,
-      message: "you do not have permission to access this resource.",
-    };
-  }
+
   let { id } = request.user;
   let demanda = request.body.demanda;
 
@@ -195,14 +165,9 @@ const updateDemandas = async (request, reply) => {
 const createDemandas = async (request, reply) => {
   let user = request.user;
 
-  let authorized = await verifyPermission(user, SERVICE, request.method);
+  await verifyPermission(user, SERVICE, request.method);
 
-  if (!authorized) {
-    throw {
-      status: 401,
-      message: "you do not have permission to access this resource.",
-    };
-  }
+
   let { id } = request.user;
   let demanda = request.body.demanda;
 
@@ -221,14 +186,9 @@ const createDemandas = async (request, reply) => {
 const assumeDemandas = async (request, reply) => {
   let user = request.user;
 
-  let authorized = await verifyPermission(user, SERVICE, request.method);
+  await verifyPermission(user, SERVICE, request.method);
 
-  if (!authorized) {
-    throw {
-      status: 401,
-      message: "you do not have permission to access this resource.",
-    };
-  }
+
 
   //id da demanda
   let id = request.params.id;
@@ -244,14 +204,9 @@ const assumeDemandas = async (request, reply) => {
 const finishDemandas = async (request, reply) => {
   let user = request.user;
 
-  let authorized = await verifyPermission(user, SERVICE, request.method);
+  await verifyPermission(user, SERVICE, request.method);
 
-  if (!authorized) {
-    throw {
-      status: 401,
-      message: "you do not have permission to access this resource.",
-    };
-  }
+
   let id = request.params.id;
 
   let demandas = await demandas_api.put(`/demandas/${id}/finish`, {
