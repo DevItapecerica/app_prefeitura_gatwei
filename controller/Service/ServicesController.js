@@ -23,10 +23,8 @@ const getAllServices = async (request, reply) => {
     let permissions = permissionsResponse.data;
 
     let roles = await permissions_api.get(`/roles`);
-    console.log(roles.data.roles);
-    console.log(user.role);
 
-    let role_id = roles.data.roles.find((role) => role.id == user.role).id;
+    let role_id = roles.data.find((role) => role.id == user.role).id;
 
 
     if (!role_id) {
@@ -43,7 +41,7 @@ const getAllServices = async (request, reply) => {
       servicePermission = [];
     });
 
-    reply.status(200).send({ services, roles: roles.data.roles });
+    reply.status(200).send({ services, roles: roles.data });
   } catch (error) {
     throw error;
   }

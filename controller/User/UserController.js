@@ -75,7 +75,7 @@ const getAllUser = async (request, reply) => {
     let setores = responseSetor.data;
     let roles = responseRole.data;
 
-    reply.status(200).send({ ...usersTarget, ...setores, ...roles });
+    reply.status(200).send({ usersTarget, setores, roles });
   } catch (error) {
     throw error;
   }
