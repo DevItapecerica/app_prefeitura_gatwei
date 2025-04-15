@@ -51,21 +51,21 @@ app.setErrorHandler((error, request, reply) => {
     case 401:
       reply.status(statusCode).send({
         statusCode: statusCode,
-        error: "Server Error",
+        error: "Unauthorized",
         message: "Unauthorized " + messageError,
       });
       break;
     case 403:
       reply.status(statusCode).send({
         statusCode: statusCode,
-        error: "Server Error",
+        error: "Forbiten",
         message: "Ação não permitida " + messageError,
       });
       break;
     case 404:
       reply.status(statusCode).send({
         statusCode: statusCode,
-        error: "Server Error",
+        error: "Not found",
         message: "Not found " + messageError,
       });
       break;
