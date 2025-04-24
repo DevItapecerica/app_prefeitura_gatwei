@@ -3,7 +3,7 @@ const user_api = require("../../service/user_api");
 const setor_api = require("../../service/setor_api");
 const demandas_api = require("../../service/demandas_api");
 
-const SERVICE = 4;
+const SERVICE = 102;
 
 const getDemandas = async (request, reply) => {
   try {
@@ -42,7 +42,6 @@ const getDemandas = async (request, reply) => {
         break;
     }
 
-    console.log(response.data.demandas)
     reply.status(200).send({ demandas, ...setores});
   } catch (error) {
     throw error;

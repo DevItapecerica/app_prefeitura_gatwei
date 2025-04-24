@@ -1,5 +1,7 @@
 const setor_api = require('../../service/setor_api');
 const user_api = require('../../service/user_api');
+const services_api = require('../../service/service_api');
+const permission_api = require('../../service/permissions_api');
 const {verifyPermission} = require('../../utils/verifyPermission')
 
 
@@ -46,10 +48,15 @@ const createSetor = async (request, reply) => {
 
     await verifyPermission(user, SERVICE, request.method) 
 
-
-
     let setor = request.body.setor;
     const response = await setor_api.post('/setor', {setor});
+
+    let responseServices = await services_api.get('/service');
+    let services = responseServices.data.services;
+
+    await permission_api.post(`/visibility/setor/${response.data.setor.id}`, {
+      services: services,
+    });
 
     reply.status(200).send(response.data);
   }
@@ -90,6 +97,7 @@ const deleteSetor = async (request, reply) => {
     }
     await setor_api.delete(`/setor/${id}`);
     await user_api.delete(`/user/setor/${id}`);
+    await permissions_api.delete(`/visibility/setor/${id}`);
 
     reply.status(204);
   } catch (error) {

@@ -1,5 +1,7 @@
+const setor_api = require("../../service/setor_api");
 const service_api = require("../../service/service_api");
 const permissions_api = require("../../service/permissions_api");
+const user_api = require("../../service/user_api");
 const { verifyPermission } = require("../../utils/verifyPermission");
 
 const SERVICE = 3;
@@ -7,37 +9,59 @@ const SERVICE = 3;
 const getAllServices = async (request, reply) => {
   try {
     let user = request.user;
-    let servicePermission = [];
+
     await verifyPermission(user, SERVICE, request.method);
 
-
-
-    let serviceResponse = await service_api.get("/service");
-    let services = serviceResponse.data.services;
-    let permissionsResponse = await permissions_api.get(`/permission/service`);
-    let permissions = permissionsResponse.data.permissions;
-
-    let rolesResponse = await permissions_api.get(`/roles`);
-    let roles = rolesResponse.data.roles;
+    const [
+      {
+        data: { services },
+      },
+      {
+        data: { permissions },
+      },
+      {
+        data: { roles },
+      },
+      {
+        data: { setores },
+      },
+      {
+        data: { visibility },
+      },
+    ] = await Promise.all([
+      service_api.get("/service"),
+      permissions_api.get("/permission/service"),
+      permissions_api.get(`/roles`),
+      setor_api.get("/setor"),
+      permissions_api.get(`/visibility`),
+    ]);
 
     let role_id = roles.find((role) => role.id == user.role).id;
-
 
     if (!role_id) {
       throw { status: 500, message: "Role not found" };
     }
 
     services.forEach((service) => {
-      permissions.forEach((permission) => {
-        if (permission.service_id === service.id) {
-          servicePermission = [...servicePermission, permission];
-          service.permission = servicePermission;
-        }
-      });
-      servicePermission = [];
+      service.permission = [];
+      service.visibility = [];
+
+      service.permission = [
+        ...service.permission,
+        ...permissions?.filter(
+          (permission) => permission.service_id == service.id
+        ),
+      ];
+
+      service.visibility = [
+        ...service.visibility,
+        ...visibility?.filter(
+          (visibility) => visibility.service_id == service.id
+        ),
+      ];
     });
 
-    reply.status(200).send({ services, roles });
+    reply.status(200).send({ services, roles, setores });
   } catch (error) {
     throw error;
   }
@@ -45,36 +69,58 @@ const getAllServices = async (request, reply) => {
 
 const getUserServices = async (request, reply) => {
   try {
-    let user = request.user;
+    const userId = request.user.id;
 
-    //gerenciamento de api request's
-    let serviceResponse = await service_api.get("/service");
-    let services = serviceResponse.data.services;
-    let permissionsResponse = await permissions_api.get(`/permission/service`);
-    let permissions = permissionsResponse.data.permissions;
+    let userResponse = await user_api.get(`/user/${userId}`);
+    let user = userResponse.data.user;
+    // 🚀 Fazendo chamadas paralelas
+    const [
+      {
+        data: { services },
+      },
+      {
+        data: { permissions },
+      },
+      {
+        data: { visibility },
+      },
+    ] = await Promise.all([
+      service_api.get("/service"),
+      permissions_api.get("/permission/service"),
+      permissions_api.get(`/visibility/setor/${user.setor_id}`),
+    ]);
 
-    let roles = await permissions_api.get(`/roles`);
-    let userServices = [];
+    const roleId = user.role_id;
 
-    let role_id = user.role;
-
-    if (!role_id) {
+    if (!roleId) {
       throw { status: 500, message: "Role not found" };
     }
 
-    services.forEach((service) => {
-      let userPermission = permissions.find(
+    // 🔍 Filtrando serviços com permissão de leitura
+    const roleService = services.filter((service) => {
+      const userPermission = permissions.find(
         (permission) =>
-          permission.role_id == role_id && permission.service_id === service.id
+          permission.role_id === roleId && permission.service_id === service.id
       );
-    if (userPermission?.read) {
-        userServices = [...userServices, service];
-      }
+
+      return userPermission?.read;
     });
 
-    reply.status(200).send({ services: userServices });
+    // 👀 Filtrando visibilidades
+    const visibleServiceIds = new Set(
+      visibility.filter((v) => v.visibility).map((v) => v.service_id)
+    );
+
+    const userServicesVisible = roleService.filter((service) =>
+      visibleServiceIds.has(service.id)
+    );
+
+    // ✅ Resposta final
+    reply.status(200).send({ services: userServicesVisible });
   } catch (error) {
-    throw error;
+    reply.status(error.status || 500).send({
+      message: error.message || "Erro interno ao buscar serviços do usuário.",
+    });
   }
 };
 
@@ -85,11 +131,10 @@ const getService = async (request, reply) => {
 
     await verifyPermission(user, SERVICE, request.method);
 
-
     let response = await service_api.get(`/service/${id}`);
     let services = response.data.service;
 
-    reply.status(200).send({services});
+    reply.status(200).send({ services });
   } catch (error) {
     throw error;
   }
@@ -102,22 +147,29 @@ const createService = async (request, reply) => {
 
     await verifyPermission(user, SERVICE, request.method);
 
-
-
     let response = await service_api.post(`/service`, {
       service,
     });
-    
     let serviceResult = response.data;
-    let permissions = await permissions_api.post(`/permission/service`, {
+    await permissions_api.post(`/permission/service`, {
       service: {
         service_id: serviceResult.service.id,
       },
     });
 
-    reply
-      .status(200)
-      .send({ ...serviceResult, message: "Tudo okay" });
+    let responseSetor = await setor_api.get("/setor");
+    let setores = responseSetor.data;
+
+    console.log(setores)
+
+    await permissions_api.post(
+      `/visibility/service/${serviceResult.service.id}`,
+      {
+        setores: setores.setores,
+      }
+    );
+
+    reply.status(200).send({ ...serviceResult, message: "Tudo okay" });
   } catch (error) {
     throw error;
   }
@@ -130,16 +182,22 @@ const updateService = async (request, reply) => {
       let permissions = request.body.service.permission;
       let id = request.params.id;
       let user = request.user;
+      let visibility = request.body.service.visibility;
+
+      console.log(visibility)
 
       await verifyPermission(user, SERVICE, request.method);
 
-      
       await service_api.put(`/service/${id}`, {
         service: {
           name: service.name,
           description: service.description,
           url: service.url,
         },
+      });
+
+      await permissions_api.put(`/visibility/service/${id}`, {
+        visibility
       });
 
       await permissions_api.put(`/permission/service/${id}`, { permissions });
@@ -159,10 +217,9 @@ const deleteService = async (request, reply) => {
 
     await verifyPermission(user, SERVICE, request.method);
 
-
-
     await service_api.delete(`/service/${id}`);
     await permissions_api.delete(`/permission/service/${id}`);
+    await permissions_api.delete(`/visibility/service/${id}`);
 
     reply.status(204);
   } catch (error) {

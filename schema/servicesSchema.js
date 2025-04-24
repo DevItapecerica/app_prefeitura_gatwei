@@ -25,6 +25,13 @@ const getServices = {
             name: "Papel 1",
           },
         },
+        setores: {
+          type: "array",
+          example: {
+            id: 1,
+            name: "tecnologia",
+          },
+        },
       },
     },
     ...errorSchema

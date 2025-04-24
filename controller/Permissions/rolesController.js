@@ -18,7 +18,6 @@ const createRoles = async (request, reply) => {
       },
       services: services,
     });
-    console.log(services);
     reply.status(201).send("Created role");
   } catch (error) {
     throw error;
@@ -31,9 +30,6 @@ const getRoles = async (request, reply) => {
     await verifyPermission(user, SERVICE, request.method);
     let responseRole = await role_api.get("/roles");
     let roles = responseRole.data.roles;
-
-    console.log(roles)
-
 
     reply.status(200).send({roles});
   } catch (error) {
@@ -56,7 +52,6 @@ const updateRoles = async (request, reply) => {
         name: name,
       },
     });
-    console.log(services);
     reply.status(201).send("updated role");
   } catch (error) {
     throw error;
@@ -71,6 +66,7 @@ const deleteRoles = async (request, reply) => {
     let id = request.params.id;
 
     await role_api.delete(`/roles/${id}`);
+    await role_api.delete(`/permission/role/${id}`);
     reply.status(201).send("updated role");
   } catch (error) {
     throw error;
