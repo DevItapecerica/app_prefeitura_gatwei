@@ -16,9 +16,6 @@ const verifyPermission = async (user, service, methode) => {
     return visibility.service_id == service;
   })
 
-  console.log(setorServiceVisibility[0].visibility);
-  console.log(`---------------------------------------------------`);
-
   switch (methode) {
     case "GET":
       if (!roles_permission.read || !setorServiceVisibility[0].visibility) {

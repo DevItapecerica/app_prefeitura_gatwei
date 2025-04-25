@@ -28,8 +28,11 @@ const getRoles = async (request, reply) => {
   try {
     let user = request.user
     await verifyPermission(user, SERVICE, request.method);
+
     let responseRole = await role_api.get("/roles");
     let roles = responseRole.data.roles;
+
+
 
     reply.status(200).send({roles});
   } catch (error) {
@@ -44,8 +47,6 @@ const updateRoles = async (request, reply) => {
 
     let id = request.params.id;
     let { name } = request.body.role;
-    const servicesResponse = await service_api.get("/service");
-    const services = servicesResponse.data;
 
     await role_api.put(`/roles/${id}`, {
       role: {
