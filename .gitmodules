@@ -1,24 +1,24 @@
 [submodule "MicroServices/Setor_MS"]
 	path = MicroServices/Setor_MS
-	url = git@github.com:Kadoia614/Setor_MS.git
-	branch = Desenvolvimento
+	url = git@github.com:DevItapecerica/Setor_MS.git
+	branch = develop
 [submodule "MicroServices/User_MS"]
 	path = MicroServices/User_MS
-	url = git@github.com:Kadoia614/User_MS.git
-	branch = Desenvolvimento
+	url = git@github.com:DevItapecerica/User_MS.git
+	branch = develop
 [submodule "MicroServices/Login_MS"]
 	path = MicroServices/Login_MS
-	url = git@github.com:Kadoia614/Login_MS.git
-	branch = Desenvolvimento
+	url = git@github.com:DevItapecerica/Login_MS.git
+	branch = develop
 [submodule "MicroServices/Services_MS"]
 	path = MicroServices/Services_MS
-	url = git@github.com:Kadoia614/Services_MS.git
-	branch = Desenvolvimento
+	url = git@github.com:DevItapecerica/Service_MS.git
+	branch = develop
 [submodule "MicroServices/Permissions_MS"]
 	path = MicroServices/Permissions_MS
-	url = git@github.com:Kadoia614/Permissions_MS.git
-	branch = Desenvolvimento
+	url = git@github.com:DevItapecerica/Permissions_MS.git
+	branch = develop
 [submodule "MicroServices/Demandas_MS"]
 	path = MicroServices/Demandas_MS
-	url = git@github.com:Kadoia614/Demandas_MS.git
-	branch = Desenvolvimento
+	url = git@github.com:DevItapecerica/Demandas_MS.git
+	branch = develop
