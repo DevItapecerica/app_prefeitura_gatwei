@@ -42,7 +42,7 @@ const getDemandas = async (request, reply) => {
         break;
     }
 
-    reply.status(200).send({ demandas, ...setores});
+    reply.status(200).send({ ...demandas, ...setores});
   } catch (error) {
     throw error;
   }
