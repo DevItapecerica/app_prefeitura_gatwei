@@ -160,7 +160,7 @@ const createService = async (request, reply) => {
     let responseSetor = await setor_api.get("/setor");
     let setores = responseSetor.data;
 
-    console.log(setores)
+    console.log(setores);
 
     await permissions_api.post(
       `/visibility/service/${serviceResult.service.id}`,
@@ -177,38 +177,33 @@ const createService = async (request, reply) => {
 
 const updateService = async (request, reply) => {
   try {
-    try {
-      let service = request.body.service;
-      let permissions = request.body.service.permission;
-      let id = request.params.id;
-      let user = request.user;
-      let visibility = request.body.service.visibility;
+    const { service } = request.body;
+    const { permission: permissions, visibility } = service;
+    const { id } = request.params;
+    const user = request.user;
 
-      console.log(visibility)
+    console.log(visibility);
 
-      await verifyPermission(user, SERVICE, request.method);
+    await verifyPermission(user, SERVICE, request.method);
 
-      await service_api.put(`/service/${id}`, {
+    await Promise.all([
+      service_api.put(`/service/${id}`, {
         service: {
           name: service.name,
           description: service.description,
           url: service.url,
         },
-      });
+      }),
+      permissions_api.put(`/visibility/service/${id}`, { visibility }),
+      permissions_api.put(`/permission/service/${id}`, { permissions }),
+    ]);
 
-      await permissions_api.put(`/visibility/service/${id}`, {
-        visibility
-      });
-
-      await permissions_api.put(`/permission/service/${id}`, { permissions });
-      reply.status(204);
-    } catch (error) {
-      throw error;
-    }
+    reply.status(204).send();
   } catch (error) {
     throw error;
   }
 };
+
 
 const deleteService = async (request, reply) => {
   try {
