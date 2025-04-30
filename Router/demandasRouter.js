@@ -2,7 +2,7 @@ const Demandas = require("../controller/DemandasTi/demandasTiController");
 const auth = require("../middleware/authJWT");
 // const schema = require("../schema/userSchema")
 
-async function routes(fastify, options) {
+async function demandasRouter(fastify, options) {
   fastify.route({
     method: "GET",
     url: "/demandas",
@@ -76,4 +76,4 @@ async function routes(fastify, options) {
   });
 }
 
-module.exports = routes;
+module.exports = demandasRouter;

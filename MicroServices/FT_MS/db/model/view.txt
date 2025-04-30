@@ -1,0 +1,11 @@
+Campo | Tipo | Observação
+bco | STRING(3) | Código do banco
+ag | STRING(4) | Agência
+dig_ag | STRING(1) | Dígito da agência
+conta | STRING(10) | Conta bancária
+dig_conta | STRING(1) | Dígito da conta
+nome | STRING | Nome do beneficiário
+bolsa | DECIMAL(10,2) | Valor da bolsa
+vencimento | INTEGER | Dia do vencimento (ex: 5, 20, 31)
+cpf | STRING(11) | CPF
+local | STRING | Local relacionado

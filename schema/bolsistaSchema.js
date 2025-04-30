@@ -1,0 +1,234 @@
+const errorSchema = require("./errorSchema");
+
+const getBolsistaSchema = {
+  tags: ["Bolsista"],
+  security: [{ APIKey: [] }],
+  description: "get all bolsista",
+  summary: "Get all bolsista",
+  response: {
+    200: {
+      type: "object",
+      properties: {
+        message: { type: "string", example: "Bolsista geted successfully" },
+        bolsistas: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              id: { type: "integer" }, // caso você use auto-incremento no banco
+              bco: { type: "string", maxLength: 3 },
+              ag: { type: "string", maxLength: 4 },
+              dig_ag: { type: "string", maxLength: 1 },
+              conta: { type: "string", maxLength: 10 },
+              dig_conta: { type: "string", maxLength: 1 },
+              nome: { type: "string" },
+              bolsa: { type: "number" },
+              vencimento: { type: "integer" },
+              cpf: { type: "string", maxLength: 11 },
+              local: { type: "string" },
+              createdAt: { type: "string", format: "date-time" },
+              updatedAt: { type: "string", format: "date-time" },
+            },
+          },
+        },
+      },
+    },
+
+    ...errorSchema,
+  },
+};
+
+const getOneBolsistaSchema = {
+  tags: ["Bolsista"],
+  security: [{ APIKey: [] }],
+  description: "get a bolsista",
+  summary: "Get a bolsista",
+  params: {
+    type: "object",
+    properties: {
+      id: {
+        type: "string",
+        description: "bolsista id",
+      },
+    },
+  },
+  response: {
+    200: {
+      type: "object",
+      properties: {
+        bolsista: {
+          type: "object",
+          properties: {
+            id: { type: "integer" }, // caso você use auto-incremento no banco
+            bco: { type: "string", maxLength: 3 },
+            ag: { type: "string", maxLength: 4 },
+            dig_ag: { type: "string", maxLength: 1 },
+            conta: { type: "string", maxLength: 10 },
+            dig_conta: { type: "string", maxLength: 1 },
+            nome: { type: "string" },
+            bolsa: { type: "number" },
+            vencimento: { type: "integer" },
+            cpf: { type: "string", maxLength: 11 },
+            local: { type: "string" },
+            createdAt: { type: "string", format: "date-time" },
+            updatedAt: { type: "string", format: "date-time" },
+          },
+        },
+      },
+    },
+
+    ...errorSchema,
+  },
+};
+
+const createBolsistaSchema = {
+  tags: ["Bolsista"],
+  security: [{ APIKey: [] }],
+  description: "create a bolsista",
+  summary: "Create a bolsista",
+
+  body: {
+    type: "object",
+    required: [
+      "bco",
+      "ag",
+      "dig_ag",
+      "conta",
+      "dig_conta",
+      "nome",
+      "bolsa",
+      "vencimento",
+      "cpf",
+      "local",
+    ],
+    properties: {
+      bco: { type: "string", maxLength: 3 },
+      ag: { type: "string", maxLength: 4 },
+      dig_ag: { type: "string", maxLength: 1 },
+      conta: { type: "string", maxLength: 10 },
+      dig_conta: { type: "string", maxLength: 1 },
+      nome: { type: "string" },
+      bolsa: { type: "number", minimum: 0 },
+      vencimento: { type: "integer", minimum: 1, maximum: 31 },
+      cpf: { type: "string", maxLength: 11 },
+      local: { type: "string" },
+    },
+  },
+  response: {
+    201: {
+      type: "object",
+      properties: {
+        message: { type: "string", example: "Bolsista created successfully" },
+        bolsista: {
+          type: "object",
+          properties: {
+            id: { type: "integer" }, // caso você use auto-incremento no banco
+            bco: { type: "string", maxLength: 3 },
+            ag: { type: "string", maxLength: 4 },
+            dig_ag: { type: "string", maxLength: 1 },
+            conta: { type: "string", maxLength: 10 },
+            dig_conta: { type: "string", maxLength: 1 },
+            nome: { type: "string" },
+            bolsa: { type: "number" },
+            vencimento: { type: "integer" },
+            cpf: { type: "string", maxLength: 11 },
+            local: { type: "string" },
+            createdAt: { type: "string", format: "date-time" },
+            updatedAt: { type: "string", format: "date-time" },
+          },
+        },
+      },
+    },
+
+    ...errorSchema,
+  },
+};
+
+const updateBolsistaSchema = {
+  tags: ["Bolsista"],
+  security: [{ APIKey: [] }],
+  description: "create a bolsista",
+  summary: "Create a bolsista",
+
+  body: {
+    type: "object",
+    required: [
+      "bco",
+      "ag",
+      "dig_ag",
+      "conta",
+      "dig_conta",
+      "nome",
+      "bolsa",
+      "vencimento",
+      "cpf",
+      "local",
+    ],
+
+    properties: {
+      bco: { type: "string", maxLength: 3 },
+      ag: { type: "string", maxLength: 4 },
+      dig_ag: { type: "string", maxLength: 1 },
+      conta: { type: "string", maxLength: 10 },
+      dig_conta: { type: "string", maxLength: 1 },
+      nome: { type: "string" },
+      bolsa: { type: "number", minimum: 0 },
+      vencimento: { type: "integer", minimum: 1, maximum: 31 },
+      cpf: { type: "string", maxLength: 11 },
+      local: { type: "string" },
+    },
+  },
+  response: {
+    200: {
+      type: "object",
+      properties: {
+        message: { type: "string", example: "Bolsista updated successfully" },
+        bolsista: {
+          type: "object",
+          properties: {
+            id: { type: "integer" }, // caso você use auto-incremento no banco
+            bco: { type: "string", maxLength: 3 },
+            ag: { type: "string", maxLength: 4 },
+            dig_ag: { type: "string", maxLength: 1 },
+            conta: { type: "string", maxLength: 10 },
+            dig_conta: { type: "string", maxLength: 1 },
+            nome: { type: "string" },
+            bolsa: { type: "number" },
+            vencimento: { type: "integer" },
+            cpf: { type: "string", maxLength: 11 },
+            local: { type: "string" },
+            createdAt: { type: "string", format: "date-time" },
+            updatedAt: { type: "string", format: "date-time" },
+          },
+        },
+      },
+    },
+
+    ...errorSchema,
+  },
+};
+
+const deleteBolsistaSchema = {
+  tags: ["Bolsista"],
+  security: [{ APIKey: [] }],
+  description: "delete a bolsista",
+  summary: "Delete a bolsista",
+  response: {
+    200: {
+      type: "object",
+      properties: {
+        message: { type: "string", example: "Bolsista deleted successfully" },
+      },
+    },
+
+    ...errorSchema,
+  },
+};
+
+module.exports = {
+  createBolsistaSchema,
+  getBolsistaSchema,
+  updateBolsistaSchema,
+  deleteBolsistaSchema,
+  getOneBolsistaSchema,
+};

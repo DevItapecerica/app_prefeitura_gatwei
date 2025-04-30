@@ -12,6 +12,7 @@ const setorRouter = require("./Router/setorRouter");
 const serviceRouter = require("./Router/serviceRouter");
 const demandasRouter = require("./Router/demandasRouter");
 const roleRouter = require("./Router/roleRouter")
+const FTRouter = require("./Router/FTRouter")
 const authenticateRouter = require('./Router/authenticateRouter')
 
 const app = fastify();
@@ -33,6 +34,8 @@ app.register(fastifySwaggerUi, SwaggerOptions.swaggerUiConfig);
 
 // Usando o hook onError para tratamento global de erros
 app.setErrorHandler((error, request, reply) => {
+
+
   console.log("--------------------------------------------------")
   console.log(error)
   console.log("--------------------------------------------------")
@@ -90,6 +93,7 @@ app.register(setorRouter);
 app.register(serviceRouter);
 app.register(demandasRouter);
 app.register(roleRouter);
+app.register(FTRouter);
 app.register(authenticateRouter);
 
 const start = () => {
