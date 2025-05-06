@@ -2,11 +2,7 @@ const Bolsistas = require("../db/model/bolsistaModel.js");
 
 const getBolsista = async (request, reply) => {
   const bolsistas = await Bolsistas.findAll();
-  if (bolsistas.length === 0) {
-    return reply.status(404).send({
-      message: "Nenhum bolsista encontrado",
-    });
-  }
+
   return reply.status(200).send({
     message: "Bolsista get successfully",
     bolsistas,

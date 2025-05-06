@@ -34,6 +34,14 @@ const FTRouter = (fastify, opt) => {
     schema: BolsistaSchema.updateBolsistaSchema,
     handler: Bolsista.updateBolsistas,
   });
+
+  fastify.route({
+    method: "DELETE",
+    url: "/bolsista/:id",
+    preHandler: [auth],
+    schema: BolsistaSchema.deleteBolsistaSchema,
+    handler: Bolsista.deleteBolsistas,
+  });
 };
 
 module.exports = FTRouter;

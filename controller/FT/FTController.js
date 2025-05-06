@@ -1,9 +1,12 @@
 const Bolsista = require("../../service/ft_app_api.js");
+const { verifyPermission } = require("../../utils/verifyPermission");
 
 const SERVICE = 6;
 
 const getBolsistas = async (request, reply) => {
   try {
+    let user = request.user;
+    await verifyPermission(user, SERVICE, request.method);
     const response = await Bolsista.get("/bolsista");
     const bolsistas = response.data;
 
@@ -17,6 +20,8 @@ const getBolsistas = async (request, reply) => {
 
 const getOneBolsistas = async (request, reply) => {
   try {
+    let user = request.user;
+    await verifyPermission(user, SERVICE, request.method);
     const { id } = request.params;
     const response = await Bolsista.get(`/bolsista/${id}`);
     const bolsistas = response.data;
@@ -31,6 +36,8 @@ const getOneBolsistas = async (request, reply) => {
 
 const createBolsistas = async (request, reply) => {
   try {
+    let user = request.user;
+    await verifyPermission(user, SERVICE, request.method);
     const {
       bco,
       ag,
@@ -68,6 +75,8 @@ const createBolsistas = async (request, reply) => {
 
 const updateBolsistas = async (request, reply) => {
   try {
+    let user = request.user;
+    await verifyPermission(user, SERVICE, request.method);
     const { id } = request.params;
     const {
       bco,
@@ -104,9 +113,26 @@ const updateBolsistas = async (request, reply) => {
   }
 };
 
+const deleteBolsistas = async (request, reply) => {
+  try {
+    let user = request.user;
+    await verifyPermission(user, SERVICE, request.method);
+    const { id } = request.params;
+
+    const response = await Bolsista.delete(`/bolsista/${id}`);
+    console.log(response.data);
+    const message = response.data.message;
+
+    reply.status(200).send(message);
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   getBolsistas,
   getOneBolsistas,
   createBolsistas,
   updateBolsistas,
+  deleteBolsistas,
 };
