@@ -1,17 +1,19 @@
-const fatify = require("fastify");
+require('dotenv').config({path: `${__dirname}/config/.env`});
+
+const fastify = require("fastify");
 const cors = require("@fastify/cors");
 const fastifySwagger = require("@fastify/swagger");
 const fastifySwaggerUi = require("@fastify/swagger-ui");
-require('dotenv').config({path: `${__dirname}/config/.env`});
 const {errorConfig} = require("./config/errorHanddlerConfig");
 
 const {swaggerConfig, swaggerUiConfig} = require('./config/swaggerConfig');
 const { corsConfig } = require("./config/corsConfig");
 
 const ftRoutes = require("./router/ftRouter");
+const uploadRouter = require("./router/uploadRouter");
 
 const port = process.env.APPLICATION_PORT || 8001;
-const app = fatify();
+const app = fastify();
 
 app.register(cors, corsConfig);
 
@@ -33,12 +35,16 @@ app.setErrorHandler((error, request, reply) => {
 });
 
 app.register(ftRoutes);
+app.register(uploadRouter);
 
-const start = () => {
+const start = async() => {
   try {
-    app.listen({ port, host: "0.0.0.0" });
+    await app.listen({ port, host: "0.0.0.0" });
     console.log(`Server is running on port ${port}`);
-  } catch (error) {}
+  } catch (error) {
+    console.error('Erro ao iniciar o servidor:', error);
+    process.exit(1);
+  }
 };
 
 start();
