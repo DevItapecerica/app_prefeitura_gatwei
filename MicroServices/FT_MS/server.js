@@ -35,9 +35,15 @@ app.setErrorHandler((error, request, reply) => {
   errorHook(error, reply);
 });
 
-app.register(ftRoutes);
-app.register(uploadRouter);
-app.register(authRouter);
+app.register(ftRoutes, {
+  prefix: "/bolsista",
+});
+app.register(uploadRouter, {
+  prefix: "/documentacao",
+});
+app.register(authRouter, {
+  prefix: "/auth",
+});
 
 const start = async() => {
   try {

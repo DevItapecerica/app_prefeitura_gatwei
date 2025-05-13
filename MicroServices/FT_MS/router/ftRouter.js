@@ -5,11 +5,12 @@ const bolsista = require("../controller/bolsistaController.js");
 
 
 const routes = async (fastify, options) => {
+  fastify.addHook("preHandler", auth);
+
   //get de bolsistas route
   fastify.route({
     method: "GET",
-    url: "/bolsista",
-    preHandler: [auth],
+    url: "/",
     schema: bolsistaSchema.getBolsistaSchema,
     handler: bolsista.getBolsista,
   });
@@ -17,8 +18,7 @@ const routes = async (fastify, options) => {
     //get one de bolsistas route
     fastify.route({
       method: "GET",
-      url: "/bolsista/:id",
-      preHandler: [auth],
+      url: "/:id",
       schema: bolsistaSchema.getOneBolsistaSchema,
       handler: bolsista.getOneBolsista,
     });
@@ -27,8 +27,7 @@ const routes = async (fastify, options) => {
   //post de bolsistas route
   fastify.route({
     method: "POST",
-    url: "/bolsista",
-    preHandler: [auth],
+    url: "/",
     schema: bolsistaSchema.createBolsistaSchema,
     handler: bolsista.createBolsista,
   });
@@ -36,8 +35,7 @@ const routes = async (fastify, options) => {
   //update de bolsistas route
   fastify.route({
     method: "PUT",
-    url: "/bolsista/:id",
-    preHandler: [auth],
+    url: "/:id",
     schema: bolsistaSchema.updateBolsistaSchema,
     handler: bolsista.updateBolsista,
   });
@@ -45,8 +43,7 @@ const routes = async (fastify, options) => {
   //delete de bolsistas route
   fastify.route({
     method: "DELETE",
-    url: "/bolsista/:id",
-    preHandler: [auth],
+    url: "/:id",
     schema: bolsistaSchema.deleteBolsistaSchema,
     handler: bolsista.deleteBolsista,
   });

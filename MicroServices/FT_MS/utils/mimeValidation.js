@@ -28,4 +28,5 @@ const mimeValidation = async (file) => {
 
 module.exports = {
     mimeValidation,
+    mimeTypes
 };

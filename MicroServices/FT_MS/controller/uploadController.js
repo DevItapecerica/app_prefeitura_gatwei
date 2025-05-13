@@ -3,14 +3,14 @@ const path = require("path");
 const { Transform } = require("stream");
 const pump = require("util").promisify(require("stream").pipeline);
 
-const { mimeValidation } = require("../utils/mimeValidation.js");
+const { mimeValidation, mimeTypes } = require("../utils/mimeValidation.js");
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 5 MB
 
 const postDoc = async (request, reply) => {
   try {
     const Data = await request.file();
-    const filename = `${Date.now()}_${Data.filename}`;
+    const filename = `${Date.now()}.${Data.filename.split(".").pop()}`;
     const uploadDir = path.join(__dirname, "../uploads");
     const filePath = path.join(uploadDir, filename);
 
@@ -60,7 +60,7 @@ const postDoc = async (request, reply) => {
     writeStream.on("finish", async () => {
         let typePath = await mimeValidation(filePath)
 
-      console.log(`Upload concluído com sucesso ${typePath}`);
+      console.log(`Upload concluído com sucesso ${JSON.stringify(typePath)}`);
     });
 
     await pump(Data.file, transform, writeStream);
@@ -68,7 +68,7 @@ const postDoc = async (request, reply) => {
 
     return reply.status(200).send({
       message: "File uploaded successfully",
-      filename: Data.filename,
+      filename: filename,
     });
   } catch (error) {
     return reply.code(error.statusCode || 500).send({
@@ -77,19 +77,44 @@ const postDoc = async (request, reply) => {
   }
 };
 
-const getDoc = async (request, reply) => {
+const getDocs = async (request, reply) => {
   try {
     const filepath = path.join(
       __dirname,
       "../uploads",
-      "1747078865183teste1.png"
+      "1747151083581.png"
     );
 
     if (!fs.existsSync(filepath)) {
       throw { status: 404, message: "File not found" };
     }
 
-    const file = require("fs").createReadStream(filepath);
+    const file = fs.createReadStream(filepath);
+
+    const extname = filepath.split(".")[1];
+
+    return reply
+      .status(200)
+      .type(mimeTypes[extname] || "application/octet-stream")
+      .send(file);
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getBolsistaDocs = async (request, reply) => {
+  try {
+    const filepath = path.join(
+      __dirname,
+      "../uploads",
+      "1747151083581.png"
+    );
+
+    if (!fs.existsSync(filepath)) {
+      throw { status: 404, message: "File not found" };
+    }
+
+    const file = fs.createReadStream(filepath);
 
     const extname = filepath.split(".")[1];
 
@@ -104,5 +129,6 @@ const getDoc = async (request, reply) => {
 
 module.exports = {
   postDoc,
-  getDoc,
+  getDocs,
+  getBolsistaDocs,
 };

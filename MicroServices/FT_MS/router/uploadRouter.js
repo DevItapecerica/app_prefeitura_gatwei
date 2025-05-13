@@ -1,28 +1,25 @@
-const fs = require("fs");
-const path = require("path");
-const util = require("util");
-const pump = util.promisify(require("stream").pipeline);
-const Transform = require("stream").Transform;
-const FileType = require("file-type");
-const { postDoc, getDoc } = require("../controller/uploadController.js");
-
-const mimeTypes = {
-  ".jpg": "image/jpeg",
-  ".jpeg": "image/jpeg",
-  ".png": "image/png",
-  ".pdf": "application/pdf",
-};
+const { postDoc, getDocs, getBolsistaDocs } = require("../controller/uploadController.js");
+const authJWT = require("../middleware/authJWT.js");
 
 const uploadRouter = (fastify, options) => {
+
+  fastify.addHook("preHandler", authJWT);
+
   fastify.route({
     method: "GET",
-    url: "/documentacao",
-    handler: getDoc,
+    url: "/",
+    handler: getDocs,
+  });
+
+  fastify.route({
+    method: "GET",
+    url: "/bolsista/:id",
+    handler: getBolsistaDocs,
   });
 
   fastify.route({
     method: "POST",
-    url: "/documentacao",
+    url: "/bolsista/:id",
     handler: postDoc,
   });
 };

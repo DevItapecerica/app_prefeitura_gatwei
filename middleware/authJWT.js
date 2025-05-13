@@ -4,7 +4,7 @@ const authJWT = async (request, reply) => {
   try {
     let token = request.headers.authorization?.replace("Bearer ", "") ;
     if (!token) {
-      throw { status: 401, message: "Token não informado" };
+      throw { status: 403, message: "Token não informado" };
     }
 
     let decodedUserResponse = await login_api.post("/authUser", {
