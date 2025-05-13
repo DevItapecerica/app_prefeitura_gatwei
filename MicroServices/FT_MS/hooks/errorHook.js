@@ -1,4 +1,4 @@
-const errorConfig = (error, reply) => {
+const errorHook = (error, reply) => {
   const statusCode = error.status || error.statusCode || 500;
   let messageError =
     error.response?.data.message || error.message || "Erro desconhecido";
@@ -30,4 +30,4 @@ const errorConfig = (error, reply) => {
   }
 };
 
-module.exports = {errorConfig};
+module.exports = {errorHook};

@@ -4,13 +4,14 @@ const fastify = require("fastify");
 const cors = require("@fastify/cors");
 const fastifySwagger = require("@fastify/swagger");
 const fastifySwaggerUi = require("@fastify/swagger-ui");
-const {errorConfig} = require("./config/errorHanddlerConfig");
+const {errorHook} = require("./hooks/errorHook");
 
 const {swaggerConfig, swaggerUiConfig} = require('./config/swaggerConfig');
 const { corsConfig } = require("./config/corsConfig");
 
 const ftRoutes = require("./router/ftRouter");
 const uploadRouter = require("./router/uploadRouter");
+const authRouter = require("./router/authRouter");
 
 const port = process.env.APPLICATION_PORT || 8001;
 const app = fastify();
@@ -19,7 +20,7 @@ app.register(cors, corsConfig);
 
 app.register(require('@fastify/multipart'), {
   limits: {
-    fileSize: 10 * 1024 * 1024 // 10 MB limite
+    fileSize: 5 * 1024 * 1024, // 5MB
   }
 });
 
@@ -31,11 +32,12 @@ app.setErrorHandler((error, request, reply) => {
   ('----------------------------------------------------------');
   ('Error: ', error);
   ('----------------------------------------------------------');
-  errorConfig(error, reply);
+  errorHook(error, reply);
 });
 
 app.register(ftRoutes);
 app.register(uploadRouter);
+app.register(authRouter);
 
 const start = async() => {
   try {
