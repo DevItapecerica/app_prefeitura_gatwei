@@ -7,35 +7,35 @@ fastify.addHook("preHandler",auth);
 
   fastify.route({
     method: "GET",
-    url: "/setor",
+    url: "/",
     schema: setorSchema.getSetores,
     handler: Setor.getSetores,
   });
 
   fastify.route({
     method: 'GET',
-    url: '/setor/:id',
+    url: '/:id',
     schema: setorSchema.getOneSetor,
     handler: Setor.getOneSetor,
   })
 
   fastify.route({
     method: 'POST',
-    url: '/setor',
+    url: '/',
     schema: setorSchema.postSetor,
     handler: Setor.createSetor,
   })
 
   fastify.route({
     method: 'PUT',
-    url: '/setor/:id',
+    url: '/:id',
     schema: setorSchema.updateSetor,
     handler: Setor.updateSetor,
   })
 
   fastify.route({
     method: 'DELETE',
-    url: '/setor/:id',
+    url: '/:id',
     schema: setorSchema.deleteSetor,
     handler: Setor.deleteSetor,
   })

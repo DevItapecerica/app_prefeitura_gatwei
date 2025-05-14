@@ -6,25 +6,25 @@ fastify.addHook("preHandler",auth);
 
   fastify.route({
     method: "POST",
-    url: "/roles",
+    url: "/",
     handler: Role.createRoles,
   });
 
   fastify.route({
     method: "get",
-    url: "/roles",
+    url: "/",
     handler: Role.getRoles,
   });
 
   fastify.route({
     method: "PUT",
-    url: "/roles/:id",
+    url: "/:id",
     handler: Role.updateRoles,
   });
 
   fastify.route({
     method: "DELETE",
-    url: "/roles/:id",
+    url: "/:id",
     handler: Role.deleteRoles,
   });
 

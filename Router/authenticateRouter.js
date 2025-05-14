@@ -14,7 +14,7 @@ const authenticateRouter = (fastify, options) =>{
 
     fastify.route({
         method: 'GET',
-        url: '/authuser',
+        url: '/',
         schema: authSchema,
         handler: authUser.authUser
     })

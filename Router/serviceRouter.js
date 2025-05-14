@@ -7,14 +7,14 @@ fastify.addHook("preHandler",auth);
 
   fastify.route({
     method: "GET",
-    url: "/service",
+    url: "/",
     schema: serviceSchema.getServices,
     handler: Service.getAllServices,
   });
 
   fastify.route({
     method: "GET",
-    url: "/service/user",
+    url: "/user",
     // schema: serviceSchema.getServices,
     handler: Service.getUserServices,
   });
@@ -23,28 +23,28 @@ fastify.addHook("preHandler",auth);
 
   fastify.route({
     method: "GET",
-    url: "/service/:id",
+    url: "/:id",
     schema: serviceSchema.getOneService,
     handler: Service.getService,
   });
 
   fastify.route({
     method: "POST",
-    url: "/service",
+    url: "/",
     schema: serviceSchema.postServices,
     handler: Service.createService,
   });
 
   fastify.route({
     method: "PUT",
-    url: "/service/:id",
+    url: "/:id",
     schema: serviceSchema.updateServices,
     handler: Service.updateService,
   })
 
   fastify.route({
     method: "DELETE",
-    url: "/service/:id",
+    url: "/:id",
     schema: serviceSchema.deleteService,
     handler: Service.deleteService,
   });

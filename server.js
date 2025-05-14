@@ -88,13 +88,27 @@ app.setErrorHandler((error, request, reply) => {
   }
 });
 
-app.register(userRouter);
-app.register(setorRouter);
-app.register(serviceRouter);
-app.register(demandasRouter);
-app.register(roleRouter);
-app.register(FTRouter);
-app.register(authenticateRouter);
+app.register(userRouter, {
+  prefix: "/user",
+});
+app.register(setorRouter, {
+  prefix: "/setor",
+});
+app.register(serviceRouter, {
+  prefix: "/service",
+});
+app.register(demandasRouter, {
+  prefix: "/demandas",
+});
+app.register(roleRouter, {
+  prefix: "/roles",
+});
+app.register(FTRouter, {
+  prefix: "/ft",
+});
+app.register(authenticateRouter, {
+  prefix: "/auth",
+});
 
 const start = () => {
   try {

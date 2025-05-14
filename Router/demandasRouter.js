@@ -7,63 +7,63 @@ async function demandasRouter(fastify, options) {
   
   fastify.route({
     method: "GET",
-    url: "/demandas",
+    url: "/",
     // schema: schema.getUserDemandas,
     handler: Demandas.getDemandas,
   });
 
   fastify.route({
     method: "GET",
-    url: "/demandas/:id",
+    url: "/:id",
     // schema: schema.getUserDemandas,
     handler: Demandas.getOneDemandas,
   });
 
   fastify.route({
     method: "GET",
-    url: "/demandas/user",
+    url: "/user",
     // schema: schema.getUserDemandas,
     handler: Demandas.getUserDemandas,
   });
 
   fastify.route({
     method: "GET",
-    url: "/demandas/history",
+    url: "/history",
     // schema: schema.getOneDemandas,
     handler: Demandas.getHistoryDemandas,
   });
 
   fastify.route({
     method: "delete",
-    url: "/demandas/:id",
+    url: "/:id",
     // schema: schema.deleteDemandas,
     handler: Demandas.deleteDemandas,
   });
 
   fastify.route({
     method: "put",
-    url: "/demandas/:id/assume",
+    url: "/:id/assume",
     // schema: schema.deleteDemandas,
     handler: Demandas.assumeDemandas,
   });
 
   fastify.route({
     method: "put",
-    url: "/demandas/:id/finish",
+    url: "/:id/finish",
     // schema: schema.deleteDemandas,
     handler: Demandas.finishDemandas,
   });
 
   fastify.route({
     method: "post",
-    url: "/demandas",
+    url: "/",
     // schema: schema.postDemandas,
     handler: Demandas.createDemandas,
   });
 
   fastify.route({
     method: "PUT",
-    url: "/demandas/:id",
+    url: "/:id",
     // schema: schema.updateDemandas,
     handler: Demandas.updateDemandas,
   });
