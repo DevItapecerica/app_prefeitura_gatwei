@@ -5,7 +5,7 @@ const pump = require("util").promisify(require("stream").pipeline);
 
 const { mimeValidation, mimeTypes } = require("../utils/mimeValidation.js");
 
-const MAX_FILE_SIZE = 0 * 1024 * 1024; // 5 MB
+const MAX_FILE_SIZE = 2 * 1024 * 1024; // 5 MB
 
 const postDoc = async (request, reply) => {
   try {
