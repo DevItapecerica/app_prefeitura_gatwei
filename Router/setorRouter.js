@@ -3,11 +3,12 @@ const Setor = require("../controller/Setor/setorController");
 const setorSchema = require("../schema/setoresSchema");
 
 const setorRouter = (fastify, options) => {
+fastify.addHook("preHandler",auth);
+
   fastify.route({
     method: "GET",
     url: "/setor",
     schema: setorSchema.getSetores,
-    preHandler: [auth],
     handler: Setor.getSetores,
   });
 
@@ -15,7 +16,6 @@ const setorRouter = (fastify, options) => {
     method: 'GET',
     url: '/setor/:id',
     schema: setorSchema.getOneSetor,
-    preHeandler: [auth],
     handler: Setor.getOneSetor,
   })
 
@@ -23,7 +23,6 @@ const setorRouter = (fastify, options) => {
     method: 'POST',
     url: '/setor',
     schema: setorSchema.postSetor,
-    preHandler: [auth],
     handler: Setor.createSetor,
   })
 
@@ -31,7 +30,6 @@ const setorRouter = (fastify, options) => {
     method: 'PUT',
     url: '/setor/:id',
     schema: setorSchema.updateSetor,
-    preHandler: [auth],
     handler: Setor.updateSetor,
   })
 
@@ -39,7 +37,6 @@ const setorRouter = (fastify, options) => {
     method: 'DELETE',
     url: '/setor/:id',
     schema: setorSchema.deleteSetor,
-    preHandler: [auth],
     handler: Setor.deleteSetor,
   })
 };

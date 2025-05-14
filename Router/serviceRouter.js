@@ -3,11 +3,12 @@ const serviceSchema = require("../schema/servicesSchema");
 const auth = require("../middleware/authJWT");
 
 const serviceRouter = (fastify, options) => {
+fastify.addHook("preHandler",auth);
+
   fastify.route({
     method: "GET",
     url: "/service",
     schema: serviceSchema.getServices,
-    preHandler: [auth],
     handler: Service.getAllServices,
   });
 
@@ -15,7 +16,6 @@ const serviceRouter = (fastify, options) => {
     method: "GET",
     url: "/service/user",
     // schema: serviceSchema.getServices,
-    preHandler: [auth],
     handler: Service.getUserServices,
   });
 
@@ -25,7 +25,6 @@ const serviceRouter = (fastify, options) => {
     method: "GET",
     url: "/service/:id",
     schema: serviceSchema.getOneService,
-    preHandler: [auth],
     handler: Service.getService,
   });
 
@@ -33,7 +32,6 @@ const serviceRouter = (fastify, options) => {
     method: "POST",
     url: "/service",
     schema: serviceSchema.postServices,
-    preHandler: [auth],
     handler: Service.createService,
   });
 
@@ -41,7 +39,6 @@ const serviceRouter = (fastify, options) => {
     method: "PUT",
     url: "/service/:id",
     schema: serviceSchema.updateServices,
-    preHandler: [auth],
     handler: Service.updateService,
   })
 
@@ -49,7 +46,6 @@ const serviceRouter = (fastify, options) => {
     method: "DELETE",
     url: "/service/:id",
     schema: serviceSchema.deleteService,
-    preHandler: [auth],
     handler: Service.deleteService,
   });
 

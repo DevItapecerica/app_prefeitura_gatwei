@@ -3,12 +3,12 @@ const UserSchema = require("../schema/userSchema");
 const auth = require("../middleware/authJWT");
 
 const userRouter = async (fastify, options) => {
-  // 📌 Users
+fastify.addHook("preHandler",auth);
+
   fastify.route({
     method: "GET",
     url: "/user",
     schema: UserSchema.getUserSchema,
-    preHandler: [auth],
     handler: User.getAllUser,
   });
 
@@ -16,7 +16,6 @@ const userRouter = async (fastify, options) => {
     method: "GET",
     url: "/user/:id",
     schema: UserSchema.getOneUserSchema,
-    preHandler: [auth],
     handler: User.getOneUser,
   });
 
@@ -24,7 +23,6 @@ const userRouter = async (fastify, options) => {
     method: "post",
     url: "/user",
     schema: UserSchema.postUserSchema,
-    preHandler: [auth],
     handler: User.cadastrarUser,
   });
 
@@ -32,7 +30,6 @@ const userRouter = async (fastify, options) => {
     method: "delete",
     url: "/user/:id",
     schema: UserSchema.deleteUserSchema,
-    preHandler: [auth],
     handler: User.deletarUser,
   });
 
@@ -40,7 +37,6 @@ const userRouter = async (fastify, options) => {
     method: "put",
     url: "/user/:id",
     schema: UserSchema.updateUserSchema,
-    preHandler: [auth],
     handler: User.atualizarUser,
   });
 };

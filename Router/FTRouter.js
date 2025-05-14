@@ -3,10 +3,11 @@ const auth = require("../middleware/authJWT");
 const BolsistaSchema = require("../schema/bolsistaSchema");
 
 const FTRouter = (fastify, opt) => {
+fastify.addHook("preHandler",auth);
+
   fastify.route({
     method: "get",
     url: "/bolsista",
-    preHandler: [auth],
     schema: BolsistaSchema.getBolsistaSchema,
     handler: Bolsista.getBolsistas,
   });
@@ -14,7 +15,6 @@ const FTRouter = (fastify, opt) => {
   fastify.route({
     method: "get",
     url: "/bolsista/:id",
-    preHandler: [auth],
     schema: BolsistaSchema.getOneBolsistaSchema,
     handler: Bolsista.getOneBolsistas,
   });
@@ -22,7 +22,6 @@ const FTRouter = (fastify, opt) => {
   fastify.route({
     method: "post",
     url: "/bolsista",
-    preHandler: [auth],
     schema: BolsistaSchema.createBolsistaSchema,
     handler: Bolsista.createBolsistas,
   });
@@ -30,7 +29,6 @@ const FTRouter = (fastify, opt) => {
   fastify.route({
     method: "put",
     url: "/bolsista/:id",
-    preHandler: [auth],
     schema: BolsistaSchema.updateBolsistaSchema,
     handler: Bolsista.updateBolsistas,
   });
@@ -38,7 +36,6 @@ const FTRouter = (fastify, opt) => {
   fastify.route({
     method: "DELETE",
     url: "/bolsista/:id",
-    preHandler: [auth],
     schema: BolsistaSchema.deleteBolsistaSchema,
     handler: Bolsista.deleteBolsistas,
   });

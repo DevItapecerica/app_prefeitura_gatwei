@@ -3,7 +3,7 @@ require("dotenv").config({ path: `${__dirname}/../config/.env` });
 
 const verifyToken = async (request, reply) => {
     try {
-        const token = request.headers["x-access-token"].split(" ")[1];
+        const token = request.headers["x-access-token"]?.split(" ")[1];
         if (!token)
           throw {statusCode: 403, auth: false, message: "No token provided." };
       
