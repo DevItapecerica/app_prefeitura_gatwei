@@ -13,6 +13,7 @@ const postDoc = async (request, reply) => {
     const filename = `${Date.now()}.${Data.filename.split(".").pop()}`;
     const uploadDir = path.join(__dirname, "../uploads");
     const filePath = path.join(uploadDir, filename);
+    const mimeFile = Data.mimetype;
 
     let fileSize = 0;
 
@@ -51,8 +52,10 @@ const postDoc = async (request, reply) => {
 
     await pump(Data.file, transform, writeStream);
 
-    let typePath = await mimeValidation(filePath);
+    let typePath = await mimeValidation(filePath, mimeFile);
+
     console.log(`Upload concluído com sucesso ${JSON.stringify(typePath)}`);
+    console.log(`File Path: ${mimeFile}`);
 
     return reply.status(200).send({
       message: "Upload concluído com sucesso",
@@ -60,7 +63,6 @@ const postDoc = async (request, reply) => {
     });
 
   } catch (error) {
-
     return reply.code(error.statusCode || error.status || 500).send({
       message: error.message || "Erro interno ao fazer upload",
     });
