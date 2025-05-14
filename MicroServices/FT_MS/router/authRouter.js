@@ -5,7 +5,7 @@ const auth = require("../middleware/authAPI.js");
 const authRoutes = async (fastify, options) => {
   fastify.route({
     method: "GET",
-    url: "/token/user/:id",
+    url: "/:id",
     preHandler: [auth],
     schema: tokenSchema,
     handler: authController.getRandomToken,

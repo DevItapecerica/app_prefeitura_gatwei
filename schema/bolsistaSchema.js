@@ -31,6 +31,9 @@ const getBolsistaSchema = {
             },
           },
         },
+        uploadToken: {
+          type: "string",
+        }
       },
     },
 

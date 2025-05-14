@@ -7,12 +7,13 @@ const getBolsistas = async (request, reply) => {
   try {
     let user = request.user;
     await verifyPermission(user, SERVICE, request.method);
-    const response = await Bolsista.get("/bolsista");
+    const response = await Bolsista.get("/ft/bolsista");
     const bolsistas = response.data;
+    const {data} = await Bolsista.get(`/ft/auth/${user.id}`);
 
     console.log(bolsistas);
 
-    reply.status(200).send(bolsistas);
+    reply.status(200).send({...bolsistas, uploadToken: data.token});
   } catch (error) {
     throw error;
   }

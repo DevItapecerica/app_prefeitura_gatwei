@@ -57,7 +57,7 @@ const Bolsa = db.define(
   },
   {
     tableName: "Bolsistas", // Nome da tabela no banco
-    timestamps: true, // Se você não quiser campos createdAt e updatedAt
+    timestamps: true,
   }
 );
 
