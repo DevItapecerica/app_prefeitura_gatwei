@@ -5,7 +5,7 @@ const pump = require("util").promisify(require("stream").pipeline);
 
 const { mimeValidation, mimeTypes } = require("../utils/mimeValidation.js");
 
-const MAX_FILE_SIZE = 2 * 1024 * 1024; // 5 MB
+const MAX_FILE_SIZE = 0 * 1024 * 1024; // 5 MB
 
 const postDoc = async (request, reply) => {
   try {
@@ -37,12 +37,8 @@ const postDoc = async (request, reply) => {
 
     const writeStream = fs.createWriteStream(filePath);
 
-    writeStream.on("open", () => {
-      console.log("Upload iniciado");
-    });
-
     writeStream.on("error", (err) => {
-      fs.unlinkSync(filePath, (error) => {
+      fs.unlink(filePath, (error) => {
         if (error) {
           console.error("Error deleting file:", error);
         } else {
@@ -53,25 +49,19 @@ const postDoc = async (request, reply) => {
       console.log("Erro ao escrever o arquivo:");
     });
 
-    writeStream.on("close", async () => {
-      console.log("Upload Fechado com sucesso");
-    });
-
-    writeStream.on("finish", async () => {
-        let typePath = await mimeValidation(filePath)
-
-      console.log(`Upload concluído com sucesso ${JSON.stringify(typePath)}`);
-    });
-
     await pump(Data.file, transform, writeStream);
 
+    let typePath = await mimeValidation(filePath);
+    console.log(`Upload concluído com sucesso ${JSON.stringify(typePath)}`);
 
     return reply.status(200).send({
-      message: "File uploaded successfully",
-      filename: filename,
+      message: "Upload concluído com sucesso",
+      file: filename,
     });
+
   } catch (error) {
-    return reply.code(error.statusCode || 500).send({
+
+    return reply.code(error.statusCode || error.status || 500).send({
       message: error.message || "Erro interno ao fazer upload",
     });
   }
@@ -79,11 +69,7 @@ const postDoc = async (request, reply) => {
 
 const getDocs = async (request, reply) => {
   try {
-    const filepath = path.join(
-      __dirname,
-      "../uploads",
-      "1747151083581.png"
-    );
+    const filepath = path.join(__dirname, "../uploads", "1747151083581.png");
 
     if (!fs.existsSync(filepath)) {
       throw { status: 404, message: "File not found" };
@@ -104,11 +90,7 @@ const getDocs = async (request, reply) => {
 
 const getBolsistaDocs = async (request, reply) => {
   try {
-    const filepath = path.join(
-      __dirname,
-      "../uploads",
-      "1747151083581.png"
-    );
+    const filepath = path.join(__dirname, "../uploads", "1747151083581.png");
 
     if (!fs.existsSync(filepath)) {
       throw { status: 404, message: "File not found" };

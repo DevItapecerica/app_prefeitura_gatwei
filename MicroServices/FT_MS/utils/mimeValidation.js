@@ -1,4 +1,4 @@
-const {fileTypeFromFile} = require("file-type");
+const { fileTypeFromFile } = require("file-type");
 const fs = require("fs");
 
 const mimeTypes = {
@@ -9,24 +9,29 @@ const mimeTypes = {
 };
 
 const mimeValidation = async (file) => {
-  const fileType = await fileTypeFromFile(file);
+  try {
+    const fileType = await fileTypeFromFile(file);
 
-  if (!mimeTypes[fileType?.ext]) {
-    fs.unlink(file, (error) => {
-      if (error) {
-        console.error("Error deleting file:", error);
-      } else {
-        console.log("File deleted successfully");
-      }
-    });
-    
-    throw { status: 400, message: "Tipo de arquivo inválido" };
+    if (!mimeTypes[fileType?.ext]) {
+      fs.unlink(file, (error) => {
+        if (error) {
+          console.error("Error deleting file:", error);
+        } else {
+          console.log("File deleted successfully");
+        }
+      });
+
+      throw { status: 400, message: "Tipo de arquivo inválido" };
+    }
+
+    return fileType;
+  } catch (error) {
+
+    throw error;
   }
-
-  return fileType;
 };
 
 module.exports = {
-    mimeValidation,
-    mimeTypes
+  mimeValidation,
+  mimeTypes,
 };
