@@ -1,4 +1,4 @@
-const { postDoc, getDocs, getBolsistaDocs } = require("../controller/uploadController.js");
+const { postDoc, getDocs, getOneDoc } = require("../controller/uploadController.js");
 const authJWT = require("../middleware/authJWT.js");
 
 const uploadRouter = (fastify, options) => {
@@ -8,13 +8,13 @@ const uploadRouter = (fastify, options) => {
   fastify.route({
     method: "GET",
     url: "/",
-    handler: getDocs,
+    handler: getOneDoc,
   });
 
   fastify.route({
     method: "GET",
     url: "/bolsista/:id",
-    handler: getBolsistaDocs,
+    handler: getDocs,
   });
 
   fastify.route({

@@ -24,7 +24,7 @@ const getOneBolsistas = async (request, reply) => {
     let user = request.user;
     await verifyPermission(user, SERVICE, request.method);
     const { id } = request.params;
-    const response = await Bolsista.get(`/bolsista/${id}`);
+    const response = await Bolsista.get(`/ft/bolsista/${id}`);
     const bolsistas = response.data;
 
     console.log(bolsistas);
@@ -52,7 +52,7 @@ const createBolsistas = async (request, reply) => {
       local,
     } = request.body;
 
-    const response = await Bolsista.post(`/bolsista`, {
+    const response = await Bolsista.post(`/ft/bolsista`, {
       bco: bco,
       ag: ag,
       dig_ag: dig_ag,
@@ -92,7 +92,7 @@ const updateBolsistas = async (request, reply) => {
       local,
     } = request.body;
 
-    const response = await Bolsista.put(`/bolsista/${id}`, {
+    const response = await Bolsista.put(`/ft/bolsista/${id}`, {
       bco: bco,
       ag: ag,
       dig_ag: dig_ag,
@@ -120,7 +120,7 @@ const deleteBolsistas = async (request, reply) => {
     await verifyPermission(user, SERVICE, request.method);
     const { id } = request.params;
 
-    const response = await Bolsista.delete(`/bolsista/${id}`);
+    const response = await Bolsista.delete(`/ft/bolsista/${id}`);
     console.log(response.data);
     const message = response.data.message;
 

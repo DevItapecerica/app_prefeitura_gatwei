@@ -16,7 +16,8 @@ const swaggerConfig = (port) => {
             type: "http",
             scheme: "bearer",
             bearerFormat: "JWT",
-            description: "Use o JWT no cabeçalho como 'Authorization: Bearer <token>'",
+            description:
+              "Use o JWT no cabeçalho como 'Authorization: Bearer <token>'",
           },
         },
       },

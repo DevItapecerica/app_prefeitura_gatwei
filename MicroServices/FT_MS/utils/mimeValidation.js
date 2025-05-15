@@ -8,8 +8,22 @@ const mimeTypes = {
   pdf: "application/pdf",
 };
 
-const mimeValidation = async (file, mimeFile) => {
+const fieldBD = ['cpf', 'rg', 'inscricao', 'banco', 'adesao', 'prorrogacao', 'egresso_prisional', 'pcd', 'comp_escolaridade'];
+
+const mimeValidation = async (file, mimeFile, fieldname) => {
   try {
+    if(!fieldBD.includes(fieldname)) {
+      fs.unlink(file, (error) => {
+        if (error) {
+          console.error("Error deleting file:", error);
+        } else {
+          console.log("File deleted successfully");
+        }
+      });
+
+      throw { status: 400, message: `campo ${fieldname} inválido`};
+    }
+
     const fileType = await fileTypeFromFile(file);
 
     if (!mimeTypes[fileType?.ext]) {
@@ -21,7 +35,7 @@ const mimeValidation = async (file, mimeFile) => {
         }
       });
 
-      throw { status: 400, message: "Tipo de arquivo inválido" };
+      throw { status: 400, message: `Tipo de arquivo inválido: ${fieldname}`};
     }
 
     if(mimeFile !== fileType.mime) {

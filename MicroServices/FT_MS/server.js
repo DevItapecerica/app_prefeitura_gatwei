@@ -1,53 +1,59 @@
 require("dotenv").config({ path: `${__dirname}/config/.env` });
+const port = process.env.APPLICATION_PORT || 8001;
 
-const fastify = require("fastify");
+// fastify
+const fastify = require("fastify")();
 const cors = require("@fastify/cors");
 const fastifySwagger = require("@fastify/swagger");
 const fastifySwaggerUi = require("@fastify/swagger-ui");
-const { errorHook } = require("./hooks/errorHook");
 
+// swagger
 const { swaggerConfig, swaggerUiConfig } = require("./config/swaggerConfig");
 const { corsConfig } = require("./config/corsConfig");
 
+// hooks
+const { errorHook } = require("./hooks/errorHook");
+
+// router
 const ftRoutes = require("./router/ftRouter");
 const uploadRouter = require("./router/uploadRouter");
 const authRouter = require("./router/authRouter");
 
-const port = process.env.APPLICATION_PORT || 8001;
-const app = fastify();
+// plugins
+fastify.register(cors, corsConfig);
 
-app.register(cors, corsConfig);
-
-app.register(require("@fastify/multipart"), {
+fastify.register(require("@fastify/multipart"), {
   limits: {
     fileSize: 5 * 1024 * 1024, // 5MB
   },
 });
 
-app.register(fastifySwagger, swaggerConfig(port));
-app.register(fastifySwaggerUi, swaggerUiConfig);
+fastify.register(fastifySwagger, swaggerConfig(port));
+fastify.register(fastifySwaggerUi, swaggerUiConfig);
 
-// Usando o hook onError para tratamento global de erros
-app.setErrorHandler((error, request, reply) => {
-  ("----------------------------------------------------------");
-  "Error: ", error;
-  ("----------------------------------------------------------");
+// hooks register
+fastify.setErrorHandler((error, request, reply) => {
+  console.log("----------------------------------------------------------");
+  console.log("error: " + error)
+  console.log("----------------------------------------------------------");
   errorHook(error, reply);
 });
 
-app.register(ftRoutes, {
+// routes register
+fastify.register(ftRoutes, {
   prefix: "/ft/bolsista",
 });
-app.register(uploadRouter, {
+fastify.register(uploadRouter, {
   prefix: "/ft/documentacao",
 });
-app.register(authRouter, {
+fastify.register(authRouter, {
   prefix: "/ft/auth",
 });
 
+// fastify instance
 const start = async () => {
   try {
-    await app.listen({ port, host: "0.0.0.0" });
+    await fastify.listen({ port, host: "0.0.0.0" });
     console.log(`Server is running on port ${port}`);
   } catch (error) {
     console.error("Erro ao iniciar o servidor:", error);

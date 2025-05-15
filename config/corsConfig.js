@@ -1,7 +1,7 @@
 const corsConfig = {
-    origin: "*",
-    allowedHeaders: ["Content-Type", "x-api-key", "x-access-token"],
+    origin: true, // Specific allowed origin
     methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"], // Métodos permitidos
     credentials: true,
 }
 
