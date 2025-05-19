@@ -14,16 +14,16 @@ const { swaggerConfig, swaggerUiConfig } = require("./src/config/swaggerConfig")
 const { corsConfig } = require("./src/config/corsConfig");
 
 // hooks
-const { errorHook } = require("./hooks/errorHook");
+const { errorHook } = require("./src/hooks/errorHook");
 
 // router
-const userRouter = require("./router/userRouter");
-const setorRouter = require("./router/setorRouter");
-const serviceRouter = require("./router/serviceRouter");
-const demandasRouter = require("./router/demandasRouter");
-const roleRouter = require("./router/roleRouter")
-const FTRouter = require("./router/FTRouter")
-const authenticateRouter = require('./router/authenticateRouter')
+const userRouter = require("./src/router/userRouter");
+const setorRouter = require("./src/router/setorRouter");
+const serviceRouter = require("./src/router/serviceRouter");
+const demandasRouter = require("./src/router/demandasRouter");
+const roleRouter = require("./src/router/roleRouter")
+const FTRouter = require("./src/router/FTRouter")
+const authenticateRouter = require('./src/router/authenticateRouter')
 
 // plugins
 fastify.register(cors, corsConfig);
