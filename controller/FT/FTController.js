@@ -1,4 +1,4 @@
-const Bolsista = require("../../service/ft_app_api.js");
+const ft_app_api = require("../../service/ft_app_api.js");
 const { verifyPermission } = require("../../utils/verifyPermission");
 
 const SERVICE = 6;
@@ -6,14 +6,15 @@ const SERVICE = 6;
 const getBolsistas = async (request, reply) => {
   try {
     let user = request.user;
-    await verifyPermission(user, SERVICE, request.method);
-    const response = await Bolsista.get("/ft/bolsista");
-    const bolsistas = response.data;
-    const {data} = await Bolsista.get(`/ft/auth/${user.id}`);
 
-    console.log(bolsistas);
+    const [{data}, {data: {token}}] = await Promise.all([
+      ft_app_api.get("/ft/bolsista"),
+      ft_app_api.get(`/ft/auth/${user}`),
+    ]);
 
-    reply.status(200).send({...bolsistas, uploadToken: data.token});
+    console.log(data, token)
+
+    reply.status(200).send({ ...data, uploadToken: token });
   } catch (error) {
     throw error;
   }
@@ -24,7 +25,7 @@ const getOneBolsistas = async (request, reply) => {
     let user = request.user;
     await verifyPermission(user, SERVICE, request.method);
     const { id } = request.params;
-    const response = await Bolsista.get(`/ft/bolsista/${id}`);
+    const response = await ft_app_api.get(`/ft/bolsista/${id}`);
     const bolsistas = response.data;
 
     console.log(bolsistas);
@@ -39,6 +40,7 @@ const createBolsistas = async (request, reply) => {
   try {
     let user = request.user;
     await verifyPermission(user, SERVICE, request.method);
+
     const {
       bco,
       ag,
@@ -52,7 +54,7 @@ const createBolsistas = async (request, reply) => {
       local,
     } = request.body;
 
-    const response = await Bolsista.post(`/ft/bolsista`, {
+    const response = await ft_app_api.post(`/ft/bolsista`, {
       bco: bco,
       ag: ag,
       dig_ag: dig_ag,
@@ -92,7 +94,7 @@ const updateBolsistas = async (request, reply) => {
       local,
     } = request.body;
 
-    const response = await Bolsista.put(`/ft/bolsista/${id}`, {
+    const response = await ft_app_api.put(`/ft/bolsista/${id}`, {
       bco: bco,
       ag: ag,
       dig_ag: dig_ag,
@@ -120,7 +122,7 @@ const deleteBolsistas = async (request, reply) => {
     await verifyPermission(user, SERVICE, request.method);
     const { id } = request.params;
 
-    const response = await Bolsista.delete(`/ft/bolsista/${id}`);
+    const response = await ft_app_api.delete(`/ft/bolsista/${id}`);
     console.log(response.data);
     const message = response.data.message;
 

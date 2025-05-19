@@ -44,7 +44,7 @@ fastify.register(ftRoutes, {
   prefix: "/ft/bolsista",
 });
 fastify.register(uploadRouter, {
-  prefix: "/ft/documentacao",
+  prefix: "/ft/img",
 });
 fastify.register(authRouter, {
   prefix: "/ft/auth",

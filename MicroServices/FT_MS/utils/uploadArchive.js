@@ -33,7 +33,6 @@ const uploadArchive = async (Data) => {
   });
 
   // WriteStream
-
   const writeStream = fs.createWriteStream(filePath);
 
   writeStream.on("error", (err) => {
@@ -50,11 +49,7 @@ const uploadArchive = async (Data) => {
 
   await pump(Data.file, transform, writeStream);
 
-  await mimeValidation(filePath, mimeFile, fieldname);
-
-  console.log(`File mime: ${mimeFile}`);
-  
-  return fieldname
+  return {filePath, mimeFile, fieldname, filename}
 };
 
 module.exports = uploadArchive;
