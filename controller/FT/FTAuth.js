@@ -1,4 +1,4 @@
-const ft_app_api = require("../../service/ft_app_api")
+const ft_app_api = require("../../src/api/ft_app_api")
 
 const getAuth = async (request, reply) => {
   try {

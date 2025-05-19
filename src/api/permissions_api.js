@@ -1,9 +1,8 @@
-require("dotenv").config({path: `${__dirname}/../config/.env`});
-
+const { PERMISSION_API_HOST, PERMISSION_API_KEY } = require("../config/env")
 const axios = require("axios");
 
 const PERMISSION_API = axios.create({
-  baseURL: process.env.PERMISSION_API_HOST,
+  baseURL: PERMISSION_API_HOST,
   headers: {
     // "Content-Type": "application/json",
   },
@@ -11,7 +10,7 @@ const PERMISSION_API = axios.create({
 
 PERMISSION_API.interceptors.request.use(
   (config) => {
-    config.headers["x-api-key"] = process.env.PERMISSION_API_KEY;
+    config.headers["x-api-key"] = PERMISSION_API_KEY;
     
     return config;
   },

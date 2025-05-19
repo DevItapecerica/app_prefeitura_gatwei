@@ -1,16 +1,15 @@
-require("dotenv").config({path: `${__dirname}/../config/.env`});
-
+const { USER_API_HOST, USER_API_KEY } = require("../config/env")
 const axios = require("axios");
 
 const USER_API = axios.create({
-  baseURL: process.env.SERVICE_API_HOST,
+  baseURL: USER_API_HOST,
   headers: {
   },
 });
 
 USER_API.interceptors.request.use(
   (config) => {
-    config.headers["x-api-key"] = process.env.SERVICE_API_KEY;
+    config.headers["x-api-key"] = USER_API_KEY;
 
     return config;
   },

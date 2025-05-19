@@ -1,4 +1,4 @@
-const ft_app_api = require("../../service/ft_app_api.js");
+const ft_app_api = require("../../src/api/ft_app_api.js");
 const { verifyPermission } = require("../../utils/verifyPermission");
 
 const SERVICE = 6;

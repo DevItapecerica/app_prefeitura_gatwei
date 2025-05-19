@@ -1,4 +1,4 @@
-const login_api = require("../service/login_api");
+const login_api = require("../src/api/login_api");
 
 const authJWT = async (request, reply) => {
   try {

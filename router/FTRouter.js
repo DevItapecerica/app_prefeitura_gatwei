@@ -1,8 +1,8 @@
 const Bolsista = require("../controller/FT/FTController");
 const getAuth = require("../controller/FT/FTAuth");
 const auth = require("../middleware/authJWT");
-const BolsistaSchema = require("../schema/bolsistaSchema");
-const Ft_AppSchema = require("../service/ft_app_api")
+const BolsistaSchema = require("../src/schema/bolsistaSchema");
+const Ft_AppSchema = require("../src/api/ft_app_api")
 
 const FTRouter = (fastify, opt) => {
 fastify.addHook("preHandler",auth);

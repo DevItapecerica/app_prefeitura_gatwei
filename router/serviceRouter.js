@@ -1,5 +1,5 @@
 const Service = require("../controller/ServicesApplication/ServicesController");
-const serviceSchema = require("../schema/servicesSchema");
+const serviceSchema = require("../src/schema/servicesSchema");
 const auth = require("../middleware/authJWT");
 
 const serviceRouter = (fastify, options) => {

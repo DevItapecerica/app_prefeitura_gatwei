@@ -1,5 +1,5 @@
-const service_api = require("../../service/service_api");
-const role_api = require("../../service/permissions_api");
+const service_api = require("../../src/api/service_api");
+const role_api = require("../../src/api/permissions_api");
 const { verifyPermission } = require("../../utils/verifyPermission");
 
 const SERVICE = 5;

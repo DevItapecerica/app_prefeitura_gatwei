@@ -1,6 +1,6 @@
 const Login = require('../controller/Auth/login')
-const loginSchema = require('../schema/loginSchema')
-const authSchema = require('../schema/authSchema')
+const loginSchema = require('../src/schema/loginSchema')
+const authSchema = require('../src/schema/authSchema')
 
 const authUser = require('../controller/Auth/authUser')
 

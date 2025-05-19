@@ -1,5 +1,5 @@
-const permissions_api = require("../service/permissions_api");
-const user_api = require("../service/user_api");
+const permissions_api = require("../src/api/permissions_api");
+const user_api = require("../src/api/user_api");
 
 const verifyPermission = async (user, service, methode) => {
   let permissions = await permissions_api.get(`/permission/service/${service}`);

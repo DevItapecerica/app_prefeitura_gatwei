@@ -1,7 +1,7 @@
-const setor_api = require("../../service/setor_api");
-const service_api = require("../../service/service_api");
-const permissions_api = require("../../service/permissions_api");
-const user_api = require("../../service/user_api");
+const setor_api = require("../../src/api/setor_api");
+const service_api = require("../../src/api/service_api");
+const permissions_api = require("../../src/api/permissions_api");
+const user_api = require("../../src/api/user_api");
 const { verifyPermission } = require("../../utils/verifyPermission");
 
 const SERVICE = 3;

@@ -1,4 +1,4 @@
-const login_api = require("../../service/login_api");
+const login_api = require("../../src/api/login_api");
 
 const login = async (request, reply) => {
   const payload = request.body.credentials;

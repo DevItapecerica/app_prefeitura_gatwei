@@ -1,8 +1,8 @@
-require("dotenv").config();
+const { LOGIN_API_HOST, LOGIN_API_KEY } = require("../config/env")
 const axios = require("axios");
 
 const LOGIN_API = axios.create({
-  baseURL: process.env.LOGIN_API_HOST,
+  baseURL: LOGIN_API_HOST,
   headers: {
     "Content-Type": "application/json",
   },
@@ -10,7 +10,7 @@ const LOGIN_API = axios.create({
 
 LOGIN_API.interceptors.request.use(
   (config) => {
-    config.headers["x-api-key"] = process.env.LOGIN_API_KEY;
+    config.headers["x-api-key"] = LOGIN_API_KEY;
     
     return config;
   },

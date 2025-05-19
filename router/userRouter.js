@@ -1,5 +1,5 @@
 const User = require("../controller/User/UserController");
-const UserSchema = require("../schema/userSchema");
+const UserSchema = require("../src/schema/userSchema");
 const auth = require("../middleware/authJWT");
 
 const userRouter = async (fastify, options) => {

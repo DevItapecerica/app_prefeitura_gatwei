@@ -1,6 +1,6 @@
 const auth = require("../middleware/authJWT");
 const Setor = require("../controller/Setor/setorController");
-const setorSchema = require("../schema/setoresSchema");
+const setorSchema = require("../src/schema/setoresSchema");
 
 const setorRouter = (fastify, options) => {
 fastify.addHook("preHandler",auth);

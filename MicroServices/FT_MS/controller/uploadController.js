@@ -44,13 +44,9 @@ const postDoc = async (request, reply) => {
 
       // verify if upload is okay
       await mimeValidation(file.filePath, file.mimeFile, file.fieldname);
-      console.log(`File mime: ${file.mimeFile}`);
 
-      await ftImageDB.create({
-        bolsista_id: id,
-        type_id: type,
-        path: file.filename,
-      });
+      // add on db and remove old file 
+
 
       // if okay, push archive to log to user
       uploadedFiles.push(file.fieldname);

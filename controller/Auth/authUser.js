@@ -1,4 +1,4 @@
-const login_api = require("../../service/login_api");
+const login_api = require("../../src/api/login_api");
 
 exports.authUser = async (request, reply) => {
   try {
