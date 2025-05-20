@@ -1,9 +1,10 @@
 const sequelize = require('sequelize');
+const {DATABASE_USER, DATABASE_KEY, DATABASE_HOST, DATABASE_NAME} = require('../config/env');
 
-const DUser = process.env.DATABASE_USER;
-const DKey = process.env.DATABASE_KEY;
-const DName = process.env.DATABASE_NAME;
-const DHost = process.env.DATABASE_HOST;
+const DUser = DATABASE_USER;
+const DKey = DATABASE_KEY;
+const DName = DATABASE_NAME;
+const DHost = DATABASE_HOST;
 
 const Sequelize = new sequelize(DName, DUser, DKey, {
   host: DHost,

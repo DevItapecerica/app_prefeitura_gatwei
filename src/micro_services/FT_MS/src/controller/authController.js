@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
+const {SECRET_KEY} = require("../config/env");
 
-const SECRET_KEY = process.env.SECRET_KEY || "your_secret_key"; // Replace with your actual secret key
 const TOKEN_EXPIRATION = "1h"; // Token expiration time
 
 const getRandomToken = async (request, reply) => {
