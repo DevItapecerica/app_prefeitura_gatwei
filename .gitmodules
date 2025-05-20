@@ -1,24 +1,24 @@
 [submodule "src/micro_services/Setor_MS"]
-	path = src/microservices/Setor_MS
+	path = src/micro_services/Setor_MS
 	url = git@github.com:DevItapecerica/Setor_MS.git
 	branch = develop
 [submodule "src/micro_services/User_MS"]
-	path = src/microservices/User_MS
+	path = src/micro_services/User_MS
 	url = git@github.com:DevItapecerica/User_MS.git
 	branch = develop
 [submodule "src/micro_services/Login_MS"]
-	path = src/microServices/Login_MS
+	path = src/micro_services/Login_MS
 	url = git@github.com:DevItapecerica/Login_MS.git
 	branch = develop
 [submodule "src/micro_services/Services_MS"]
-	path = src/microservices/Services_MS
+	path = src/micro_services/Services_MS
 	url = git@github.com:DevItapecerica/Service_MS.git
 	branch = develop
 [submodule "src/micro_services/Permissions_MS"]
-	path = src/microservices/Permissions_MS
+	path = src/micro_services/Permissions_MS
 	url = git@github.com:DevItapecerica/Permissions_MS.git
 	branch = develop
 [submodule "src/micro_services/Demandas_MS"]
-	path = src/microservices/Demandas_MS
+	path = src/micro_services/Demandas_MS
 	url = git@github.com:DevItapecerica/Demandas_MS.git
 	branch = develop
