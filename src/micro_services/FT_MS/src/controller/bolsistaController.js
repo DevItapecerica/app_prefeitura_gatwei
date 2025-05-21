@@ -1,4 +1,7 @@
 const Bolsistas = require("../db/model/bolsistaModel.js");
+const {
+  getBolsistaById,
+} = require("../services/bolsista/bolsistaOperation.js");
 
 const getBolsista = async (request, reply) => {
   const bolsistas = await Bolsistas.findAll();
@@ -11,13 +14,7 @@ const getBolsista = async (request, reply) => {
 
 const getOneBolsista = async (request, reply) => {
   const { id } = request.params;
-  const bolsista = await Bolsistas.findByPk(id);
-
-  if (!bolsista) {
-    return reply.status(404).send({
-      message: "Nenhum bolsista encontrado",
-    });
-  }
+  const bolsista = await getBolsistaById(id);
 
   return reply.status(200).send({
     message: "Bolsista get successfully",
@@ -60,13 +57,7 @@ const createBolsista = async (request, reply) => {
 
 const updateBolsista = async (request, reply) => {
   const { id } = request.params;
-  const bolsista = await Bolsistas.findByPk(id);
-
-  if (!bolsista) {
-    return reply.status(404).send({
-      message: "Nenhum bolsista encontrado",
-    });
-  }
+  const bolsista = await getBolsistaById(id);
 
   const {
     bco,
@@ -102,13 +93,7 @@ const updateBolsista = async (request, reply) => {
 
 const deleteBolsista = async (request, reply) => {
   const { id } = request.params;
-  const bolsista = await Bolsistas.findByPk(id);
-
-  if (!bolsista) {
-    return reply.status(404).send({
-      message: "Nenhum bolsista encontrado",
-    });
-  }
+  const bolsista = await getBolsistaById(id);
 
   await bolsista.destroy();
 
@@ -122,5 +107,5 @@ module.exports = {
   getOneBolsista,
   createBolsista,
   updateBolsista,
-  deleteBolsista
+  deleteBolsista,
 };

@@ -5,6 +5,7 @@ const getBolsistaById = async (id) => {
 
   if (!bolsista) {
     throw {
+      status: 404,
       message: "Nenhum bolsista encontrado",
     };
   }
@@ -12,4 +13,4 @@ const getBolsistaById = async (id) => {
   return bolsista;
 };
 
-module.exports = getBolsistaById;
+module.exports = {getBolsistaById};

@@ -27,11 +27,11 @@ const postDoc = async (request, reply) => {
       path = null;
 
       // upload archive
-      let response = await handleFileUpload(Data, bolsistaFiles)
+      let response = await handleFileUpload(Data, bolsistaFiles, id)
 
       console.log(response)
       path = response.file.filePath
-      
+
       // verify if upload is okay
       await mimeValidation(response.file.filePath, response.file.mimeFile, response.file.fieldname);
 
