@@ -1,20 +1,17 @@
-const uploadArchive = require("../utils/uploadArchive.js");
-const { getArchive, getOneArchive } = require("../utils/getArchive.js");
-const { mimeValidation } = require("../utils/mimeValidation.js");
+const handleFileUpload = require("../services/upload/handleFileUpload.js");
+const { getArchivePath, getOneArchive } = require("../utils/getArchive.js");
+const {
+  mimeValidation,
+  fieldBD,
+} = require("../services/upload/validations.js");
 const removeFile = require("../utils/removeFile.js");
+const {
+  saveArchive,
+  searchArchive,
+  updateArchive,
+} = require("../services/upload/archiveDBManipulation.js.js");
 const ftImageDB = require("../db/model/ftImageModel.js");
 
-const fieldBD = [
-  "rg",
-  "cpf",
-  "inscricao",
-  "banco",
-  "adesao",
-  "prorrogacao",
-  "egresso_prisional",
-  "pcd",
-  "escolaridade",
-];
 
 const postDoc = async (request, reply) => {
   let uploadedFiles = [];
@@ -22,36 +19,32 @@ const postDoc = async (request, reply) => {
   let path = null;
 
   try {
+    const bolsistaFiles = await searchArchive(id);
     const DataFile = await request.files();
 
     // for each file
     for await (const Data of DataFile) {
       path = null;
 
-      // verifica a qual campo pertence
-      const type = fieldBD.indexOf(Data.fieldname);
-      console.log(type);
-      if (type == -1) {
-        throw {
-          status: 400,
-          message: "Tipo de arquivo não encontrado " + Data.fieldname,
-        };
+      // upload archive
+      let response = await handleFileUpload(Data, bolsistaFiles)
+
+      console.log(response)
+      path = response.file.filePath
+      
+      // verify if upload is okay
+      await mimeValidation(response.file.filePath, response.file.mimeFile, response.file.fieldname);
+
+      // caso seja updateArchive, atualiza e remove o antigo
+      if (response.existingFile) {
+        await updateArchive(response.file, id, response.type);
+        removeFile(response.existingFile.path);
+      } else {
+        await saveArchive(response.file, id, response.type);
       }
 
-      // upload archive
-      let file = await uploadArchive(Data);
-      path = file.filePath;
-
-      // verify if upload is okay
-      await mimeValidation(file.filePath, file.mimeFile, file.fieldname);
-
-      // add on db and remove old file 
-
-
       // if okay, push archive to log to user
-      uploadedFiles.push(file.fieldname);
-
-      console.log(`File uploaded: ${uploadedFiles}`);
+      uploadedFiles.push(response.file.fieldname);
     }
     // end for each file
 
@@ -72,7 +65,7 @@ const postDoc = async (request, reply) => {
 const getDocs = async (request, reply) => {
   try {
     const { id } = request.params;
-    
+
     const files = await ftImageDB.findAll({
       where: {
         bolsista_id: id,
@@ -80,9 +73,9 @@ const getDocs = async (request, reply) => {
       attributes: ["path"],
     });
 
-    let archivesGeted = await getArchive(files);
+    let archivesPath = await getArchivePath(files);
 
-    return reply.status(200).send({ archives: archivesGeted, types: fieldBD });
+    return reply.status(200).send({ archives: archivesPath, types: fieldBD });
   } catch (error) {
     throw error;
   }

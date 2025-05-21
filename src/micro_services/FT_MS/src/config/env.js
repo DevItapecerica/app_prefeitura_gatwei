@@ -1,6 +1,5 @@
 const path = require("path");
 const dotenv = require("dotenv");
-
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 module.exports = {
@@ -12,5 +11,6 @@ module.exports = {
   API_KEY: process.env.API_KEY,
 
   PORT: process.env.APPLICATION_PORT,
-  SECRET_KEY: process.env.SECRET_KEY
+  SECRET_KEY: process.env.SECRET_KEY,
+
 };

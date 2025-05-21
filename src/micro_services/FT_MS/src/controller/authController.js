@@ -7,7 +7,7 @@ const getRandomToken = async (request, reply) => {
   try {
     const { id } = request.params;
     const payload = {
-      user: id,
+      id: id,
       timestamp: Date.now(),
     };
     const token = jwt.sign(payload, SECRET_KEY, {

@@ -1,15 +1,14 @@
 const fs = require("fs");
 const path = require("path");
-const { mimeTypes } = require("./mimeValidation");
+const { mimeTypes } = require("../services/upload/validations");
 
-const getArchive = (archives) => {
+const getArchivePath = (archives) => {
   let archivesGeted = [];
 
-
   archives.forEach((archive) => {
-    archiveName = archive.dataValues.path;
+    const archiveName = archive.dataValues.path;
 
-    const filepath = path.join(__dirname, "../uploads", archiveName);
+    const filepath = path.join(__dirname, "../../uploads", archiveName);
 
     if (!fs.existsSync(filepath)) {
       throw { status: 404, message: "File not found " + archiveName};
@@ -39,4 +38,4 @@ const getOneArchive = (archive) => {
   return { file, type };
 };
 
-module.exports = { getOneArchive, getArchive };
+module.exports = { getOneArchive, getArchivePath };

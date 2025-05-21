@@ -2,8 +2,7 @@ const { Transform } = require("stream");
 const pump = require("util").promisify(require("stream").pipeline);
 const fs = require("fs");
 const path = require("path");
-const uploadDir = path.join(__dirname, "../uploads");
-const { mimeValidation } = require("./mimeValidation.js");
+const uploadDir = path.join(__dirname, "../../../uploads");
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 5 MB
 
@@ -44,7 +43,7 @@ const uploadArchive = async (Data) => {
       }
     });
 
-    console.log("Erro ao escrever o arquivo:");
+    console.log("Erro ao escrever o arquivo: " + err);
   });
 
   await pump(Data.file, transform, writeStream);

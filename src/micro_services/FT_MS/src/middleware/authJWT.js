@@ -9,8 +9,7 @@ const verifyToken = async (request, reply) => {
         await jwt.verify(token, process.env.SECRET_KEY, function (err, decoded) {
           if (err) throw { status: 401, message: "Incorrect Token." };
       
-          request.userId = decoded.id;
-          request.role = decoded.role_id;
+          request.user = decoded
         });
     } catch (error) {
         throw error;
