@@ -23,7 +23,7 @@ const getArchivePath = (archives) => {
 };
 
 const getOneArchive = (archive) => {
-  const filepath = path.join(__dirname, "../uploads", archive);
+  const filepath = path.join(__dirname, "../../uploads", archive);
 
   if (!fs.existsSync(filepath)) {
     throw { status: 404, message: "File not found" };

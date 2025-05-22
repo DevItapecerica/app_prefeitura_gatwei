@@ -15,7 +15,7 @@ const getBolsistaSchema = {
           items: {
             type: "object",
             properties: {
-              id: { type: "integer" }, // caso você use auto-incremento no banco
+              id: { type: "string" }, // caso você use auto-incremento no banco
               bco: { type: "string", maxLength: 3 },
               ag: { type: "string", maxLength: 4 },
               dig_ag: { type: "string", maxLength: 1 },
@@ -62,7 +62,7 @@ const getOneBolsistaSchema = {
         bolsista: {
           type: "object",
           properties: {
-            id: { type: "integer" }, // caso você use auto-incremento no banco
+            id: { type: "string" }, // caso você use auto-incremento no banco
             bco: { type: "string", maxLength: 3 },
             ag: { type: "string", maxLength: 4 },
             dig_ag: { type: "string", maxLength: 1 },
@@ -125,7 +125,7 @@ const createBolsistaSchema = {
         bolsista: {
           type: "object",
           properties: {
-            id: { type: "integer" }, // caso você use auto-incremento no banco
+            id: { type: "string" }, // caso você use auto-incremento no banco
             bco: { type: "string", maxLength: 3 },
             ag: { type: "string", maxLength: 4 },
             dig_ag: { type: "string", maxLength: 1 },
@@ -189,7 +189,7 @@ const updateBolsistaSchema = {
         bolsista: {
           type: "object",
           properties: {
-            id: { type: "integer" }, // caso você use auto-incremento no banco
+            id: { type: "string" }, // caso você use auto-incremento no banco
             bco: { type: "string", maxLength: 3 },
             ag: { type: "string", maxLength: 4 },
             dig_ag: { type: "string", maxLength: 1 },

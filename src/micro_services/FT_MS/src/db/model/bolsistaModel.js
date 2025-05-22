@@ -5,10 +5,9 @@ const Bolsa = db.define(
   "Bolsistas",
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-      autoIncrement: true,
-      allowNull: false,
     },
     bco: {
       type: DataTypes.STRING(3), // até 3 caracteres

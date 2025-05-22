@@ -5,13 +5,12 @@ const Image = db.define(
   "Image",
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-      autoIncrement: true,
-      allowNull: false,
     },
     bolsista_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     type_id: {
@@ -21,7 +20,7 @@ const Image = db.define(
     path: {
       type: DataTypes.STRING,
       allowNull: false,
-    }
+    },
   },
   {
     tableName: "Image", // Nome da tabela no banco
