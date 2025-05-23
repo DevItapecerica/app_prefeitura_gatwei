@@ -70,12 +70,12 @@ const getDocs = async (request, reply) => {
       where: {
         bolsista_id: id,
       },
-      attributes: ["path"],
+      attributes: ["path", "type_id"],
     });
 
-    let archivesPath = await getArchivePath(files);
+    // let archivesPath = await getArchivePath(files);
 
-    return reply.status(200).send({ archives: archivesPath, types: fieldBD });
+    return reply.status(200).send({ archives: files, types: fieldBD });
   } catch (error) {
     throw error;
   }
@@ -83,7 +83,7 @@ const getDocs = async (request, reply) => {
 
 const getOneDoc = async (request, reply) => {
   try {
-    const target = request.query.target;
+    const target = request.params.img;
 
     console.log(target);
 

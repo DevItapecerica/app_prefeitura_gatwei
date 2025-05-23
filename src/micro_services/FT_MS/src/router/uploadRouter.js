@@ -7,7 +7,7 @@ const uploadRouter = (fastify, options) => {
 
   fastify.route({
     method: "GET",
-    url: "/",
+    url: "/:img",
     handler: getOneDoc,
   });
 
