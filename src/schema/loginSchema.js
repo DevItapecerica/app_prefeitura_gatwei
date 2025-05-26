@@ -1,4 +1,5 @@
-const errorSchema = require('./errorSchema')
+import errorSchema from './errorSchema.js';
+
 const loginSchema = {
   description: "Verificação de usuário",
   tags: ["Auth"],
@@ -36,7 +37,7 @@ const loginSchema = {
       },
     },
     ...errorSchema
-
   },
 };
-module.exports = loginSchema;
+
+export default loginSchema;

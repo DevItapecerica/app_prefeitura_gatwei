@@ -1,4 +1,4 @@
-const errorSchema = require("./errorSchema");
+import errorSchema from "./errorSchema.js";
 
 const getBolsistaSchema = {
   tags: ["Bolsista"],
@@ -15,7 +15,7 @@ const getBolsistaSchema = {
           items: {
             type: "object",
             properties: {
-              id: { type: "string" }, // caso você use auto-incremento no banco
+              id: { type: "string" },
               bco: { type: "string", maxLength: 3 },
               ag: { type: "string", maxLength: 4 },
               dig_ag: { type: "string", maxLength: 1 },
@@ -33,7 +33,6 @@ const getBolsistaSchema = {
         },
       },
     },
-
     ...errorSchema,
   },
 };
@@ -59,7 +58,7 @@ const getOneBolsistaSchema = {
         bolsista: {
           type: "object",
           properties: {
-            id: { type: "string" }, // caso você use auto-incremento no banco
+            id: { type: "string" },
             bco: { type: "string", maxLength: 3 },
             ag: { type: "string", maxLength: 4 },
             dig_ag: { type: "string", maxLength: 1 },
@@ -76,7 +75,6 @@ const getOneBolsistaSchema = {
         },
       },
     },
-
     ...errorSchema,
   },
 };
@@ -86,7 +84,6 @@ const createBolsistaSchema = {
   security: [{ APIKey: [] }],
   description: "create a bolsista",
   summary: "Create a bolsista",
-
   body: {
     type: "object",
     required: [
@@ -122,7 +119,7 @@ const createBolsistaSchema = {
         bolsista: {
           type: "object",
           properties: {
-            id: { type: "string" }, // caso você use auto-incremento no banco
+            id: { type: "string" },
             bco: { type: "string", maxLength: 3 },
             ag: { type: "string", maxLength: 4 },
             dig_ag: { type: "string", maxLength: 1 },
@@ -139,7 +136,6 @@ const createBolsistaSchema = {
         },
       },
     },
-
     ...errorSchema,
   },
 };
@@ -147,9 +143,8 @@ const createBolsistaSchema = {
 const updateBolsistaSchema = {
   tags: ["Bolsista"],
   security: [{ APIKey: [] }],
-  description: "create a bolsista",
-  summary: "Create a bolsista",
-
+  description: "update a bolsista",
+  summary: "Update a bolsista",
   body: {
     type: "object",
     required: [
@@ -164,7 +159,6 @@ const updateBolsistaSchema = {
       "cpf",
       "local",
     ],
-
     properties: {
       bco: { type: "string", maxLength: 3 },
       ag: { type: "string", maxLength: 4 },
@@ -186,7 +180,7 @@ const updateBolsistaSchema = {
         bolsista: {
           type: "object",
           properties: {
-            id: { type: "string" }, // caso você use auto-incremento no banco
+            id: { type: "string" },
             bco: { type: "string", maxLength: 3 },
             ag: { type: "string", maxLength: 4 },
             dig_ag: { type: "string", maxLength: 1 },
@@ -203,7 +197,6 @@ const updateBolsistaSchema = {
         },
       },
     },
-
     ...errorSchema,
   },
 };
@@ -220,12 +213,11 @@ const deleteBolsistaSchema = {
         message: { type: "string", example: "Bolsista deleted successfully" },
       },
     },
-
     ...errorSchema,
   },
 };
 
-module.exports = {
+export {
   createBolsistaSchema,
   getBolsistaSchema,
   updateBolsistaSchema,

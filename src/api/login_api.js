@@ -1,17 +1,16 @@
-const { LOGIN_API_HOST, LOGIN_API_KEY } = require("../config/env")
-const axios = require("axios");
+import axios from 'axios';
+import { LOGIN_API_HOST, LOGIN_API_KEY } from '../config/env.js';
 
-const LOGIN_API = axios.create({
+const loginApi = axios.create({
   baseURL: LOGIN_API_HOST,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 });
 
-LOGIN_API.interceptors.request.use(
+loginApi.interceptors.request.use(
   (config) => {
-    config.headers["x-api-key"] = LOGIN_API_KEY;
-    
+    config.headers['x-api-key'] = LOGIN_API_KEY;
     return config;
   },
   (error) => {
@@ -19,4 +18,4 @@ LOGIN_API.interceptors.request.use(
   }
 );
 
-module.exports = LOGIN_API;
+export default loginApi;

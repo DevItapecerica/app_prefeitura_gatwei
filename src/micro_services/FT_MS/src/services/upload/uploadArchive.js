@@ -1,10 +1,16 @@
-const { Transform } = require("stream");
-const pump = require("util").promisify(require("stream").pipeline);
-const fs = require("fs");
-const path = require("path");
-const uploadDir = path.join(__dirname, "../../../uploads");
+import { Transform, pipeline } from "stream";
+import { promisify } from "util";
+import fs from "fs";
+import path from "path";
 
-const MAX_FILE_SIZE = 2 * 1024 * 1024; // 5 MB
+const pump = promisify(pipeline);
+const uploadDir = path.join(path.dirname(import.meta.url.split("file:")[1]), "../../../uploads");
+if (!uploadDir) {
+  throw {statusCode: 500, message: "Upload directory path could not be determined."};
+}
+// Define the maximum file size (2 MB in this case)
+
+const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB
 
 const uploadArchive = async (Data) => {
   const filename = `${Date.now()}.${Data.filename.split(".").pop()}`;
@@ -48,7 +54,7 @@ const uploadArchive = async (Data) => {
 
   await pump(Data.file, transform, writeStream);
 
-  return {filePath, mimeFile, fieldname, filename}
+  return { filePath, mimeFile, fieldname, filename };
 };
 
-module.exports = uploadArchive;
+export default uploadArchive;

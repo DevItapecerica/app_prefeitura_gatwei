@@ -1,22 +1,18 @@
-const { PERMISSION_API_HOST, PERMISSION_API_KEY } = require("../config/env")
-const axios = require("axios");
+import { PERMISSION_API_HOST, PERMISSION_API_KEY } from "../config/env.js";
+import axios from "axios";
 
 const PERMISSION_API = axios.create({
   baseURL: PERMISSION_API_HOST,
-  headers: {
-    // "Content-Type": "application/json",
-  },
 });
 
 PERMISSION_API.interceptors.request.use(
   (config) => {
     config.headers["x-api-key"] = PERMISSION_API_KEY;
-    
     return config;
   },
   (error) => {
-    return Promise.reject(error, 'teste');
+    return Promise.reject(error); // Removido 'teste' extra
   }
 );
 
-module.exports = PERMISSION_API;
+export default PERMISSION_API;

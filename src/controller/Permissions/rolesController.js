@@ -1,11 +1,12 @@
-const service_api = require("../../api/service_api");
-const role_api = require("../../api/permissions_api");
-const { verifyPermission } = require("../../utils/verifyPermission");
+import service_api from "../../api/service_api.js";
+import role_api from "../../api/permissions_api.js";
+import { verifyPermission } from "../../utils/verifyPermission.js";
 
 const SERVICE = 5;
-const createRoles = async (request, reply) => {
+
+export const createRoles = async (request, reply) => {
   try {
-    let user = request.user
+    let user = request.user;
     await verifyPermission(user, SERVICE, request.method);
 
     let { name } = request.body.role;
@@ -24,25 +25,23 @@ const createRoles = async (request, reply) => {
   }
 };
 
-const getRoles = async (request, reply) => {
+export const getRoles = async (request, reply) => {
   try {
-    let user = request.user
+    let user = request.user;
     await verifyPermission(user, SERVICE, request.method);
 
     let responseRole = await role_api.get("/roles");
     let roles = responseRole.data.roles;
 
-
-
-    reply.status(200).send({roles});
+    reply.status(200).send({ roles });
   } catch (error) {
     throw error;
   }
 };
 
-const updateRoles = async (request, reply) => {
+export const updateRoles = async (request, reply) => {
   try {
-    let user = request.user
+    let user = request.user;
     await verifyPermission(user, SERVICE, request.method);
 
     let id = request.params.id;
@@ -53,30 +52,23 @@ const updateRoles = async (request, reply) => {
         name: name,
       },
     });
-    reply.status(201).send("updated role");
+    reply.status(201).send("Updated role");
   } catch (error) {
     throw error;
   }
 };
 
-const deleteRoles = async (request, reply) => {
+export const deleteRoles = async (request, reply) => {
   try {
-    let user = request.user
+    let user = request.user;
     await verifyPermission(user, SERVICE, request.method);
 
     let id = request.params.id;
 
     await role_api.delete(`/roles/${id}`);
     await role_api.delete(`/permission/role/${id}`);
-    reply.status(201).send("updated role");
+    reply.status(201).send("Deleted role");
   } catch (error) {
     throw error;
   }
-};
-
-module.exports = {
-  createRoles,
-  getRoles,
-  updateRoles,
-  deleteRoles,
 };

@@ -1,17 +1,18 @@
-const ftImageDB = require("../../db/model/ftImageModel.js");
+import ftImageDB from "../../db/model/ftImageModel.js";
 
 // save archive ande remove old file
-const saveArchive = async (file, bolsista, type) => {
+export const saveArchive = async (file, bolsista, type, mime) => {
   await ftImageDB.create({
     bolsista_id: bolsista,
     type_id: type,
     path: file.filename,
+    mime: mime,
   });
 };
 
-const updateArchive = async (file, bolsista, type) => {
+export const updateArchive = async (file, bolsista, type, mime) => {
   await ftImageDB.update(
-    { path: file.filename }, // valores a atualizar
+    { path: file.filename, mime: mime }, // valores a atualizar
     {
       where: {
         bolsista_id: bolsista,
@@ -21,7 +22,7 @@ const updateArchive = async (file, bolsista, type) => {
   );
 };
 
-const searchArchive = async (bolsista) => {
+export const searchArchive = async (bolsista) => {
   const archive = await ftImageDB.findAll({
     where: {
       bolsista_id: bolsista,
@@ -29,10 +30,4 @@ const searchArchive = async (bolsista) => {
   });
 
   return archive;
-};
-
-module.exports = {
-  saveArchive,
-  searchArchive,
-  updateArchive,
 };

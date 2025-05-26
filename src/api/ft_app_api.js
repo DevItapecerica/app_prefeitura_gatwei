@@ -1,5 +1,5 @@
-const { FT_APP_API_HOST, FT_APP_API_KEY } = require("../config/env")
-const axios = require("axios");
+import { FT_APP_API_HOST, FT_APP_API_KEY } from "../config/env.js";
+import axios from "axios";
 
 const DEMANDAS_API = axios.create({
   baseURL: FT_APP_API_HOST,
@@ -11,12 +11,12 @@ const DEMANDAS_API = axios.create({
 DEMANDAS_API.interceptors.request.use(
   (config) => {
     config.headers["x-api-key"] = FT_APP_API_KEY;
-    
     return config;
   },
   (error) => {
-    return Promise.reject(error, 'teste');
+    return Promise.reject(error);
   }
 );
 
-module.exports = DEMANDAS_API;
+
+export default DEMANDAS_API;

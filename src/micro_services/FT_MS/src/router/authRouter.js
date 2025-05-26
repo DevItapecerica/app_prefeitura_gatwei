@@ -1,6 +1,6 @@
-const authController = require("../controller/authController.js");
-const tokenSchema = require("../schema/tokenSchema.js");
-const auth = require("../middleware/authAPI.js");
+import getRandomToken from "../controller/authController.js";
+import tokenSchema from "../schema/tokenSchema.js";
+import auth from "../middleware/authAPI.js";
 
 const authRoutes = async (fastify, options) => {
   fastify.route({
@@ -8,8 +8,8 @@ const authRoutes = async (fastify, options) => {
     url: "/:id",
     preHandler: [auth],
     schema: tokenSchema,
-    handler: authController.getRandomToken,
+    handler: getRandomToken,
   });
 };
 
-module.exports = authRoutes;
+export default authRoutes;

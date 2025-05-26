@@ -1,6 +1,6 @@
-const Bolsistas = require("../../db/model/bolsistaModel");
+import Bolsistas from "../../db/model/bolsistaModel.js";
 
-const getBolsistaById = async (id) => {
+export const getBolsistaById = async (id) => {
   const bolsista = await Bolsistas.findByPk(id);
 
   if (!bolsista) {
@@ -12,5 +12,3 @@ const getBolsistaById = async (id) => {
 
   return bolsista;
 };
-
-module.exports = {getBolsistaById};

@@ -1,3 +1,5 @@
+import errorSchema from './errorSchema.js';
+
 const tokenSchema = {
   description: 'Get a random token for a user',
   tags: ['auth'],
@@ -9,8 +11,9 @@ const tokenSchema = {
       properties: {
         token: { type: 'string' }
       }
-    }
+    },
+    ...errorSchema
   }
 };
 
-module.exports = tokenSchema;
+export default tokenSchema;

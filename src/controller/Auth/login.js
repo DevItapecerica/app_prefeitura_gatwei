@@ -1,19 +1,17 @@
-const login_api = require("../../api/login_api");
+import login_api from "../../api/login_api.js";
 
 const login = async (request, reply) => {
   const payload = request.body.credentials;
-  try {
-    const response = await login_api.post("/login", {
-      ...payload
-    });
 
-    let login = response.data;
+  try {
+    const response = await login_api.post("/login", { ...payload });
+
+    const login = response.data;
 
     reply.status(200).send(login);
   } catch (error) {
-    // O erro será tratado pelo hook onError
-    throw error; // Lançar o erro para que o middleware de erro o capture
+    throw error; // O erro será tratado pelo hook onError
   }
 };
 
-module.exports = { login };
+export default login ;

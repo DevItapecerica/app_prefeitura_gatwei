@@ -1,4 +1,5 @@
-const errorSchema = require('./errorSchema')
+import errorSchema from './errorSchema.js';
+
 const getSetores = {
   tags: ["Setores"],
   security: [{ APIKey: [], JWTToken: [] }],
@@ -17,8 +18,7 @@ const getSetores = {
         },
       },
     },
-    ...errorSchema
-
+    ...errorSchema,
   },
 };
 
@@ -27,7 +27,7 @@ const getOneSetor = {
   security: [{ APIKey: [], JWTToken: [] }],
   response: {
     200: {
-      description: "Lista de setores",
+      description: "Detalhes do setor",
       type: "object",
       properties: {
         setor: {
@@ -43,8 +43,7 @@ const getOneSetor = {
         },
       },
     },
-    ...errorSchema
-
+    ...errorSchema,
   },
 };
 
@@ -84,14 +83,13 @@ const postSetor = {
         },
       },
     },
-    ...errorSchema
-
+    ...errorSchema,
   },
 };
 
 const updateSetor = {
   tags: ["Setores"],
-  description: "Cria um novo setor",
+  description: "Atualiza um setor existente",
   security: [{ APIKey: [], JWTToken: [] }],
   body: {
     type: "object",
@@ -111,8 +109,7 @@ const updateSetor = {
     204: {
       description: "Setor atualizado com sucesso",
     },
-    ...errorSchema
-
+    ...errorSchema,
   },
 };
 
@@ -121,14 +118,13 @@ const deleteSetor = {
   security: [{ APIKey: [], JWTToken: [] }],
   response: {
     204: {
-      description: "Lista de setores",
+      description: "Setor deletado com sucesso",
     },
-    ...errorSchema
-
+    ...errorSchema,
   },
 };
 
-module.exports = {
+export {
   getSetores,
   getOneSetor,
   postSetor,

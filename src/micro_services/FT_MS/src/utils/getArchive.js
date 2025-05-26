@@ -1,6 +1,8 @@
-const fs = require("fs");
-const path = require("path");
-const { mimeTypes } = require("../services/upload/validations");
+import fs from "fs";
+import path from "path";
+import { mimeTypes } from "../services/upload/validations.js";
+
+
 
 const getArchivePath = (archives) => {
   let archivesGeted = [];
@@ -8,22 +10,26 @@ const getArchivePath = (archives) => {
   archives.forEach((archive) => {
     const archiveName = archive.dataValues.path;
 
-    const filepath = path.join(__dirname, "../../uploads", archiveName);
+    const filepath = path.join(path.dirname(import.meta.url.split("file:")[1]), "../../uploads", archive);
 
     if (!fs.existsSync(filepath)) {
-      throw { status: 404, message: "File not found " + archiveName};
+      throw { status: 404, message: "File not found " + archiveName };
     }
 
     const url = `/ft/img?target=${archiveName}`;
 
-    archivesGeted.push({filename: archiveName, url}) 
+    archivesGeted.push({ filename: archiveName, url });
   });
 
   return archivesGeted;
 };
 
 const getOneArchive = (archive) => {
-  const filepath = path.join(__dirname, "../../uploads", archive);
+    const filepath = path.join(path.dirname(import.meta.url.split("file:")[1]), "../../uploads", archive);
+
+
+    console.log(filepath)
+
 
   if (!fs.existsSync(filepath)) {
     throw { status: 404, message: "File not found" };
@@ -33,9 +39,9 @@ const getOneArchive = (archive) => {
 
   const extname = filepath.split(".")[1];
 
-  const type = mimeTypes[extname] || "application/octet-stream"
+  const type = mimeTypes[extname] || "application/octet-stream";
 
   return { file, type };
 };
 
-module.exports = { getOneArchive, getArchivePath };
+export { getOneArchive, getArchivePath };

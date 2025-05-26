@@ -1,23 +1,22 @@
-const Login = require('../controller/Auth/login')
-const loginSchema = require('../schema/loginSchema')
-const authSchema = require('../schema/authSchema')
+import Login from '../controller/Auth/login.js';
+import loginSchema from '../schema/loginSchema.js';
+import authSchema from '../schema/authSchema.js';
+import authUser from '../controller/Auth/authUser.js';
 
-const authUser = require('../controller/Auth/authUser')
+const authenticateRouter = (fastify, options) => {
+  fastify.route({
+    method: 'POST',
+    url: '/login',
+    schema: loginSchema,
+    handler: Login,
+  });
 
-const authenticateRouter = (fastify, options) =>{
-    fastify.route({
-        method: 'POST',
-        url: '/login',
-        schema: loginSchema,
-        handler: Login.login
-    })
+  fastify.route({
+    method: 'GET',
+    url: '/',
+    schema: authSchema,
+    handler: authUser,
+  });
+};
 
-    fastify.route({
-        method: 'GET',
-        url: '/',
-        schema: authSchema,
-        handler: authUser.authUser
-    })
-}
-
-module.exports = authenticateRouter
+export default authenticateRouter;

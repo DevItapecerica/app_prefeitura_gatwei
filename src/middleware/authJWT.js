@@ -1,22 +1,18 @@
-const login_api = require("../api/login_api");
+import loginApi from '../api/login_api.js';
 
-const authJWT = async (request, reply) => {
+export const authJWT = async (request, reply) => {
   try {
-    let token = request.headers.authorization?.replace("Bearer ", "") ;
+    const token = request.headers.authorization?.replace('Bearer ', '');
+
     if (!token) {
-      throw { status: 403, message: "Token não informado" };
+      throw { status: 403, message: 'Token não informado' };
     }
 
-    let decodedUserResponse = await login_api.post("/authUser", {
-      token: token,
-    });
+    const decodedUserResponse = await loginApi.post('/authUser', { token });
 
-    let decodedUser = decodedUserResponse.data.user
-    request.user = decodedUser
+    request.user = decodedUserResponse.data.user;
   } catch (error) {
-
-    throw error; // Lançar o erro para que o middleware de erro o capture
+    // Lança o erro para o error handler do Fastify
+    throw error;
   }
 };
-
-module.exports = authJWT;

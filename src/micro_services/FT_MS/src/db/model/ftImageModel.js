@@ -1,7 +1,7 @@
-const { DataTypes } = require("sequelize");
-const db = require("../context");
+import { DataTypes } from "sequelize";
+import Sequelize from "../context.js"; // <-- corrigido aqui
 
-const Image = db.define(
+const ftImageDB = Sequelize.define(
   "Image",
   {
     id: {
@@ -21,11 +21,15 @@ const Image = db.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    mime: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   {
-    tableName: "Image", // Nome da tabela no banco
+    tableName: "Image",
     timestamps: true,
   }
 );
 
-module.exports = Image;
+export default ftImageDB;

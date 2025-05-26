@@ -1,70 +1,54 @@
-const { PORT } = require("./src/config/env");
+// Fastify
+import Fastify from 'fastify';
+import cors from '@fastify/cors';
+import fastifyCookie from '@fastify/cookie';
+import fastifySwagger from '@fastify/swagger';
+import fastifySwaggerUi from '@fastify/swagger-ui';
 
-const port = PORT || 8000;
-
-// fastify
-const fastify = require("fastify")();
-const cors = require("@fastify/cors");
-const fastifyCookie = require("@fastify/cookie");
-const fastifySwagger = require("@fastify/swagger");
-const fastifySwaggerUi = require("@fastify/swagger-ui");
-
-// swagger
-const { swaggerConfig, swaggerUiConfig } = require("./src/config/swaggerConfig");
-const { corsConfig } = require("./src/config/corsConfig");
-
-// hooks
-const { errorHook } = require("./src/hooks/errorHook");
+// pluggins
+import loggerPlugin from './plugins/logger.js';
+import { PORT } from './src/config/env.js';
+import { swaggerConfig, swaggerUiConfig } from './src/config/swaggerConfig.js';
+import { corsConfig } from './src/config/corsConfig.js';
+import { errorHook } from './src/hooks/errorHook.js';
 
 // router
-const userRouter = require("./src/router/userRouter");
-const setorRouter = require("./src/router/setorRouter");
-const serviceRouter = require("./src/router/serviceRouter");
-const demandasRouter = require("./src/router/demandasRouter");
-const roleRouter = require("./src/router/roleRouter")
-const FTRouter = require("./src/router/FTRouter")
-const authenticateRouter = require('./src/router/authenticateRouter')
+import userRouter from './src/router/userRouter.js';
+import setorRouter from './src/router/setorRouter.js';
+import serviceRouter from './src/router/serviceRouter.js';
+import demandasRouter from './src/router/demandasRouter.js';
+import roleRouter from './src/router/roleRouter.js';
+import FTRouter from './src/router/FTRouter.js';
+import authenticateRouter from './src/router/authenticateRouter.js';
+
+const port = PORT || 8000;
+const fastify = Fastify();
 
 // plugins
-fastify.register(cors, corsConfig);
+await fastify.register(loggerPlugin);
+await fastify.register(cors, corsConfig);
+await fastify.register(fastifyCookie);
+await fastify.register(fastifySwagger, swaggerConfig(port));
+await fastify.register(fastifySwaggerUi, swaggerUiConfig);
 
-fastify.register(fastifyCookie);
-
-fastify.register(fastifySwagger, swaggerConfig(port));
-fastify.register(fastifySwaggerUi, swaggerUiConfig);
-
-// hooks register
+// hooks
 fastify.setErrorHandler((error, request, reply) => {
   console.log("----------------------------------------------------------");
-  console.log("error: " + error)
+  console.log("error: " + JSON.stringify(error));
   console.log("----------------------------------------------------------");
   errorHook(error, reply);
 });
 
-// routes register
-fastify.register(userRouter, {
-  prefix: "/user",
-});
-fastify.register(setorRouter, {
-  prefix: "/setor",
-});
-fastify.register(serviceRouter, {
-  prefix: "/service",
-});
-fastify.register(demandasRouter, {
-  prefix: "/demandas",
-});
-fastify.register(roleRouter, {
-  prefix: "/roles",
-});
-fastify.register(FTRouter, {
-  prefix: "/ft",
-});
-fastify.register(authenticateRouter, {
-  prefix: "/auth",
-});
+// rotas
+fastify.register(userRouter, { prefix: "/user" });
+fastify.register(setorRouter, { prefix: "/setor" });
+fastify.register(serviceRouter, { prefix: "/service" });
+fastify.register(demandasRouter, { prefix: "/demandas" });
+fastify.register(roleRouter, { prefix: "/roles" });
+fastify.register(FTRouter, { prefix: "/ft" });
+fastify.register(authenticateRouter, { prefix: "/auth" });
 
-// fastify instance
+// server
 const start = async () => {
   try {
     await fastify.listen({ port, host: "0.0.0.0" });

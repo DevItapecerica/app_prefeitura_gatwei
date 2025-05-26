@@ -1,9 +1,9 @@
-const User = require("../controller/User/UserController");
-const UserSchema = require("../schema/userSchema");
-const auth = require("../middleware/authJWT");
+import * as User from "../controller/User/UserController.js";
+import * as UserSchema from "../schema/userSchema.js";
+import {authJWT} from "../middleware/authJWT.js";
 
 const userRouter = async (fastify, options) => {
-fastify.addHook("preHandler",auth);
+  fastify.addHook("preHandler", authJWT);
 
   fastify.route({
     method: "GET",
@@ -20,25 +20,25 @@ fastify.addHook("preHandler",auth);
   });
 
   fastify.route({
-    method: "post",
+    method: "POST",
     url: "/",
     schema: UserSchema.postUserSchema,
     handler: User.cadastrarUser,
   });
 
   fastify.route({
-    method: "delete",
+    method: "DELETE",
     url: "/:id",
     schema: UserSchema.deleteUserSchema,
     handler: User.deletarUser,
   });
 
   fastify.route({
-    method: "put",
+    method: "PUT",
     url: "/:id",
     schema: UserSchema.updateUserSchema,
     handler: User.atualizarUser,
   });
 };
 
-module.exports = userRouter;
+export default userRouter;

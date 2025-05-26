@@ -1,8 +1,7 @@
-const { postDoc, getDocs, getOneDoc } = require("../controller/uploadController.js");
-const authJWT = require("../middleware/authJWT.js");
+import { postDoc, getDocs, getOneDoc } from "../controller/uploadController.js";
+import authJWT from "../middleware/authJWT.js";
 
 const uploadRouter = (fastify, options) => {
-
   fastify.addHook("preHandler", authJWT);
 
   fastify.route({
@@ -24,4 +23,4 @@ const uploadRouter = (fastify, options) => {
   });
 };
 
-module.exports = uploadRouter;
+export default uploadRouter;

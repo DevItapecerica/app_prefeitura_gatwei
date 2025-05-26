@@ -1,18 +1,18 @@
-const ft_app_api = require("../../api/ft_app_api.js");
-const { verifyPermission } = require("../../utils/verifyPermission");
+import ft_app_api from "../../api/ft_app_api.js";
+import { verifyPermission } from "../../utils/verifyPermission.js";
 
 const SERVICE = 6;
 
-const getBolsistas = async (request, reply) => {
+export const getBolsistas = async (request, reply) => {
   try {
     let user = request.user;
 
-    const [{data}, {data: {token}}] = await Promise.all([
+    const [{ data }, { data: { token } }] = await Promise.all([
       ft_app_api.get("/ft/bolsista"),
       ft_app_api.get(`/ft/auth/${user}`),
     ]);
 
-    console.log(data, token)
+    console.log(data, token);
 
     reply.status(200).send({ ...data, uploadToken: token });
   } catch (error) {
@@ -20,7 +20,7 @@ const getBolsistas = async (request, reply) => {
   }
 };
 
-const getOneBolsistas = async (request, reply) => {
+export const getOneBolsistas = async (request, reply) => {
   try {
     let user = request.user;
     await verifyPermission(user, SERVICE, request.method);
@@ -36,7 +36,7 @@ const getOneBolsistas = async (request, reply) => {
   }
 };
 
-const createBolsistas = async (request, reply) => {
+export const createBolsistas = async (request, reply) => {
   try {
     let user = request.user;
     await verifyPermission(user, SERVICE, request.method);
@@ -55,16 +55,16 @@ const createBolsistas = async (request, reply) => {
     } = request.body;
 
     const response = await ft_app_api.post(`/ft/bolsista`, {
-      bco: bco,
-      ag: ag,
-      dig_ag: dig_ag,
-      conta: conta,
-      dig_conta: dig_conta,
-      nome: nome,
-      bolsa: bolsa,
-      vencimento: vencimento,
-      cpf: cpf,
-      local: local,
+      bco,
+      ag,
+      dig_ag,
+      conta,
+      dig_conta,
+      nome,
+      bolsa,
+      vencimento,
+      cpf,
+      local,
     });
     const bolsista = response.data;
 
@@ -76,7 +76,7 @@ const createBolsistas = async (request, reply) => {
   }
 };
 
-const updateBolsistas = async (request, reply) => {
+export const updateBolsistas = async (request, reply) => {
   try {
     let user = request.user;
     await verifyPermission(user, SERVICE, request.method);
@@ -95,16 +95,16 @@ const updateBolsistas = async (request, reply) => {
     } = request.body;
 
     const response = await ft_app_api.put(`/ft/bolsista/${id}`, {
-      bco: bco,
-      ag: ag,
-      dig_ag: dig_ag,
-      conta: conta,
-      dig_conta: dig_conta,
-      nome: nome,
-      bolsa: bolsa,
-      vencimento: vencimento,
-      cpf: cpf,
-      local: local,
+      bco,
+      ag,
+      dig_ag,
+      conta,
+      dig_conta,
+      nome,
+      bolsa,
+      vencimento,
+      cpf,
+      local,
     });
     const bolsista = response.data;
 
@@ -116,7 +116,7 @@ const updateBolsistas = async (request, reply) => {
   }
 };
 
-const deleteBolsistas = async (request, reply) => {
+export const deleteBolsistas = async (request, reply) => {
   try {
     let user = request.user;
     await verifyPermission(user, SERVICE, request.method);
@@ -130,12 +130,4 @@ const deleteBolsistas = async (request, reply) => {
   } catch (error) {
     throw error;
   }
-};
-
-module.exports = {
-  getBolsistas,
-  getOneBolsistas,
-  createBolsistas,
-  updateBolsistas,
-  deleteBolsistas,
 };

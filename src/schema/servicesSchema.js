@@ -1,4 +1,5 @@
-const errorSchema = require('./errorSchema')
+import errorSchema from './errorSchema.js';
+
 const getServices = {
   description: "Retorna todos os serviços",
   type: "object",
@@ -6,7 +7,7 @@ const getServices = {
   security: [{ APIKey: [] }],
   response: {
     200: {
-      description: "Verificação bem sucedido",
+      description: "Verificação bem sucedida",
       type: "object",
       properties: {
         services: {
@@ -34,8 +35,7 @@ const getServices = {
         },
       },
     },
-    ...errorSchema
-
+    ...errorSchema,
   },
 };
 
@@ -46,7 +46,7 @@ const getOneService = {
   security: [{ APIKey: [] }],
   response: {
     200: {
-      description: "Verificação bem sucedido",
+      description: "Verificação bem sucedida",
       type: "object",
       properties: {
         services: {
@@ -60,9 +60,7 @@ const getOneService = {
         },
       },
     },
-
-    ...errorSchema
-
+    ...errorSchema,
   },
 };
 
@@ -106,8 +104,7 @@ const postServices = {
         },
       },
     },
-    ...errorSchema
-
+    ...errorSchema,
   },
 };
 
@@ -135,8 +132,7 @@ const updateServices = {
     204: {
       description: "Update bem sucedido",
     },
-    ...errorSchema
-
+    ...errorSchema,
   },
 };
 
@@ -149,13 +145,11 @@ const deleteService = {
     204: {
       description: "Excluido com sucesso",
     },
-
-    ...errorSchema
-
+    ...errorSchema,
   },
 };
 
-module.exports = {
+export {
   getServices,
   getOneService,
   postServices,

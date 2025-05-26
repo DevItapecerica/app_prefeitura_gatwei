@@ -1,53 +1,55 @@
-const Bolsista = require("../controller/FT/FTController");
-const getAuth = require("../controller/FT/FTAuth");
-const auth = require("../middleware/authJWT");
-const BolsistaSchema = require("../schema/bolsistaSchema");
-const Ft_AppSchema = require("../api/ft_app_api")
+import * as BolsistaController from '../controller/FT/FTController.js';
+import { getAuth } from '../controller/FT/FTAuth.js';
+import { authJWT } from '../middleware/authJWT.js';
 
-const FTRouter = (fastify, opt) => {
-fastify.addHook("preHandler",auth);
+import * as BolsistaSchema from '../schema/bolsistaSchema.js';
+import * as FtAppSchema from '../api/ft_app_api.js';
+
+const FTRouter = async (fastify, _options) => {
+  // Protege todas as rotas do grupo com JWT
+  fastify.addHook('preHandler', authJWT);
 
   fastify.route({
-    method: "get",
-    url: "/bolsista",
+    method: 'GET',
+    url: '/bolsista',
     schema: BolsistaSchema.getBolsistaSchema,
-    handler: Bolsista.getBolsistas,
+    handler: BolsistaController.getBolsistas,
   });
 
   fastify.route({
-    method: "get",
-    url: "/bolsista/:id",
+    method: 'GET',
+    url: '/bolsista/:id',
     schema: BolsistaSchema.getOneBolsistaSchema,
-    handler: Bolsista.getOneBolsistas,
+    handler: BolsistaController.getOneBolsistas,
   });
 
   fastify.route({
-    method: "post",
-    url: "/bolsista",
+    method: 'POST',
+    url: '/bolsista',
     schema: BolsistaSchema.createBolsistaSchema,
-    handler: Bolsista.createBolsistas,
+    handler: BolsistaController.createBolsistas,
   });
 
   fastify.route({
-    method: "put",
-    url: "/bolsista/:id",
+    method: 'PUT',
+    url: '/bolsista/:id',
     schema: BolsistaSchema.updateBolsistaSchema,
-    handler: Bolsista.updateBolsistas,
+    handler: BolsistaController.updateBolsistas,
   });
 
   fastify.route({
-    method: "DELETE",
-    url: "/bolsista/:id",
+    method: 'DELETE',
+    url: '/bolsista/:id',
     schema: BolsistaSchema.deleteBolsistaSchema,
-    handler: Bolsista.deleteBolsistas,
+    handler: BolsistaController.deleteBolsistas,
   });
 
   fastify.route({
-    method: "GET",
-    url: "/auth",
-    schema: Ft_AppSchema.getTokenSchema,
+    method: 'GET',
+    url: '/auth',
+    schema: FtAppSchema.getTokenSchema,
     handler: getAuth,
-  })
+  });
 };
 
-module.exports = FTRouter;
+export default FTRouter;

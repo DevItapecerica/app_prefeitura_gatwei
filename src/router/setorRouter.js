@@ -1,9 +1,9 @@
-const auth = require("../middleware/authJWT");
-const Setor = require("../controller/Setor/setorController");
-const setorSchema = require("../schema/setoresSchema");
+import {authJWT} from "../middleware/authJWT.js";
+import * as Setor from "../controller/Setor/setorController.js";
+import * as setorSchema from "../schema/setoresSchema.js";
 
 const setorRouter = (fastify, options) => {
-fastify.addHook("preHandler",auth);
+  fastify.addHook("preHandler", authJWT);
 
   fastify.route({
     method: "GET",
@@ -13,32 +13,32 @@ fastify.addHook("preHandler",auth);
   });
 
   fastify.route({
-    method: 'GET',
-    url: '/:id',
+    method: "GET",
+    url: "/:id",
     schema: setorSchema.getOneSetor,
     handler: Setor.getOneSetor,
-  })
+  });
 
   fastify.route({
-    method: 'POST',
-    url: '/',
+    method: "POST",
+    url: "/",
     schema: setorSchema.postSetor,
     handler: Setor.createSetor,
-  })
+  });
 
   fastify.route({
-    method: 'PUT',
-    url: '/:id',
+    method: "PUT",
+    url: "/:id",
     schema: setorSchema.updateSetor,
     handler: Setor.updateSetor,
-  })
+  });
 
   fastify.route({
-    method: 'DELETE',
-    url: '/:id',
+    method: "DELETE",
+    url: "/:id",
     schema: setorSchema.deleteSetor,
     handler: Setor.deleteSetor,
-  })
+  });
 };
 
-module.exports = setorRouter;
+export default setorRouter;

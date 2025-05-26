@@ -1,9 +1,9 @@
-const Service = require("../controller/ServicesApplication/ServicesController");
-const serviceSchema = require("../schema/servicesSchema");
-const auth = require("../middleware/authJWT");
+import * as Service from "../controller/ServicesApplication/ServicesController.js";
+import * as serviceSchema from "../schema/servicesSchema.js";
+import {authJWT} from "../middleware/authJWT.js";
 
 const serviceRouter = (fastify, options) => {
-fastify.addHook("preHandler",auth);
+  fastify.addHook("preHandler", authJWT);
 
   fastify.route({
     method: "GET",
@@ -18,8 +18,6 @@ fastify.addHook("preHandler",auth);
     // schema: serviceSchema.getServices,
     handler: Service.getUserServices,
   });
-
-  
 
   fastify.route({
     method: "GET",
@@ -40,7 +38,7 @@ fastify.addHook("preHandler",auth);
     url: "/:id",
     schema: serviceSchema.updateServices,
     handler: Service.updateService,
-  })
+  });
 
   fastify.route({
     method: "DELETE",
@@ -48,7 +46,6 @@ fastify.addHook("preHandler",auth);
     schema: serviceSchema.deleteService,
     handler: Service.deleteService,
   });
-
 };
 
-module.exports = serviceRouter;
+export default serviceRouter;

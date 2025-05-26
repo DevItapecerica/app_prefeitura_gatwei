@@ -1,42 +1,45 @@
-const errorSchema = require("./errorSchema");
+import errorSchema from "./errorSchema.js";
+
+const bolsistaProperties = {
+  id: { type: "string" }, // caso você use auto-incremento no banco
+  bco: { type: "string", maxLength: 3 },
+  ag: { type: "string", maxLength: 4 },
+  dig_ag: { type: "string", maxLength: 1 },
+  conta: { type: "string", maxLength: 10 },
+  dig_conta: { type: "string", maxLength: 1 },
+  nome: { type: "string" },
+  bolsa: { type: "number" },
+  vencimento: { type: "integer" },
+  cpf: { 
+    type: "string", 
+    maxLength: 11, 
+    pattern: "^[0-9]{11}$", // Regex para validar CPF com 11 dígitos
+  },
+  local: { type: "string" },
+  createdAt: { type: "string", format: "date-time" },
+  updatedAt: { type: "string", format: "date-time" },
+};
 
 const getBolsistaSchema = {
   tags: ["Bolsista"],
   security: [{ APIKey: [] }],
-  description: "get all bolsista",
-  summary: "Get all bolsista",
+  description: "Get all bolsistas",
+  summary: "Retrieve all bolsistas",
   response: {
     200: {
       type: "object",
       properties: {
-        message: { type: "string", example: "Bolsista geted successfully" },
+        message: { type: "string", example: "Bolsistas retrieved successfully" },
         bolsistas: {
           type: "array",
           items: {
             type: "object",
-            properties: {
-              id: { type: "string" }, // caso você use auto-incremento no banco
-              bco: { type: "string", maxLength: 3 },
-              ag: { type: "string", maxLength: 4 },
-              dig_ag: { type: "string", maxLength: 1 },
-              conta: { type: "string", maxLength: 10 },
-              dig_conta: { type: "string", maxLength: 1 },
-              nome: { type: "string" },
-              bolsa: { type: "number" },
-              vencimento: { type: "integer" },
-              cpf: { type: "string", maxLength: 11 },
-              local: { type: "string" },
-              createdAt: { type: "string", format: "date-time" },
-              updatedAt: { type: "string", format: "date-time" },
-            },
+            properties: bolsistaProperties,
           },
         },
-        uploadToken: {
-          type: "string",
-        }
+        uploadToken: { type: "string" },
       },
     },
-
     ...errorSchema,
   },
 };
@@ -44,15 +47,12 @@ const getBolsistaSchema = {
 const getOneBolsistaSchema = {
   tags: ["Bolsista"],
   security: [{ APIKey: [] }],
-  description: "get a bolsista",
-  summary: "Get a bolsista",
+  description: "Get a bolsista by ID",
+  summary: "Retrieve a single bolsista",
   params: {
     type: "object",
     properties: {
-      id: {
-        type: "string",
-        description: "bolsista id",
-      },
+      id: { type: "string", description: "Bolsista ID" },
     },
   },
   response: {
@@ -61,25 +61,10 @@ const getOneBolsistaSchema = {
       properties: {
         bolsista: {
           type: "object",
-          properties: {
-            id: { type: "string" }, // caso você use auto-incremento no banco
-            bco: { type: "string", maxLength: 3 },
-            ag: { type: "string", maxLength: 4 },
-            dig_ag: { type: "string", maxLength: 1 },
-            conta: { type: "string", maxLength: 10 },
-            dig_conta: { type: "string", maxLength: 1 },
-            nome: { type: "string" },
-            bolsa: { type: "number" },
-            vencimento: { type: "integer" },
-            cpf: { type: "string", maxLength: 11 },
-            local: { type: "string" },
-            createdAt: { type: "string", format: "date-time" },
-            updatedAt: { type: "string", format: "date-time" },
-          },
+          properties: bolsistaProperties,
         },
       },
     },
-
     ...errorSchema,
   },
 };
@@ -87,9 +72,8 @@ const getOneBolsistaSchema = {
 const createBolsistaSchema = {
   tags: ["Bolsista"],
   security: [{ APIKey: [] }],
-  description: "create a bolsista",
-  summary: "Create a bolsista",
-
+  description: "Create a new bolsista",
+  summary: "Add a new bolsista to the system",
   body: {
     type: "object",
     required: [
@@ -113,7 +97,11 @@ const createBolsistaSchema = {
       nome: { type: "string" },
       bolsa: { type: "number", minimum: 0 },
       vencimento: { type: "integer", minimum: 1, maximum: 31 },
-      cpf: { type: "string", maxLength: 11 },
+      cpf: { 
+        type: "string", 
+        maxLength: 11, 
+        pattern: "^[0-9]{11}$", // Regex para validar CPF com 11 dígitos
+      },
       local: { type: "string" },
     },
   },
@@ -124,25 +112,10 @@ const createBolsistaSchema = {
         message: { type: "string", example: "Bolsista created successfully" },
         bolsista: {
           type: "object",
-          properties: {
-            id: { type: "string" }, // caso você use auto-incremento no banco
-            bco: { type: "string", maxLength: 3 },
-            ag: { type: "string", maxLength: 4 },
-            dig_ag: { type: "string", maxLength: 1 },
-            conta: { type: "string", maxLength: 10 },
-            dig_conta: { type: "string", maxLength: 1 },
-            nome: { type: "string" },
-            bolsa: { type: "number" },
-            vencimento: { type: "integer" },
-            cpf: { type: "string", maxLength: 11 },
-            local: { type: "string" },
-            createdAt: { type: "string", format: "date-time" },
-            updatedAt: { type: "string", format: "date-time" },
-          },
+          properties: bolsistaProperties,
         },
       },
     },
-
     ...errorSchema,
   },
 };
@@ -150,9 +123,8 @@ const createBolsistaSchema = {
 const updateBolsistaSchema = {
   tags: ["Bolsista"],
   security: [{ APIKey: [] }],
-  description: "create a bolsista",
-  summary: "Create a bolsista",
-
+  description: "Update an existing bolsista",
+  summary: "Update the details of an existing bolsista",
   body: {
     type: "object",
     required: [
@@ -167,7 +139,6 @@ const updateBolsistaSchema = {
       "cpf",
       "local",
     ],
-
     properties: {
       bco: { type: "string", maxLength: 3 },
       ag: { type: "string", maxLength: 4 },
@@ -177,7 +148,11 @@ const updateBolsistaSchema = {
       nome: { type: "string" },
       bolsa: { type: "number", minimum: 0 },
       vencimento: { type: "integer", minimum: 1, maximum: 31 },
-      cpf: { type: "string", maxLength: 11 },
+      cpf: { 
+        type: "string", 
+        maxLength: 11, 
+        pattern: "^[0-9]{11}$", 
+      },
       local: { type: "string" },
     },
   },
@@ -188,25 +163,10 @@ const updateBolsistaSchema = {
         message: { type: "string", example: "Bolsista updated successfully" },
         bolsista: {
           type: "object",
-          properties: {
-            id: { type: "string" }, // caso você use auto-incremento no banco
-            bco: { type: "string", maxLength: 3 },
-            ag: { type: "string", maxLength: 4 },
-            dig_ag: { type: "string", maxLength: 1 },
-            conta: { type: "string", maxLength: 10 },
-            dig_conta: { type: "string", maxLength: 1 },
-            nome: { type: "string" },
-            bolsa: { type: "number" },
-            vencimento: { type: "integer" },
-            cpf: { type: "string", maxLength: 11 },
-            local: { type: "string" },
-            createdAt: { type: "string", format: "date-time" },
-            updatedAt: { type: "string", format: "date-time" },
-          },
+          properties: bolsistaProperties,
         },
       },
     },
-
     ...errorSchema,
   },
 };
@@ -214,8 +174,8 @@ const updateBolsistaSchema = {
 const deleteBolsistaSchema = {
   tags: ["Bolsista"],
   security: [{ APIKey: [] }],
-  description: "delete a bolsista",
-  summary: "Delete a bolsista",
+  description: "Delete a bolsista",
+  summary: "Remove a bolsista from the system",
   response: {
     200: {
       type: "object",
@@ -223,12 +183,11 @@ const deleteBolsistaSchema = {
         message: { type: "string", example: "Bolsista deleted successfully" },
       },
     },
-
     ...errorSchema,
   },
 };
 
-module.exports = {
+export {
   createBolsistaSchema,
   getBolsistaSchema,
   updateBolsistaSchema,

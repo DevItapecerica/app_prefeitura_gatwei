@@ -1,45 +1,35 @@
-const errorHook = (error, reply) => {
-  let payload = {};
+export const errorHook = (error, reply) => {
   const statusCode = error.status || error.statusCode || 500;
-  let messageError =
-    error.response?.data.message || error.message || "Erro desconhecido";
-  // Verifica o tipo de erro e responde com o status adequado
+  const messageError = error.response?.data?.message || error.message || "Erro desconhecido";
+
+  const payload = {
+    statusCode,
+    error: "",
+    message: "",
+  };
+
   switch (statusCode) {
     case 400:
-      payload.statusCode = statusCode;
       payload.error = "Bad Request";
-      payload.message = `${payload.error} ${messageError}`;
       break;
     case 401:
-      payload.statusCode = statusCode;
       payload.error = "Unauthorized";
-      payload.message = `${payload.error} ${messageError}`;
       break;
     case 403:
-      payload.statusCode = statusCode;
-      payload.error = "Bad Request";
-      payload.message = `${payload.error} ${messageError}`;
+      payload.error = "Forbidden";
       break;
     case 404:
-      payload.statusCode = statusCode;
       payload.error = "Not Found";
-      payload.message = `${payload.error} ${messageError}`;
       break;
     case 500:
-      payload.statusCode = statusCode;
-      payload.error = "Bad Request";
-      payload.message = `${payload.error} ${messageError}`;
+      payload.error = "Internal Server Error";
       break;
     default:
       payload.statusCode = 500;
-      payload.error = "Bad Request";
-      payload.message = `${payload.error} Erro interno no servidor`;
+      payload.error = "Internal Server Error";
   }
 
-  reply.status(statusCode).send({
-    ...payload,
-  });
-  // Verifica o tipo de erro e responde com o status adequado
-};
+  payload.message = `${payload.error} - ${messageError}`;
 
-module.exports = { errorHook };
+  reply.status(payload.statusCode).send(payload);
+};

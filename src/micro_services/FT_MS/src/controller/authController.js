@@ -1,5 +1,5 @@
-const jwt = require("jsonwebtoken");
-const {SECRET_KEY} = require("../config/env");
+import jwt from "jsonwebtoken";
+import { SECRET_KEY } from "../config/env.js";
 
 const TOKEN_EXPIRATION = "1h"; // Token expiration time
 
@@ -20,6 +20,4 @@ const getRandomToken = async (request, reply) => {
   }
 };
 
-module.exports = {
-  getRandomToken,
-};
+export default getRandomToken;

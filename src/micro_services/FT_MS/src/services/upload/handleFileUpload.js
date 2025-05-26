@@ -1,18 +1,15 @@
-const uploadArchive = require("./uploadArchive.js");
-const {
-  archiveValidation,
-} = require("./validations.js");const {
-  getBolsistaById,
-} = require("../bolsista/bolsistaOperation.js");
+import uploadArchive from "./uploadArchive.js";
+import { archiveValidation } from "./validations.js";
+import { getBolsistaById } from "../bolsista/bolsistaOperation.js";
 
-async function handleFileUpload(data, bolsistaFiles, bolsista) {
-  await getBolsistaById(bolsista)
+async function handleFileUpload(data, bolsistaFiles, bolsista, name) {
+  await getBolsistaById(bolsista);
   const type = archiveValidation(data);
   const existingFile = bolsistaFiles.find(f => f.dataValues.type_id == type);
 
-  const file = await uploadArchive(data);
+  const file = await uploadArchive(data, name);
 
-  return {file, existingFile, type};
+  return { file, existingFile, type };
 }
 
-module.exports = handleFileUpload;
+export default handleFileUpload;

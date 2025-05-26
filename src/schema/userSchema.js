@@ -1,5 +1,6 @@
-const errorSchema = require('./errorSchema')
-const getUserSchema = {
+import errorSchema from './errorSchema.js';
+
+export const getUserSchema = {
   tags: ["Users"],
   security: [{ APIKey: [], JWTToken: [] }],
   response: {
@@ -19,19 +20,15 @@ const getUserSchema = {
             firstLogin: { type: "boolean", example: true },
           },
         },
-        setores: {
-          type: "array",
-        },
-        roles: {
-          type: "array",
-        },
+        setores: { type: "array" },
+        roles: { type: "array" },
       },
     },
-    ...errorSchema
+    ...errorSchema,
   },
 };
 
-const postUserSchema = {
+export const postUserSchema = {
   description: "Pegue todos os usuários",
   tags: ["Users"],
   security: [{ APIKey: [], JWTToken: [] }],
@@ -54,7 +51,7 @@ const postUserSchema = {
   },
   response: {
     200: {
-      description: "Ususário criado com sucesso",
+      description: "Usuário criado com sucesso",
       type: "object",
       properties: {
         user: {
@@ -69,12 +66,11 @@ const postUserSchema = {
         },
       },
     },
-    ...errorSchema
-
+    ...errorSchema,
   },
 };
 
-const getOneUserSchema = {
+export const getOneUserSchema = {
   tags: ["Users"],
   security: [{ APIKey: [], JWTToken: [] }],
   response: {
@@ -97,12 +93,11 @@ const getOneUserSchema = {
         },
       },
     },
-    ...errorSchema
-
+    ...errorSchema,
   },
 };
 
-const updateUserSchema = {
+export const updateUserSchema = {
   description: "Atualizar usuário",
   tags: ["Users"],
   security: [{ APIKey: [], JWTToken: [] }],
@@ -123,7 +118,6 @@ const updateUserSchema = {
       },
     },
   },
-
   response: {
     200: {
       description: "Usuário atualizado com sucesso",
@@ -132,12 +126,11 @@ const updateUserSchema = {
         message: { type: "string", example: "Usuário salvo com sucesso" },
       },
     },
-    ...errorSchema
-
+    ...errorSchema,
   },
 };
 
-const deleteUserSchema = {
+export const deleteUserSchema = {
   description: "Deleta um usuário",
   tags: ["Users"],
   security: [{ APIKey: [], JWTToken: [] }],
@@ -149,15 +142,6 @@ const deleteUserSchema = {
         message: { type: "string", example: "Usuário deletado com sucesso" },
       },
     },
-    ...errorSchema
-
+    ...errorSchema,
   },
-};
-
-module.exports = {
-  getUserSchema,
-  postUserSchema,
-  getOneUserSchema,
-  deleteUserSchema,
-  updateUserSchema,
 };

@@ -31,4 +31,4 @@ const errorSchema = {
   },
 };
 
-module.exports = errorSchema
+export default errorSchema;

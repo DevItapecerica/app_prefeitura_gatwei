@@ -1,19 +1,18 @@
-const handleFileUpload = require("../services/upload/handleFileUpload.js");
-const { getArchivePath, getOneArchive } = require("../utils/getArchive.js");
-const {
+import handleFileUpload from "../services/upload/handleFileUpload.js";
+import { getArchivePath, getOneArchive } from "../utils/getArchive.js";
+import {
   mimeValidation,
   fieldBD,
-} = require("../services/upload/validations.js");
-const removeFile = require("../utils/removeFile.js");
-const {
+} from "../services/upload/validations.js";
+import removeFile from "../utils/removeFile.js";
+import {
   saveArchive,
   searchArchive,
   updateArchive,
-} = require("../services/upload/archiveDBManipulation.js.js");
-const ftImageDB = require("../db/model/ftImageModel.js");
+} from "../services/upload/archiveDBManipulation.js";
+import ftImageDB from "../db/model/ftImageModel.js";
 
-
-const postDoc = async (request, reply) => {
+export const postDoc = async (request, reply) => {
   let uploadedFiles = [];
   const { id } = request.params;
   let path = null;
@@ -27,20 +26,24 @@ const postDoc = async (request, reply) => {
       path = null;
 
       // upload archive
-      let response = await handleFileUpload(Data, bolsistaFiles, id)
+      let response = await handleFileUpload(Data, bolsistaFiles, id);
 
-      console.log(response)
-      path = response.file.filePath
+      path = response.file.filePath;
 
       // verify if upload is okay
-      await mimeValidation(response.file.filePath, response.file.mimeFile, response.file.fieldname);
+      const mime = await mimeValidation(
+        response.file.filePath,
+        response.file.mimeFile,
+        response.file.fieldname
+      );
 
+      console.log(mime);
       // caso seja updateArchive, atualiza e remove o antigo
       if (response.existingFile) {
-        await updateArchive(response.file, id, response.type);
+        await updateArchive(response.file, id, response.type, mime.ext);
         removeFile(response.existingFile.path);
       } else {
-        await saveArchive(response.file, id, response.type);
+        await saveArchive(response.file, id, response.type, mime.ext);
       }
 
       // if okay, push archive to log to user
@@ -62,7 +65,7 @@ const postDoc = async (request, reply) => {
   }
 };
 
-const getDocs = async (request, reply) => {
+export const getDocs = async (request, reply) => {
   try {
     const { id } = request.params;
 
@@ -70,7 +73,7 @@ const getDocs = async (request, reply) => {
       where: {
         bolsista_id: id,
       },
-      attributes: ["path", "type_id"],
+      attributes: ["path", "type_id", "mime"],
     });
 
     // let archivesPath = await getArchivePath(files);
@@ -81,7 +84,7 @@ const getDocs = async (request, reply) => {
   }
 };
 
-const getOneDoc = async (request, reply) => {
+export const getOneDoc = async (request, reply) => {
   try {
     const target = request.params.img;
 
@@ -93,10 +96,4 @@ const getOneDoc = async (request, reply) => {
   } catch (error) {
     throw error;
   }
-};
-
-module.exports = {
-  postDoc,
-  getDocs,
-  getOneDoc,
 };

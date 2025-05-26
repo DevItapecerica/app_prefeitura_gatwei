@@ -1,14 +1,14 @@
-const sequelize = require('sequelize');
-const {DATABASE_USER, DATABASE_KEY, DATABASE_HOST, DATABASE_NAME} = require('../config/env');
+import SequelizeModule from 'sequelize';
+import { DATABASE_USER, DATABASE_KEY, DATABASE_HOST, DATABASE_NAME } from '../config/env.js';
 
 const DUser = DATABASE_USER;
 const DKey = DATABASE_KEY;
 const DName = DATABASE_NAME;
 const DHost = DATABASE_HOST;
 
-const Sequelize = new sequelize(DName, DUser, DKey, {
+const Sequelize = new SequelizeModule(DName, DUser, DKey, {
   host: DHost,
-  dialect: "mariadb",
+  dialect: 'mariadb',
   define: {
     timestamps: false,
   },
@@ -16,12 +16,12 @@ const Sequelize = new sequelize(DName, DUser, DKey, {
 
 Sequelize.authenticate()
   .then(() => {
-    console.log("conectado ao banco de dados");
+    console.log('conectado ao banco de dados');
   })
   .catch((err) => {
-
-    console.log(`Sem sucesso na conexão com o banco de dados ${err} `);
+    console.log(`Sem sucesso na conexão com o banco de dados ${err}`);
   });
+
 
 // Sincronizar modelos sem excluir tabelas existentes
 // Sequelize.sync({ alter: true })
@@ -32,4 +32,5 @@ Sequelize.authenticate()
 //     console.error("Erro ao sincronizar modelos:", err);
 // });
 
-module.exports = Sequelize;
+export default Sequelize;
+

@@ -1,16 +1,13 @@
-const { USER_API_HOST, USER_API_KEY } = require("../config/env")
-const axios = require("axios");
+import { USER_API_HOST, USER_API_KEY } from "../config/env.js";
+import axios from "axios";
 
 const USER_API = axios.create({
   baseURL: USER_API_HOST,
-  headers: {
-  },
 });
 
 USER_API.interceptors.request.use(
   (config) => {
     config.headers["x-api-key"] = USER_API_KEY;
-
     return config;
   },
   (error) => {
@@ -18,4 +15,4 @@ USER_API.interceptors.request.use(
   }
 );
 
-module.exports = USER_API;
+export default USER_API;

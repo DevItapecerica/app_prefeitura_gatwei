@@ -1,6 +1,7 @@
-const fs = require("fs");
-const path = require("path");
-const UPLOAD_DIR = path.join(__dirname, "../../uploads")
+import fs from 'fs';
+import path from 'path';
+
+const UPLOAD_DIR = path.join(path.dirname(import.meta.url), "../../uploads");
 
 const removeFile = (filename) => {
   fs.unlink(`${UPLOAD_DIR}/${filename}`, (error) => {
@@ -12,4 +13,4 @@ const removeFile = (filename) => {
   });
 };
 
-module.exports = removeFile;
+export default removeFile;

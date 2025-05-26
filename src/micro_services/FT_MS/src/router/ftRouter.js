@@ -1,26 +1,26 @@
 
-const auth = require("../middleware/authAPI.js");
-const bolsistaSchema = require("../schema/bolsistaSchema.js");
-const bolsista = require("../controller/bolsistaController.js");
+import auth from "../middleware/authAPI.js";
+import * as BolsistaSchema from "../schema/bolsistaSchema.js";
+import * as Bolsista from "../controller/bolsistaController.js";
 
 
-const routes = async (fastify, options) => {
+export const routes = async (fastify, options) => {
   fastify.addHook("preHandler", auth);
 
   //get de bolsistas route
   fastify.route({
     method: "GET",
     url: "/",
-    schema: bolsistaSchema.getBolsistaSchema,
-    handler: bolsista.getBolsista,
+    schema: BolsistaSchema.getBolsistaSchema,
+    handler: Bolsista.getBolsista,
   });
 
     //get one de bolsistas route
     fastify.route({
       method: "GET",
       url: "/:id",
-      schema: bolsistaSchema.getOneBolsistaSchema,
-      handler: bolsista.getOneBolsista,
+      schema: BolsistaSchema.getOneBolsistaSchema,
+      handler: Bolsista.getOneBolsista,
     });
   
 
@@ -28,25 +28,23 @@ const routes = async (fastify, options) => {
   fastify.route({
     method: "POST",
     url: "/",
-    schema: bolsistaSchema.createBolsistaSchema,
-    handler: bolsista.createBolsista,
+    schema: BolsistaSchema.createBolsistaSchema,
+    handler: Bolsista.createBolsista,
   });
 
   //update de bolsistas route
   fastify.route({
     method: "PUT",
     url: "/:id",
-    schema: bolsistaSchema.updateBolsistaSchema,
-    handler: bolsista.updateBolsista,
+    schema: BolsistaSchema.updateBolsistaSchema,
+    handler: Bolsista.updateBolsista,
   });
 
   //delete de bolsistas route
   fastify.route({
     method: "DELETE",
     url: "/:id",
-    schema: bolsistaSchema.deleteBolsistaSchema,
-    handler: bolsista.deleteBolsista,
+    schema: BolsistaSchema.deleteBolsistaSchema,
+    handler: Bolsista.deleteBolsista,
   });
 };
-
-module.exports = routes;

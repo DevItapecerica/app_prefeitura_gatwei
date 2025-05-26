@@ -1,9 +1,7 @@
-const Bolsistas = require("../db/model/bolsistaModel.js");
-const {
-  getBolsistaById,
-} = require("../services/bolsista/bolsistaOperation.js");
+import Bolsistas from "../db/model/bolsistaModel.js";
+import {getBolsistaById} from "../services/bolsista/bolsistaOperation.js";
 
-const getBolsista = async (request, reply) => {
+export const getBolsista = async (request, reply) => {
   const bolsistas = await Bolsistas.findAll();
 
   return reply.status(200).send({
@@ -12,7 +10,7 @@ const getBolsista = async (request, reply) => {
   });
 };
 
-const getOneBolsista = async (request, reply) => {
+export const getOneBolsista = async (request, reply) => {
   const { id } = request.params;
   const bolsista = await getBolsistaById(id);
 
@@ -22,7 +20,7 @@ const getOneBolsista = async (request, reply) => {
   });
 };
 
-const createBolsista = async (request, reply) => {
+export const createBolsista = async (request, reply) => {
   const {
     bco,
     ag,
@@ -55,7 +53,7 @@ const createBolsista = async (request, reply) => {
   });
 };
 
-const updateBolsista = async (request, reply) => {
+export const updateBolsista = async (request, reply) => {
   const { id } = request.params;
   const bolsista = await getBolsistaById(id);
 
@@ -91,7 +89,7 @@ const updateBolsista = async (request, reply) => {
   });
 };
 
-const deleteBolsista = async (request, reply) => {
+export const deleteBolsista = async (request, reply) => {
   const { id } = request.params;
   const bolsista = await getBolsistaById(id);
 
@@ -100,12 +98,4 @@ const deleteBolsista = async (request, reply) => {
   return reply.status(200).send({
     message: "Bolsista deleted successfully",
   });
-};
-
-module.exports = {
-  getBolsista,
-  getOneBolsista,
-  createBolsista,
-  updateBolsista,
-  deleteBolsista,
 };

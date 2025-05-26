@@ -1,5 +1,5 @@
-const { fileTypeFromFile } = require("file-type");
-const fs = require("fs");
+import { fileTypeFromFile } from "file-type";
+import fs from "fs";
 
 const mimeTypes = {
   jpg: "image/jpeg",
@@ -29,7 +29,7 @@ const mimeValidation = async (file, mimeFile, fieldname) => {
     }
 
     if (mimeFile !== fileType.mime) {
-      throw { status: 400, message: "Para de graça, salafrario" };
+      throw { status: 400, message: "Para de graça, salafrário" };
     }
 
     return fileType;
@@ -48,12 +48,7 @@ const archiveValidation = (Data) => {
     };
   }
 
-  return type
+  return type;
 };
 
-module.exports = {
-  mimeValidation,
-  mimeTypes,
-  fieldBD,
-  archiveValidation,
-};
+export { mimeValidation, mimeTypes, fieldBD, archiveValidation };

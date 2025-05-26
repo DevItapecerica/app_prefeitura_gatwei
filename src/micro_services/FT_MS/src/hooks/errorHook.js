@@ -42,4 +42,4 @@ const errorHook = (error, reply) => {
   // Verifica o tipo de erro e responde com o status adequado
 };
 
-module.exports = { errorHook };
+export default errorHook;

@@ -1,32 +1,34 @@
-const permissions_api = require("../api/permissions_api");
-const user_api = require("../api/user_api");
+import permissions_api from '../api/permissions_api.js';
+import user_api from '../api/user_api.js';
 
-const verifyPermission = async (user, service, methode) => {
-  let permissions = await permissions_api.get(`/permission/service/${service}`);
-
-  let roles_permission = permissions.data.permissions.find(
+export const verifyPermission = async (user, service, methode) => {
+  const permissions = await permissions_api.get(`/permission/service/${service}`);
+  const roles_permission = permissions.data.permissions.find(
     (permission) => permission.role_id == user.role
   );
 
-  let responseUser = await user_api.get(`/user/${user.id}`);
-  let userData = responseUser.data.user;
-  let responseSetorvisibility = await permissions_api.get(`/visibility/setor/${userData.setor_id}`);
+  const responseUser = await user_api.get(`/user/${user.id}`);
+  const userData = responseUser.data.user;
 
-  let setorServiceVisibility = responseSetorvisibility.data.visibility.filter(visibility => {
-    return visibility.service_id == service;
-  })
+  const responseSetorvisibility = await permissions_api.get(`/visibility/setor/${userData.setor_id}`);
+  const setorServiceVisibility = responseSetorvisibility.data.visibility.filter(
+    (visibility) => visibility.service_id == service
+  );
+
+  const isVisible = setorServiceVisibility[0]?.visibility;
 
   switch (methode) {
     case "GET":
-      if (!roles_permission.read || !setorServiceVisibility[0].visibility) {
+      if (!roles_permission?.read || !isVisible) {
         throw {
           status: 401,
           message: "You don't have the right to read this service",
         };
       }
       break;
+
     case "POST":
-      if (!roles_permission.write || !setorServiceVisibility[0].visibility) {
+      if (!roles_permission?.write || !isVisible) {
         throw {
           status: 401,
           message: "You don't have the right to write this service",
@@ -35,7 +37,7 @@ const verifyPermission = async (user, service, methode) => {
       break;
 
     case "PUT":
-      if (!roles_permission.edit || !setorServiceVisibility[0].visibility) {
+      if (!roles_permission?.edit || !isVisible) {
         throw {
           status: 401,
           message: "You don't have the right to edit this service",
@@ -44,10 +46,10 @@ const verifyPermission = async (user, service, methode) => {
       break;
 
     case "DELETE":
-      if (!roles_permission.del || !setorServiceVisibility[0].visibility) {
+      if (!roles_permission?.del || !isVisible) {
         throw {
           status: 401,
-          message: "You don't have the right to del this service",
+          message: "You don't have the right to delete this service",
         };
       }
       break;
@@ -55,8 +57,4 @@ const verifyPermission = async (user, service, methode) => {
     default:
       return false;
   }
-};
-
-module.exports = {
-  verifyPermission,
 };

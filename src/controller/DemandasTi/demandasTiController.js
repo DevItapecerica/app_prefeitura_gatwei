@@ -1,7 +1,7 @@
-const { verifyPermission } = require("../../utils/verifyPermission");
-const user_api = require("../../api/user_api");
-const setor_api = require("../../api/setor_api");
-const demandas_api = require("../../api/demandas_api");
+import { verifyPermission } from "../../utils/verifyPermission.js";
+import user_api from "../../api/user_api.js";
+import setor_api from "../../api/setor_api.js";
+import demandas_api from "../../api/demandas_api.js";
 
 const SERVICE = 4;
 
@@ -11,7 +11,6 @@ const getDemandas = async (request, reply) => {
 
     await verifyPermission(user, SERVICE, request.method);
 
-
     let demandas = null;
     let response = null;
 
@@ -20,9 +19,6 @@ const getDemandas = async (request, reply) => {
 
     switch (user.role) {
       case "1":
-        response = await demandas_api.get(`/demandas`);
-        demandas = response.data;
-        break;
       case "2":
         response = await demandas_api.get(`/demandas`);
         demandas = response.data;
@@ -42,17 +38,17 @@ const getDemandas = async (request, reply) => {
         break;
     }
 
-    reply.status(200).send({ ...demandas, ...setores});
+    reply.status(200).send({ ...demandas, ...setores });
   } catch (error) {
     throw error;
   }
 };
+
 const getOneDemandas = async (request, reply) => {
   try {
     let user = request.user;
 
     await verifyPermission(user, SERVICE, request.method);
-
 
     let id = request.params.id;
     let response = await demandas_api.get(`/demandas/${id}`);
@@ -62,12 +58,12 @@ const getOneDemandas = async (request, reply) => {
     throw error;
   }
 };
+
 const getUserDemandas = async (request, reply) => {
   try {
     let user = request.user;
 
     await verifyPermission(user, SERVICE, request.method);
-
 
     const setorResponse = await setor_api.get("/setor");
     const setores = setorResponse.data;
@@ -86,8 +82,6 @@ const getHistoryDemandas = async (request, reply) => {
 
     await verifyPermission(user, SERVICE, request.method);
 
-
-
     let demandas;
     let response;
 
@@ -96,9 +90,6 @@ const getHistoryDemandas = async (request, reply) => {
 
     switch (user.role) {
       case "1":
-        response = await demandas_api.get(`/demandas/history`);
-        demandas = response.data;
-        break;
       case "2":
         response = await demandas_api.get(`/demandas/history`);
         demandas = response.data;
@@ -112,7 +103,7 @@ const getHistoryDemandas = async (request, reply) => {
 
         demandas = response.data;
         break;
-        default:
+      default:
         response = await demandas_api.get(`/demandas/history/user/${user.id}`);
         demandas = response.data;
         break;
@@ -129,7 +120,6 @@ const deleteDemandas = async (request, reply) => {
 
   await verifyPermission(user, SERVICE, request.method);
 
-
   let id = request.params.id;
   let demandas = await demandas_api.deleteDemandas(id);
 
@@ -141,7 +131,6 @@ const updateDemandas = async (request, reply) => {
   let demandaId = request.params.id;
 
   await verifyPermission(user, SERVICE, request.method);
-
 
   let { id } = request.user;
   let demanda = request.body.demanda;
@@ -157,11 +146,11 @@ const updateDemandas = async (request, reply) => {
 
   reply.status(204);
 };
+
 const createDemandas = async (request, reply) => {
   let user = request.user;
 
   await verifyPermission(user, SERVICE, request.method);
-
 
   let { id } = request.user;
   let demanda = request.body.demanda;
@@ -183,9 +172,7 @@ const assumeDemandas = async (request, reply) => {
 
   await verifyPermission(user, SERVICE, request.method);
 
-
-
-  //id da demanda
+  // id da demanda
   let id = request.params.id;
   let user_id = user.id;
 
@@ -201,7 +188,6 @@ const finishDemandas = async (request, reply) => {
 
   await verifyPermission(user, SERVICE, request.method);
 
-
   let id = request.params.id;
 
   let demandas = await demandas_api.put(`/demandas/${id}/finish`, {
@@ -211,17 +197,14 @@ const finishDemandas = async (request, reply) => {
   reply.status(204);
 };
 
-module.exports = {
+export {
   getDemandas,
   getOneDemandas,
   getUserDemandas,
-
   getHistoryDemandas,
-
   deleteDemandas,
   updateDemandas,
   createDemandas,
-
   assumeDemandas,
   finishDemandas,
 };

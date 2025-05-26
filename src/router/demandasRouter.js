@@ -1,10 +1,10 @@
-const Demandas = require("../controller/DemandasTi/demandasTiController");
-const auth = require("../middleware/authJWT");
-// const schema = require("../schema/userSchema")
+import * as Demandas from "../controller/DemandasTi/demandasTiController.js";
+import {authJWT} from "../middleware/authJWT.js";
+// import * as schema from "../schema/userSchema.js";
 
-async function demandasRouter(fastify, options) {
-  fastify.addHook("preHandler",auth);
-  
+export default async function demandasRouter(fastify, options) {
+  fastify.addHook("preHandler", authJWT);
+
   fastify.route({
     method: "GET",
     url: "/",
@@ -34,28 +34,28 @@ async function demandasRouter(fastify, options) {
   });
 
   fastify.route({
-    method: "delete",
+    method: "DELETE",
     url: "/:id",
     // schema: schema.deleteDemandas,
     handler: Demandas.deleteDemandas,
   });
 
   fastify.route({
-    method: "put",
+    method: "PUT",
     url: "/:id/assume",
     // schema: schema.deleteDemandas,
     handler: Demandas.assumeDemandas,
   });
 
   fastify.route({
-    method: "put",
+    method: "PUT",
     url: "/:id/finish",
     // schema: schema.deleteDemandas,
     handler: Demandas.finishDemandas,
   });
 
   fastify.route({
-    method: "post",
+    method: "POST",
     url: "/",
     // schema: schema.postDemandas,
     handler: Demandas.createDemandas,
@@ -68,5 +68,3 @@ async function demandasRouter(fastify, options) {
     handler: Demandas.updateDemandas,
   });
 }
-
-module.exports = demandasRouter;

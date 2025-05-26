@@ -1,8 +1,8 @@
-const Role = require("../controller/Permissions/rolesController");
-const auth = require("../middleware/authJWT");
+import * as Role from "../controller/Permissions/rolesController.js";
+import { authJWT } from "../middleware/authJWT.js";
 
 const roleRouter = (fastify, opt) => {
-fastify.addHook("preHandler",auth);
+  fastify.addHook("preHandler", authJWT);
 
   fastify.route({
     method: "POST",
@@ -11,7 +11,7 @@ fastify.addHook("preHandler",auth);
   });
 
   fastify.route({
-    method: "get",
+    method: "GET",
     url: "/",
     handler: Role.getRoles,
   });
@@ -27,8 +27,6 @@ fastify.addHook("preHandler",auth);
     url: "/:id",
     handler: Role.deleteRoles,
   });
-
-
 };
 
-module.exports = roleRouter;
+export default roleRouter;

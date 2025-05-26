@@ -1,7 +1,7 @@
-const { DataTypes } = require("sequelize");
-const db = require("../context");
+import { DataTypes } from "sequelize";
+import Sequelize from "../context.js";
 
-const Bolsa = db.define(
+const Bolsistas = Sequelize.define(
   "Bolsistas",
   {
     id: {
@@ -60,4 +60,4 @@ const Bolsa = db.define(
   }
 );
 
-module.exports = Bolsa;
+export default Bolsistas;

@@ -1,60 +1,51 @@
-const { PORT } = require("./src/config/env");
+import fastify from "fastify";
+import cors from "@fastify/cors";
+import fastifySwagger from "@fastify/swagger";
+import fastifySwaggerUi from "@fastify/swagger-ui";
+import fastifyMultipart from "@fastify/multipart";
+
+import { PORT } from "./src/config/env.js";
+import { swaggerConfig, swaggerUiConfig } from "./src/config/swaggerConfig.js";
+import corsConfig from "./src/config/corsConfig.js";
+import errorHook from "./src/hooks/errorHook.js";
+
+import {routes as ftRoutes} from "./src/router/ftRouter.js";
+import uploadRouter from "./src/router/uploadRouter.js";
+import authRouter from "./src/router/authRouter.js";
 
 const port = PORT || 8001;
 
-// fastify
-const fastify = require("fastify")();
-const cors = require("@fastify/cors");
-const fastifySwagger = require("@fastify/swagger");
-const fastifySwaggerUi = require("@fastify/swagger-ui");
+const app = fastify();
 
-// swagger
-const { swaggerConfig, swaggerUiConfig } = require("./src/config/swaggerConfig");
-const { corsConfig } = require("./src/config/corsConfig");
+// Plugins
+await app.register(cors, corsConfig);
 
-// hooks
-const { errorHook } = require("./src/hooks/errorHook");
-
-// router
-const ftRoutes = require("./src/router/ftRouter");
-const uploadRouter = require("./src/router/uploadRouter");
-const authRouter = require("./src/router/authRouter");
-
-// plugins
-fastify.register(cors, corsConfig);
-
-fastify.register(require("@fastify/multipart"), {
+await app.register(fastifyMultipart, {
   limits: {
     fileSize: 5 * 1024 * 1024, // 5MB
   },
 });
 
-fastify.register(fastifySwagger, swaggerConfig(port));
-fastify.register(fastifySwaggerUi, swaggerUiConfig);
+await app.register(fastifySwagger, swaggerConfig(port));
+await app.register(fastifySwaggerUi, swaggerUiConfig);
 
-// hooks register
-fastify.setErrorHandler((error, request, reply) => {
+// Hooks
+app.setErrorHandler((error, request, reply) => {
   console.log("----------------------------------------------------------");
-  console.log("error: " + error)
+  console.log("error:", error);
   console.log("----------------------------------------------------------");
   errorHook(error, reply);
 });
 
-// routes register
-fastify.register(ftRoutes, {
-  prefix: "/ft/bolsista",
-});
-fastify.register(uploadRouter, {
-  prefix: "/ft/img",
-});
-fastify.register(authRouter, {
-  prefix: "/ft/auth",
-});
+// Rotas
+await app.register(ftRoutes, { prefix: "/ft/bolsista" });
+await app.register(uploadRouter, { prefix: "/ft/img" });
+await app.register(authRouter, { prefix: "/ft/auth" });
 
-// fastify instance
+// Start server
 const start = async () => {
   try {
-    await fastify.listen({ port, host: "0.0.0.0" });
+    await app.listen({ port, host: "0.0.0.0" });
     console.log(`Server is running on port ${port}`);
   } catch (error) {
     console.error("Erro ao iniciar o servidor:", error);
