@@ -143,3 +143,5 @@ dist
 *.svg
 *.ico
 *.pdf
+
+uploads/*
