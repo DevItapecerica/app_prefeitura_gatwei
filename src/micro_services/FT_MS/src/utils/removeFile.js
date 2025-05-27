@@ -1,10 +1,13 @@
 import fs from 'fs';
 import path from 'path';
 
-const UPLOAD_DIR = path.join(path.dirname(import.meta.url), "../../uploads");
+// const UPLOAD_DIR = path.join(path.dirname(import.meta.url.split("file:")[1]), "../../uploads");
 
 const removeFile = (filename) => {
-  fs.unlink(`${UPLOAD_DIR}/${filename}`, (error) => {
+
+  // const arch = path.join(UPLOAD_DIR, filename); 
+  // fs.unlink(arch, (error) => {
+  fs.unlink(filename, (error) => {
     if (error) {
       console.error("Error deleting file:", error);
     } else {

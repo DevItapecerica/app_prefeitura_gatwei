@@ -1,16 +1,13 @@
 import handleFileUpload from "../services/upload/handleFileUpload.js";
 import { getArchivePath, getOneArchive } from "../utils/getArchive.js";
-import {
-  mimeValidation,
-  fieldBD,
-} from "../services/upload/validations.js";
+import { mimeValidation, fieldBD } from "../services/upload/validations.js";
 import removeFile from "../utils/removeFile.js";
 import {
   saveArchive,
   searchArchive,
   updateArchive,
 } from "../services/upload/archiveDBManipulation.js";
-import ftImageDB from "../db/model/ftImageModel.js";
+import ftImageDB from "../db/model/Image.js";
 
 export const postDoc = async (request, reply) => {
   let uploadedFiles = [];
@@ -32,7 +29,7 @@ export const postDoc = async (request, reply) => {
 
       // verify if upload is okay
       const mime = await mimeValidation(
-        response.file.filePath,
+        path,
         response.file.mimeFile,
         response.file.fieldname
       );
@@ -40,6 +37,7 @@ export const postDoc = async (request, reply) => {
       console.log(mime);
       // caso seja updateArchive, atualiza e remove o antigo
       if (response.existingFile) {
+        console.log("Arquivo já existe, atualizando...");
         await updateArchive(response.file, id, response.type, mime.ext);
         removeFile(response.existingFile.path);
       } else {
@@ -56,7 +54,8 @@ export const postDoc = async (request, reply) => {
       message: "Upload concluído com sucesso " + uploadedFiles,
     });
   } catch (error) {
-    if (path) removeFile(path);
+
+    if (path) await removeFile(path);
 
     error.message += `. Arquivos upados com sucesso: ${
       uploadedFiles.length > 0 ? uploadedFiles : "anyone"

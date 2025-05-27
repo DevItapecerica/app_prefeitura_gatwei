@@ -1,4 +1,4 @@
-import Bolsistas from "../../db/model/bolsistaModel.js";
+import Bolsistas from "../../db/model/Bolsistas.js";
 
 export const getBolsistaById = async (id) => {
   const bolsista = await Bolsistas.findByPk(id);

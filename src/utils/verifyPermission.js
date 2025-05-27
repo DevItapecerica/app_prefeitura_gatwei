@@ -8,6 +8,7 @@ export const verifyPermission = async (user, service, methode) => {
   );
 
   const responseUser = await user_api.get(`/user/${user.id}`);
+
   const userData = responseUser.data.user;
 
   const responseSetorvisibility = await permissions_api.get(`/visibility/setor/${userData.setor_id}`);

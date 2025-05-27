@@ -1,4 +1,4 @@
-import Bolsistas from "../db/model/bolsistaModel.js";
+import Bolsistas from "../db/model/Bolsistas.js";
 import {getBolsistaById} from "../services/bolsista/bolsistaOperation.js";
 
 export const getBolsista = async (request, reply) => {

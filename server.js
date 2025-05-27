@@ -25,7 +25,7 @@ const port = PORT || 8000;
 const fastify = Fastify();
 
 // plugins
-await fastify.register(loggerPlugin);
+await fastify.register(loggerPlugin); 
 await fastify.register(cors, corsConfig);
 await fastify.register(fastifyCookie);
 await fastify.register(fastifySwagger, swaggerConfig(port));

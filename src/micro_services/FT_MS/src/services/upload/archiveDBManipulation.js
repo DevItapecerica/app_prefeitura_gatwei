@@ -1,4 +1,4 @@
-import ftImageDB from "../../db/model/ftImageModel.js";
+import ftImageDB from "../../db/model/Image.js";
 
 // save archive ande remove old file
 export const saveArchive = async (file, bolsista, type, mime) => {

@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import Sequelize from "../context.js"; // <-- corrigido aqui
 
-const ftImageDB = Sequelize.define(
+const Image = Sequelize.define(
   "Image",
   {
     id: {
@@ -32,4 +32,4 @@ const ftImageDB = Sequelize.define(
   }
 );
 
-export default ftImageDB;
+export default Image;
