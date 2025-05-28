@@ -1,9 +1,6 @@
 import { DataTypes } from "sequelize";
 import Sequelize from "../context.js";
 
-import BolsistaEdital from "./BolsistasEditais.js";
-import Editais from "./Editais.js";
-
 const Bolsistas = Sequelize.define(
   "Bolsistas",
   {

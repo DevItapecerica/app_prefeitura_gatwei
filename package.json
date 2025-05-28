@@ -2,7 +2,7 @@
   "name": "Gerenciamento_Prefeitura",
   "version": "1.0.0",
   "description": "API para gestão e controle de serviços na Prefeitura",
-    "keywords": [
+  "keywords": [
     "API",
     "Prefeitura",
     "Gerenciamento",
@@ -22,7 +22,6 @@
     "setor": "nodemon src/micro_services/Setor_MS/server.js",
     "login": "nodemon src/micro_services/Login_MS/server.js"
   },
-
   "dependencies": {
     "@fastify/cookie": "^11.0.2",
     "@fastify/cors": "^10.0.2",
@@ -37,6 +36,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "esbuild": "^0.25.5",
     "nodemon": "^3.1.9"
   }
 }
