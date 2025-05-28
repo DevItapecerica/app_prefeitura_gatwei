@@ -12,7 +12,13 @@ const Image = Sequelize.define(
     bolsista_id: {
       type: DataTypes.UUID,
       allowNull: false,
+      references: {
+        model: "Bolsistas",
+        key: "id",
+      },
+      onDelete: "CASCADE",
     },
+
     type_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -29,6 +35,7 @@ const Image = Sequelize.define(
   {
     tableName: "Image",
     timestamps: true,
+    paranoid: true,
   }
 );
 

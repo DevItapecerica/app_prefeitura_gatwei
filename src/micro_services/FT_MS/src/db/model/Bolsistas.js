@@ -33,11 +33,7 @@ const Bolsistas = Sequelize.define(
       type: DataTypes.STRING, // VARCHAR (sem limite explícito, padrão do Sequelize)
       allowNull: false,
     },
-    bolsa: {
-      type: DataTypes.DECIMAL(10, 2), // número com até 10 dígitos, 2 casas decimais
-      allowNull: false,
-    },
-    vencimento: {
+    vencimento: { // verificar se vem do edital ou não
       type: DataTypes.INTEGER, // para armazenar apenas o dia do mês (1-31)
       allowNull: false,
       validate: {
@@ -52,6 +48,11 @@ const Bolsistas = Sequelize.define(
     local: {
       type: DataTypes.STRING, // VARCHAR
       allowNull: false,
+    },
+    status: {
+      type: DataTypes.ENUM("ativo", "inativo", "pendente"), // valores possíveis
+      allowNull: false,
+      defaultValue: "pendente", // valor padrão
     },
   },
   {

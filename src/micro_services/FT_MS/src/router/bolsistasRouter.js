@@ -4,7 +4,7 @@ import * as BolsistaSchema from "../schema/bolsistaSchema.js";
 import * as Bolsista from "../controller/bolsistaController.js";
 
 
-export const routes = async (fastify, options) => {
+const bolsistaRouter = async (fastify, options) => {
   fastify.addHook("preHandler", auth);
 
   //get de bolsistas route
@@ -48,3 +48,5 @@ export const routes = async (fastify, options) => {
     handler: Bolsista.deleteBolsista,
   });
 };
+
+export default bolsistaRouter;

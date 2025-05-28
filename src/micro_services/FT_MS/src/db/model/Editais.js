@@ -25,6 +25,8 @@ const Editais = Sequelize.define(
   {
     tableName: "Editais", // Nome da tabela no banco (pode personalizar)
     timestamps: false, // Desativa createdAt/updatedAt se não forem usados
+    paranoid: true,
+
   }
 );
 

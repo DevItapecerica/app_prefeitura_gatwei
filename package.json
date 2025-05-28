@@ -36,7 +36,6 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "esbuild": "^0.25.5",
     "nodemon": "^3.1.9"
   }
 }

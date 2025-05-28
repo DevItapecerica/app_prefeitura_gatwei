@@ -1,8 +1,9 @@
-import Bolsistas from "../db/model/Bolsistas.js";
-import {getBolsistaById} from "../services/bolsista/bolsistaOperation.js";
+// import Bolsistas from "../db/model/Bolsistas.js";
+import * as Bolsista from "../services/bolsista/bolsistaOperation.js";
+import saveBolsista from "../services/bolsista/saveBolsista.js";
 
 export const getBolsista = async (request, reply) => {
-  const bolsistas = await Bolsistas.findAll();
+  const bolsistas = await Bolsista.getAllBolsistas();
 
   return reply.status(200).send({
     message: "Bolsista get successfully",
@@ -12,7 +13,7 @@ export const getBolsista = async (request, reply) => {
 
 export const getOneBolsista = async (request, reply) => {
   const { id } = request.params;
-  const bolsista = await getBolsistaById(id);
+  const bolsista = await Bolsista.getBolsistaById(id);
 
   return reply.status(200).send({
     message: "Bolsista get successfully",
@@ -21,67 +22,22 @@ export const getOneBolsista = async (request, reply) => {
 };
 
 export const createBolsista = async (request, reply) => {
-  const {
-    bco,
-    ag,
-    dig_ag,
-    conta,
-    dig_conta,
-    nome,
-    bolsa,
-    vencimento,
-    cpf,
-    local,
-  } = request.body;
+  const data = request.body;
 
-  const newBolsista = await Bolsistas.create({
-    bco: bco,
-    ag: ag,
-    dig_ag: dig_ag,
-    conta: conta,
-    dig_conta: dig_conta,
-    nome: nome,
-    bolsa: bolsa,
-    vencimento: vencimento,
-    cpf: cpf,
-    local: local,
-  });
+  let bolsista = await saveBolsista(data);
 
   return reply.status(201).send({
     message: "Bolsista created successfully",
-    bolsista: newBolsista,
+    bolsista,
   });
 };
 
 export const updateBolsista = async (request, reply) => {
   const { id } = request.params;
-  const bolsista = await getBolsistaById(id);
+  const data = request.body;
 
-  const {
-    bco,
-    ag,
-    dig_ag,
-    conta,
-    dig_conta,
-    nome,
-    bolsa,
-    vencimento,
-    cpf,
-    local,
-  } = request.body;
+  const bolsista = await saveBolsista(data, id);
 
-  await bolsista.update({
-    bco: bco,
-    ag: ag,
-    dig_ag: dig_ag,
-    conta: conta,
-    dig_conta: dig_conta,
-    nome: nome,
-    bolsa: bolsa,
-    vencimento: vencimento,
-    cpf: cpf,
-    local: local,
-  });
 
   return reply.status(200).send({
     message: "Bolsista updated successfully",
@@ -91,9 +47,8 @@ export const updateBolsista = async (request, reply) => {
 
 export const deleteBolsista = async (request, reply) => {
   const { id } = request.params;
-  const bolsista = await getBolsistaById(id);
 
-  await bolsista.destroy();
+  await Bolsista.deleteBolsista(id);
 
   return reply.status(200).send({
     message: "Bolsista deleted successfully",

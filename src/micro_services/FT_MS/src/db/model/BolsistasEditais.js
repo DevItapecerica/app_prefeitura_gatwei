@@ -26,6 +26,8 @@ const BolsistasEditais = Sequelize.define(
   {
     tableName: "BolsistasEditais",
     timestamps: false,
+    paranoid: true,
+
   }
 );
 

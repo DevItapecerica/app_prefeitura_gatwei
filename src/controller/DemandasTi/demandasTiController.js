@@ -152,16 +152,21 @@ const createDemandas = async (request, reply) => {
 
   await verifyPermission(user, SERVICE, request.method);
 
-  let { id } = request.user;
   let demanda = request.body.demanda;
 
-  let userResponse = await user_api.get(`/user/${user.id}`);
-  let userData = userResponse.data.user;
+  let {data} = await user_api.get(`/user/${user.id}`);
+  let userData = data.user;
+  console.log("---------------------------------------------")
+  console.log("---------------------------------------------")
+  console.log(demanda)
+  console.log("---------------------------------------------")
+  console.log("---------------------------------------------")
 
   let response = await demandas_api.post("/demandas", {
     demanda,
     user: { ...userData },
   });
+
   let newDemanda = response.data;
 
   reply.status(200).send({ demanda: { ...newDemanda } });

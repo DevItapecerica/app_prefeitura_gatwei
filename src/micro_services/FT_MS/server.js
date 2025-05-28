@@ -13,7 +13,7 @@ import corsConfig from "./src/config/corsConfig.js";
 import errorHook from "./src/hooks/errorHook.js";
 
 // routers
-import { routes as ftRoutes } from "./src/router/ftRouter.js";
+import bolsistaRouter from "./src/router/bolsistasRouter.js";
 import uploadRouter from "./src/router/uploadRouter.js";
 import authRouter from "./src/router/authRouter.js";
 
@@ -44,7 +44,7 @@ fastify.setErrorHandler((error, request, reply) => {
 });
 
 // Rotas
-await fastify.register(ftRoutes, { prefix: "/ft/bolsista" });
+await fastify.register(bolsistaRouter, { prefix: "/ft/bolsista" });
 await fastify.register(uploadRouter, { prefix: "/ft/img" });
 await fastify.register(authRouter, { prefix: "/ft/auth" });
 

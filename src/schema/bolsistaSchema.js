@@ -8,7 +8,6 @@ const bolsistaProperties = {
   conta: { type: "string", maxLength: 10 },
   dig_conta: { type: "string", maxLength: 1 },
   nome: { type: "string" },
-  bolsa: { type: "number" },
   vencimento: { type: "integer" },
   cpf: { 
     type: "string", 
@@ -83,7 +82,6 @@ const createBolsistaSchema = {
       "conta",
       "dig_conta",
       "nome",
-      "bolsa",
       "vencimento",
       "cpf",
       "local",
@@ -95,7 +93,6 @@ const createBolsistaSchema = {
       conta: { type: "string", maxLength: 10 },
       dig_conta: { type: "string", maxLength: 1 },
       nome: { type: "string" },
-      bolsa: { type: "number", minimum: 0 },
       vencimento: { type: "integer", minimum: 1, maximum: 31 },
       cpf: { 
         type: "string", 
@@ -134,7 +131,6 @@ const updateBolsistaSchema = {
       "conta",
       "dig_conta",
       "nome",
-      "bolsa",
       "vencimento",
       "cpf",
       "local",
@@ -146,7 +142,6 @@ const updateBolsistaSchema = {
       conta: { type: "string", maxLength: 10 },
       dig_conta: { type: "string", maxLength: 1 },
       nome: { type: "string" },
-      bolsa: { type: "number", minimum: 0 },
       vencimento: { type: "integer", minimum: 1, maximum: 31 },
       cpf: { 
         type: "string", 
