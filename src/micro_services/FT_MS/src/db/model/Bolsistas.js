@@ -33,14 +33,6 @@ const Bolsistas = Sequelize.define(
       type: DataTypes.STRING, // VARCHAR (sem limite explícito, padrão do Sequelize)
       allowNull: false,
     },
-    vencimento: { // verificar se vem do edital ou não
-      type: DataTypes.INTEGER, // para armazenar apenas o dia do mês (1-31)
-      allowNull: false,
-      validate: {
-        min: 1,
-        max: 31,
-      },
-    },
     cpf: {
       type: DataTypes.STRING(11), // até 11 caracteres
       allowNull: false,

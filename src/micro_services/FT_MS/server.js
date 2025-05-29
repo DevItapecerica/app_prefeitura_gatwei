@@ -16,6 +16,7 @@ import errorHook from "./src/hooks/errorHook.js";
 import bolsistaRouter from "./src/router/bolsistasRouter.js";
 import uploadRouter from "./src/router/uploadRouter.js";
 import authRouter from "./src/router/authRouter.js";
+import editalRouter from "./src/router/editalRouter.js";
 
 // outros
 import "./src/db/model/associations.js";
@@ -47,6 +48,7 @@ fastify.setErrorHandler((error, request, reply) => {
 await fastify.register(bolsistaRouter, { prefix: "/ft/bolsista" });
 await fastify.register(uploadRouter, { prefix: "/ft/img" });
 await fastify.register(authRouter, { prefix: "/ft/auth" });
+await fastify.register(editalRouter, { prefix: "/ft/edital" });
 
 // Start server
 const start = async () => {

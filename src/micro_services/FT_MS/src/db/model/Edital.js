@@ -1,33 +1,44 @@
 import { DataTypes } from "sequelize";
 import Sequelize from "../context.js";
 
-const Editais = Sequelize.define(
-  "Editais",
+const Edital = Sequelize.define(
+  "Edital",
   {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    nome: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    abertura: {
+    data_publicacao: {
       type: DataTypes.DATE,
       allowNull: false,
     },
-    fechamento: {
+    data_vencimento: {
       type: DataTypes.DATE,
+      allowNull: false,
+    },
+    dia_pagamento: {
+      type: DataTypes.INTEGER, // para armazenar apenas o dia do mês (1-31)
+      allowNull: false,
+      validate: {
+        min: 1,
+        max: 31,
+      },
+    },
+    valor_bolsa: {
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
   },
   {
-    tableName: "Editais", // Nome da tabela no banco (pode personalizar)
+    tableName: "Edital", // Nome da tabela no banco (pode personalizar)
     timestamps: false, // Desativa createdAt/updatedAt se não forem usados
     paranoid: true,
-
   }
 );
 
-export default Editais;
+export default Edital;

@@ -3,11 +3,11 @@ import * as Bolsista from "../services/bolsista/bolsistaOperation.js";
 import saveBolsista from "../services/bolsista/saveBolsista.js";
 
 export const getBolsista = async (request, reply) => {
-  const bolsistas = await Bolsista.getAllBolsistas();
+  const bolsista = await Bolsista.getAllBolsistas();
 
   return reply.status(200).send({
     message: "Bolsista get successfully",
-    bolsistas,
+    bolsista,
   });
 };
 
@@ -38,7 +38,6 @@ export const updateBolsista = async (request, reply) => {
 
   const bolsista = await saveBolsista(data, id);
 
-
   return reply.status(200).send({
     message: "Bolsista updated successfully",
     bolsista,
@@ -53,4 +52,15 @@ export const deleteBolsista = async (request, reply) => {
   return reply.status(200).send({
     message: "Bolsista deleted successfully",
   });
+};
+
+export const getBolsistaEdital = async (request, reply) => {
+  const { id } = request.params;
+
+  const bolsista = await Bolsista.getBolsistaByEditalId(id);
+
+  reply.status(200).send({
+    message: "Bolsista get successfully",
+    bolsista,
+  })
 };

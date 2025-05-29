@@ -47,6 +47,14 @@ const bolsistaRouter = async (fastify, options) => {
     schema: BolsistaSchema.deleteBolsistaSchema,
     handler: Bolsista.deleteBolsista,
   });
+
+  fastify.route({
+    method: "GET",
+    url: "/edital/:id",
+    // schema: BolsistaSchema.getEditalSchema,
+    handler: Bolsista.getBolsistaEdital,
+  })
+
 };
 
 export default bolsistaRouter;

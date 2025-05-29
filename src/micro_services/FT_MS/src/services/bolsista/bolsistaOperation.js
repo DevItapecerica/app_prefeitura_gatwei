@@ -1,4 +1,5 @@
 import Bolsistas from "../../db/model/Bolsistas.js";
+import Edital from "../../db/model/Edital.js";
 
 export const getBolsistaById = async (id) => {
   const bolsista = await Bolsistas.findByPk(id);
@@ -26,7 +27,7 @@ export const createBolsista = async (data) => {
     local: data.local,
   });
 
-  console.log(newBolsista)
+  console.log(newBolsista);
 
   return newBolsista;
 };
@@ -58,7 +59,7 @@ export const updateBolsista = async (data, id) => {
 
 export const deleteBolsista = async (id) => {
   const bolsista = await getBolsistaById(id);
-  
+
   if (!bolsista) {
     throw {
       status: 404,
@@ -69,12 +70,29 @@ export const deleteBolsista = async (id) => {
   return {
     message: "Bolsista deletado com sucesso",
   };
-}
+};
 export const getAllBolsistas = async () => {
   const bolsistas = await Bolsistas.findAll();
   return bolsistas;
-}
+};
 
+export const getBolsistaByEditalId = async (id) => {
+  const bolsista = await Bolsistas.findAll({
+    include: [
+      {
+        model: Edital,
+        as: "edital", // mesmo alias usado na associação
+        where: { id: id },
+        attributes: [], // opcional: evita trazer dados do edital
+        through: {
+          attributes: [], // não traz dados da tabela intermediária
+        },
+      },
+    ],
+  });
+
+  return bolsista;
+};
 export const getBolsistaByCpf = async (cpf) => {
   const bolsista = await Bolsistas.findOne({
     where: { cpf: cpf },
@@ -88,7 +106,7 @@ export const getBolsistaByCpf = async (cpf) => {
   }
 
   return bolsista;
-}
+};
 
 export const getBolsistaByName = async (name) => {
   const bolsista = await Bolsistas.findOne({
@@ -103,4 +121,4 @@ export const getBolsistaByName = async (name) => {
   }
 
   return bolsista;
-}
+};

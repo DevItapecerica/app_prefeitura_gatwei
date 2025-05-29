@@ -1,5 +1,24 @@
 import errorSchema from "./errorSchema.js";
 
+const bolsista = {
+  type: "object",
+  properties: {
+    id: { type: "string", format: "uuid" },
+    bco: { type: "string", maxLength: 3 },
+    ag: { type: "string", maxLength: 4 },
+    dig_ag: { type: "string", maxLength: 1 },
+    conta: { type: "string", maxLength: 10 },
+    dig_conta: { type: "string", maxLength: 1 },
+    nome: { type: "string" },
+    bolsa: { type: "number" },
+    vencimento: { type: "integer" },
+    cpf: { type: "string", maxLength: 11 },
+    local: { type: "string" },
+    createdAt: { type: "string", format: "date-time" },
+    updatedAt: { type: "string", format: "date-time" },
+  },
+};
+
 const getBolsistaSchema = {
   tags: ["Bolsista"],
   security: [{ APIKey: [] }],
@@ -10,26 +29,9 @@ const getBolsistaSchema = {
       type: "object",
       properties: {
         message: { type: "string", example: "Bolsista geted successfully" },
-        bolsistas: {
+        bolsista: {
           type: "array",
-          items: {
-            type: "object",
-            properties: {
-              id: { type: "string" },
-              bco: { type: "string", maxLength: 3 },
-              ag: { type: "string", maxLength: 4 },
-              dig_ag: { type: "string", maxLength: 1 },
-              conta: { type: "string", maxLength: 10 },
-              dig_conta: { type: "string", maxLength: 1 },
-              nome: { type: "string" },
-              bolsa: { type: "number" },
-              vencimento: { type: "integer" },
-              cpf: { type: "string", maxLength: 11 },
-              local: { type: "string" },
-              createdAt: { type: "string", format: "date-time" },
-              updatedAt: { type: "string", format: "date-time" },
-            },
-          },
+          items: bolsista,
         },
       },
     },
@@ -55,24 +57,7 @@ const getOneBolsistaSchema = {
     200: {
       type: "object",
       properties: {
-        bolsista: {
-          type: "object",
-          properties: {
-            id: { type: "string" },
-            bco: { type: "string", maxLength: 3 },
-            ag: { type: "string", maxLength: 4 },
-            dig_ag: { type: "string", maxLength: 1 },
-            conta: { type: "string", maxLength: 10 },
-            dig_conta: { type: "string", maxLength: 1 },
-            nome: { type: "string" },
-            bolsa: { type: "number" },
-            vencimento: { type: "integer" },
-            cpf: { type: "string", maxLength: 11 },
-            local: { type: "string" },
-            createdAt: { type: "string", format: "date-time" },
-            updatedAt: { type: "string", format: "date-time" },
-          },
-        },
+        bolsista,
       },
     },
     ...errorSchema,
@@ -114,23 +99,7 @@ const createBolsistaSchema = {
       type: "object",
       properties: {
         message: { type: "string", example: "Bolsista created successfully" },
-        bolsista: {
-          type: "object",
-          properties: {
-            id: { type: "string" },
-            bco: { type: "string", maxLength: 3 },
-            ag: { type: "string", maxLength: 4 },
-            dig_ag: { type: "string", maxLength: 1 },
-            conta: { type: "string", maxLength: 10 },
-            dig_conta: { type: "string", maxLength: 1 },
-            nome: { type: "string" },
-            vencimento: { type: "integer" },
-            cpf: { type: "string", maxLength: 11 },
-            local: { type: "string" },
-            createdAt: { type: "string", format: "date-time" },
-            updatedAt: { type: "string", format: "date-time" },
-          },
-        },
+        bolsista
       },
     },
     ...errorSchema,
@@ -172,23 +141,7 @@ const updateBolsistaSchema = {
       type: "object",
       properties: {
         message: { type: "string", example: "Bolsista updated successfully" },
-        bolsista: {
-          type: "object",
-          properties: {
-            id: { type: "string" },
-            bco: { type: "string", maxLength: 3 },
-            ag: { type: "string", maxLength: 4 },
-            dig_ag: { type: "string", maxLength: 1 },
-            conta: { type: "string", maxLength: 10 },
-            dig_conta: { type: "string", maxLength: 1 },
-            nome: { type: "string" },
-            vencimento: { type: "integer" },
-            cpf: { type: "string", maxLength: 11 },
-            local: { type: "string" },
-            createdAt: { type: "string", format: "date-time" },
-            updatedAt: { type: "string", format: "date-time" },
-          },
-        },
+        bolsista
       },
     },
     ...errorSchema,

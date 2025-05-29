@@ -29,7 +29,7 @@ const getBolsistaSchema = {
       type: "object",
       properties: {
         message: { type: "string", example: "Bolsistas retrieved successfully" },
-        bolsistas: {
+        bolsista: {
           type: "array",
           items: {
             type: "object",

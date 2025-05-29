@@ -1,18 +1,18 @@
 import Bolsistas from "./Bolsistas.js";
-import Editais from "./Editais.js";
+import Edital from "./Edital.js";
 import Image from "./Image.js";
-import BolsistasEditais from "./BolsistasEditais.js";
+import BolsistasEdital from "./BolsistasEdital.js";
 
 // Definindo os relacionamentos N:N com alias
-Bolsistas.belongsToMany(Editais, {
-  through: BolsistasEditais,
+Bolsistas.belongsToMany(Edital, {
+  through: BolsistasEdital,
   foreignKey: "bolsista_id",
   otherKey: "edital_id",
-  as: "editais",
+  as: "edital",
 });
 
-Editais.belongsToMany(Bolsistas, {
-  through: BolsistasEditais,
+Edital.belongsToMany(Bolsistas, {
+  through: BolsistasEdital,
   foreignKey: "edital_id",  
   otherKey: "bolsista_id",
   as: "bolsistas",

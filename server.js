@@ -19,6 +19,7 @@ import serviceRouter from './src/router/serviceRouter.js';
 import demandasRouter from './src/router/demandasRouter.js';
 import roleRouter from './src/router/roleRouter.js';
 import FTRouter from './src/router/FTRouter.js';
+import editalRouter from './src/router/editalRouter.js';
 import authenticateRouter from './src/router/authenticateRouter.js';
 
 const port = PORT || 8000;
@@ -46,6 +47,7 @@ fastify.register(serviceRouter, { prefix: "/service" });
 fastify.register(demandasRouter, { prefix: "/demandas" });
 fastify.register(roleRouter, { prefix: "/roles" });
 fastify.register(FTRouter, { prefix: "/ft" });
+fastify.register(editalRouter, { prefix: "/ft" });
 fastify.register(authenticateRouter, { prefix: "/auth" });
 
 // server

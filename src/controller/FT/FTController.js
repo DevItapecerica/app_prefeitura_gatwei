@@ -6,13 +6,17 @@ const SERVICE = 6;
 export const getBolsistas = async (request, reply) => {
   try {
     let user = request.user;
+    await verifyPermission(user, SERVICE, request.method);
 
-    const [{ data }, { data: { token } }] = await Promise.all([
+    const [
+      { data },
+      {
+        data: { token },
+      },
+    ] = await Promise.all([
       ft_app_api.get("/ft/bolsista"),
       ft_app_api.get(`/ft/auth/${user}`),
     ]);
-
-    console.log(data, token);
 
     reply.status(200).send({ ...data, uploadToken: token });
   } catch (error) {
@@ -27,8 +31,6 @@ export const getOneBolsistas = async (request, reply) => {
     const { id } = request.params;
     const response = await ft_app_api.get(`/ft/bolsista/${id}`);
     const bolsistas = response.data;
-
-    console.log(bolsistas);
 
     reply.status(200).send(bolsistas);
   } catch (error) {
@@ -68,8 +70,6 @@ export const createBolsistas = async (request, reply) => {
     });
     const bolsista = response.data;
 
-    console.log(bolsista);
-
     reply.status(200).send(bolsista);
   } catch (error) {
     throw error;
@@ -94,7 +94,7 @@ export const updateBolsistas = async (request, reply) => {
       local,
     } = request.body;
 
-    const response = await ft_app_api.put(`/ft/bolsista/${id}`, {
+    const {data} = await ft_app_api.put(`/ft/bolsista/${id}`, {
       bco,
       ag,
       dig_ag,
@@ -106,9 +106,7 @@ export const updateBolsistas = async (request, reply) => {
       cpf,
       local,
     });
-    const bolsista = response.data;
-
-    console.log(bolsista);
+    const bolsista = data;
 
     reply.status(200).send(bolsista);
   } catch (error) {
@@ -122,9 +120,8 @@ export const deleteBolsistas = async (request, reply) => {
     await verifyPermission(user, SERVICE, request.method);
     const { id } = request.params;
 
-    const response = await ft_app_api.delete(`/ft/bolsista/${id}`);
-    console.log(response.data);
-    const message = response.data.message;
+    const {data} = await ft_app_api.delete(`/ft/bolsista/${id}`);
+    const message = data.message;
 
     reply.status(200).send(message);
   } catch (error) {

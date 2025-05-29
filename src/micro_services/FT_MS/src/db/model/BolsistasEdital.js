@@ -1,8 +1,8 @@
 import { DataTypes } from "sequelize";
 import Sequelize from "../context.js";
 
-const BolsistasEditais = Sequelize.define(
-  "BolsistasEditais",
+const BolsistasEdital = Sequelize.define(
+  "BolsistasEdital",
   {
     bolsista_id: {
       type: DataTypes.UUID,
@@ -17,18 +17,18 @@ const BolsistasEditais = Sequelize.define(
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: "Editais",
+        model: "Edital",
         key: "id",
       },
       onDelete: "CASCADE",
     },
   },
   {
-    tableName: "BolsistasEditais",
+    tableName: "BolsistasEdital",
     timestamps: false,
     paranoid: true,
 
   }
 );
 
-export default BolsistasEditais;
+export default BolsistasEdital;
