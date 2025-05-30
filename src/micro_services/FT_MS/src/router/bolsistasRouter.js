@@ -50,7 +50,7 @@ const bolsistaRouter = async (fastify, options) => {
 
   fastify.route({
     method: "GET",
-    url: "/edital/:id",
+    url: "/:id/edital",
     // schema: BolsistaSchema.getEditalSchema,
     handler: Bolsista.getBolsistaEdital,
   })

@@ -94,7 +94,7 @@ export const updateBolsistas = async (request, reply) => {
       local,
     } = request.body;
 
-    const {data} = await ft_app_api.put(`/ft/bolsista/${id}`, {
+    const { data } = await ft_app_api.put(`/ft/bolsista/${id}`, {
       bco,
       ag,
       dig_ag,
@@ -120,10 +120,23 @@ export const deleteBolsistas = async (request, reply) => {
     await verifyPermission(user, SERVICE, request.method);
     const { id } = request.params;
 
-    const {data} = await ft_app_api.delete(`/ft/bolsista/${id}`);
+    const { data } = await ft_app_api.delete(`/ft/bolsista/${id}`);
     const message = data.message;
 
     reply.status(200).send(message);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getBolsistaEdital = async (request, reply) => {
+  try {
+    let user = request.user;
+    await verifyPermission(user, SERVICE, request.method);
+    const { id } = request.params;
+    const { data } = await ft_app_api.get(`/ft/bolsista/${id}/edital`);
+    const bolsista = data;
+    reply.status(200).send(bolsista);
   } catch (error) {
     throw error;
   }

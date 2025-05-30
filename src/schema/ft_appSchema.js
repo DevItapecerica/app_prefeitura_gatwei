@@ -1,6 +1,6 @@
 const getTokenSchema = {
   tag: ["FT_APP", "FT_APP_AUTH"],
-  security: [{ APIKEY: [] }],
+  security: [{ APIKey: [], JWTToken: [] }],
   description:
     "Get a token for consume FT_APP_API to upload and download image",
   summary: "Get a token for consume FT_APP_API to upload and download image",

@@ -7,8 +7,9 @@ export const getEditais = async (request, reply) => {
   try {
     let user = request.user;
     await verifyPermission(user, SERVICE, request.method);
-    const { data } = FT_API.get("/ft/edital");
-
+    const response = await FT_API.get("/ft/edital");
+    const { data } = response;
+    console.log(data);
     reply.status(200).send({ ...data });
   } catch (error) {
     throw error;
@@ -20,9 +21,10 @@ export const getEditalById = async (request, reply) => {
     let user = request.user;
     await verifyPermission(user, SERVICE, request.method);
     const { id } = request.params;
-    const { data } = await FT_API.get(`/ft/edital/${id}`);
+    const response = await FT_API.get(`/ft/edital/${id}`);
+    const { data } = response;
 
-    reply.status(200).send(...data);
+    reply.status(200).send({ ...data });
   } catch (error) {
     throw error;
   }
@@ -36,12 +38,12 @@ export const postEdital = async (request, reply) => {
     const { edital } = request.body;
 
     const response = await FT_API.post(`/ft/edital`, {
-      ...edital,
+      edital,
     });
 
     const { data } = response;
 
-    reply.status(200).send(data);
+    reply.status(200).send({ ...data });
   } catch (error) {
     throw error;
   }
@@ -55,11 +57,11 @@ export const updateEdital = async (request, reply) => {
     const { edital } = request.body;
 
     const response = await FT_API.put(`/ft/edital/${id}`, {
-      ...edital,
+      edital,
     });
     const { data } = response;
 
-    reply.status(200).send(...data);
+    reply.status(200).send({ ...data });
   } catch (error) {
     throw error;
   }
@@ -73,9 +75,28 @@ export const deleteEdital = async (request, reply) => {
 
     const response = await ft_app_api.delete(`/ft/edital/${id}`);
 
-    const message = response.data.message;
+    const { data } = response;
 
-    reply.status(200).send(message);
+    reply.status(200).send({ ...data });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const vincularBolsista = async (request, reply) => {
+  try {
+    let user = request.user;
+    await verifyPermission(user, SERVICE, request.method);
+
+    const { id } = request.params;
+    const { bolsista } = request.body;
+
+    const response = await FT_API.post(`/ft/edital/vincularbolsista/${id}`, {
+      bolsista,
+    });
+
+    const { data } = response;
+    reply.status(200).send({ ...data });
   } catch (error) {
     throw error;
   }

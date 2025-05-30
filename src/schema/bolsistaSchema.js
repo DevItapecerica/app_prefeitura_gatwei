@@ -21,7 +21,7 @@ const bolsistaProperties = {
 
 const getBolsistaSchema = {
   tags: ["Bolsista"],
-  security: [{ APIKey: [] }],
+  security: [{ APIKey: [], JWTToken: [] }],
   description: "Get all bolsistas",
   summary: "Retrieve all bolsistas",
   response: {
@@ -45,7 +45,7 @@ const getBolsistaSchema = {
 
 const getOneBolsistaSchema = {
   tags: ["Bolsista"],
-  security: [{ APIKey: [] }],
+  security: [{ APIKey: [], JWTToken: [] }],
   description: "Get a bolsista by ID",
   summary: "Retrieve a single bolsista",
   params: {
@@ -70,7 +70,7 @@ const getOneBolsistaSchema = {
 
 const createBolsistaSchema = {
   tags: ["Bolsista"],
-  security: [{ APIKey: [] }],
+  security: [{ APIKey: [], JWTToken: [] }],
   description: "Create a new bolsista",
   summary: "Add a new bolsista to the system",
   body: {
@@ -82,7 +82,6 @@ const createBolsistaSchema = {
       "conta",
       "dig_conta",
       "nome",
-      "vencimento",
       "cpf",
       "local",
     ],
@@ -93,7 +92,6 @@ const createBolsistaSchema = {
       conta: { type: "string", maxLength: 10 },
       dig_conta: { type: "string", maxLength: 1 },
       nome: { type: "string" },
-      vencimento: { type: "integer", minimum: 1, maximum: 31 },
       cpf: { 
         type: "string", 
         maxLength: 11, 
@@ -119,7 +117,7 @@ const createBolsistaSchema = {
 
 const updateBolsistaSchema = {
   tags: ["Bolsista"],
-  security: [{ APIKey: [] }],
+  security: [{ APIKey: [], JWTToken: [] }],
   description: "Update an existing bolsista",
   summary: "Update the details of an existing bolsista",
   body: {
@@ -131,7 +129,6 @@ const updateBolsistaSchema = {
       "conta",
       "dig_conta",
       "nome",
-      "vencimento",
       "cpf",
       "local",
     ],
@@ -142,7 +139,6 @@ const updateBolsistaSchema = {
       conta: { type: "string", maxLength: 10 },
       dig_conta: { type: "string", maxLength: 1 },
       nome: { type: "string" },
-      vencimento: { type: "integer", minimum: 1, maximum: 31 },
       cpf: { 
         type: "string", 
         maxLength: 11, 
@@ -168,7 +164,7 @@ const updateBolsistaSchema = {
 
 const deleteBolsistaSchema = {
   tags: ["Bolsista"],
-  security: [{ APIKey: [] }],
+  security: [{ APIKey: [], JWTToken: [] }],
   description: "Delete a bolsista",
   summary: "Remove a bolsista from the system",
   response: {

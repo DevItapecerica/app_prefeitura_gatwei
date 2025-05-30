@@ -18,7 +18,7 @@ import setorRouter from './src/router/setorRouter.js';
 import serviceRouter from './src/router/serviceRouter.js';
 import demandasRouter from './src/router/demandasRouter.js';
 import roleRouter from './src/router/roleRouter.js';
-import FTRouter from './src/router/FTRouter.js';
+import bolsistaRouter from './src/router/bolsistaRouter.js';
 import editalRouter from './src/router/editalRouter.js';
 import authenticateRouter from './src/router/authenticateRouter.js';
 
@@ -46,8 +46,8 @@ fastify.register(setorRouter, { prefix: "/setor" });
 fastify.register(serviceRouter, { prefix: "/service" });
 fastify.register(demandasRouter, { prefix: "/demandas" });
 fastify.register(roleRouter, { prefix: "/roles" });
-fastify.register(FTRouter, { prefix: "/ft" });
-fastify.register(editalRouter, { prefix: "/ft" });
+fastify.register(bolsistaRouter, { prefix: "/ft/bolsista" });
+fastify.register(editalRouter, { prefix: "/ft/edital" });
 fastify.register(authenticateRouter, { prefix: "/auth" });
 
 // server

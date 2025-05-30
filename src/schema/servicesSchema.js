@@ -4,7 +4,7 @@ const getServices = {
   description: "Retorna todos os serviços",
   type: "object",
   tags: ["Services"],
-  security: [{ APIKey: [] }],
+  security: [{ APIKey: [], JWTToken: [] }],
   response: {
     200: {
       description: "Verificação bem sucedida",
@@ -43,7 +43,7 @@ const getOneService = {
   description: "Retorna o serviço pelo ID",
   type: "object",
   tags: ["Services"],
-  security: [{ APIKey: [] }],
+  security: [{ APIKey: [], JWTToken: [] }],
   response: {
     200: {
       description: "Verificação bem sucedida",
@@ -68,7 +68,7 @@ const postServices = {
   description: "Cria um serviço",
   type: "object",
   tags: ["Services"],
-  security: [{ APIKey: [] }],
+  security: [{ APIKey: [], JWTToken: [] }],
   body: {
     type: "object",
     required: ["service"],
@@ -112,7 +112,7 @@ const updateServices = {
   description: "Atualiza um serviço",
   type: "object",
   tags: ["Services"],
-  security: [{ APIKey: [] }],
+  security: [{ APIKey: [], JWTToken: [] }],
   body: {
     type: "object",
     required: ["service"],
@@ -140,7 +140,7 @@ const deleteService = {
   description: "Exclude um serviço",
   type: "object",
   tags: ["Services"],
-  security: [{ APIKey: [] }],
+  security: [{ APIKey: [], JWTToken: [] }],
   response: {
     204: {
       description: "Excluido com sucesso",
