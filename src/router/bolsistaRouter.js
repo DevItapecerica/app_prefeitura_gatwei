@@ -46,7 +46,7 @@ const bolsistaRouter = async (fastify, _options) => {
 
   fastify.route({
     method: 'GET',
-    url: '/:id/edital',
+    url: '/edital/:id',
     schema: FtAppSchema.getEditalSchema,
     handler: BolsistaController.getBolsistaEdital,
   })

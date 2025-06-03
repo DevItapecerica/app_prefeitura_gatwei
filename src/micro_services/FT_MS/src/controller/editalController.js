@@ -88,6 +88,14 @@ export const vincularBolsista = async (req, res) => {
   }
 };
 
+export const getAllEditalWithBolsista = async (req, res) => {
+  const bolsista_edital = await Edital.getAllWithBolsista()
+
+  res.status(200).send({message: "Todos os editais com bolsistas", bolsista_edital})
+}
+
+
+
 // a serem implementados
 export const getEditalByDate = async (req, res) => {
   try {

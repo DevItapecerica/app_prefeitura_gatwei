@@ -77,7 +77,7 @@ export const vincularBolsista = async (id, data) => {
 
   data.forEach((bolsista) => {
     const isBolsista = Bolsistas.findByPk(bolsista);
-    
+
     if (!isBolsista) {
       throw {
         status: 404,
@@ -89,4 +89,19 @@ export const vincularBolsista = async (id, data) => {
   await edital.addBolsista(data);
 
   console.log("bolsista adicionado com sucesso");
+};
+
+export const getAllWithBolsista = async () => {
+  const edital_bolsista = await Edital.findAll({
+    attributes: ["name", "id"],
+    include: [
+      {
+        model: Bolsistas,
+        as: "bolsistas",
+        through: { attributes: [] },
+      },
+    ],
+  });
+
+  return edital_bolsista;
 };

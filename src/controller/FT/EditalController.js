@@ -91,13 +91,21 @@ export const vincularBolsista = async (request, reply) => {
     const { id } = request.params;
     const { bolsista } = request.body;
 
-    const response = await FT_API.post(`/ft/edital/vincularbolsista/${id}`, {
+    const { data } = await FT_API.post(`/ft/edital/vincularbolsista/${id}`, {
       bolsista,
     });
 
-    const { data } = response;
     reply.status(200).send({ ...data });
   } catch (error) {
     throw error;
   }
+};
+
+export const getEditalWithBolsista = async (request, response) => {
+  let user = request.user;
+  await verifyPermission(user, SERVICE, request.method);
+
+  const { data } = await FT_API.get(`/ft/edital/bolsista`);
+
+  response.status(200).send({ ...data });
 };

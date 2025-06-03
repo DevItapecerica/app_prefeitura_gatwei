@@ -51,6 +51,13 @@ const editalRouter = async (fastify, options) => {
     schema: Schema.vincularBolsista,
     handler: Edital.vincularBolsista,
   });
+
+  fastify.route({
+    method: "GET",
+    url: "/bolsista",
+    // schema: Schema.vincularBolsista,
+    handler: Edital.getAllEditalWithBolsista,
+  });
 };
 
 export default editalRouter;

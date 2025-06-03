@@ -134,7 +134,8 @@ export const getBolsistaEdital = async (request, reply) => {
     let user = request.user;
     await verifyPermission(user, SERVICE, request.method);
     const { id } = request.params;
-    const { data } = await ft_app_api.get(`/ft/bolsista/${id}/edital`);
+
+    const { data } = await ft_app_api.get(`/ft/bolsista/edital/${id}`);
     const bolsista = data;
     reply.status(200).send(bolsista);
   } catch (error) {
