@@ -1,0 +1,36 @@
+import SequelizeModule from 'sequelize';
+import { DATABASE_USER, DATABASE_KEY, DATABASE_HOST, DATABASE_NAME } from '../config/env.js';
+
+const DUser = DATABASE_USER;
+const DKey = DATABASE_KEY;
+const DName = DATABASE_NAME;
+const DHost = DATABASE_HOST;
+
+const Sequelize = new SequelizeModule(DName, DUser, DKey, {
+  host: DHost,
+  dialect: 'mariadb',
+  define: {
+    timestamps: false,
+  },
+});
+
+Sequelize.authenticate()
+  .then(() => {
+    console.log('conectado ao banco de dados');
+  })
+  .catch((err) => {
+    console.log(`Sem sucesso na conexão com o banco de dados ${err}`);
+  });
+
+
+// Sincronizar modelos sem excluir tabelas existentes
+// Sequelize.sync({ alter: true })
+// .then(() => {
+//     console.log("Modelos sincronizados com sucesso!");
+// })
+// .catch((err) => {
+//     console.error("Erro ao sincronizar modelos:", err);
+// });
+
+export default Sequelize;
+
