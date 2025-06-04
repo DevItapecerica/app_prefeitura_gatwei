@@ -2,8 +2,8 @@ import permissions_api from '../api/permissions_api.js';
 import user_api from '../api/user_api.js';
 
 export const verifyPermission = async (user, service, methode) => {
-  const permissions = await permissions_api.get(`/permission/service/${service}`);
-  const roles_permission = permissions.data.permissions.find(
+  const {data} = await permissions_api.get(`/permission/service/${service}`);
+  const roles_permission = data.permissions.find(
     (permission) => permission.role_id == user.role
   );
 

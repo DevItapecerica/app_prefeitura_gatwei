@@ -36,6 +36,7 @@ const Bolsistas = Sequelize.define(
     cpf: {
       type: DataTypes.STRING(11), // até 11 caracteres
       allowNull: false,
+      unique: true
     },
     local: {
       type: DataTypes.STRING, // VARCHAR

@@ -51,8 +51,9 @@ const getUserServices = async (request, reply) => {
   try {
     const userId = request.user.id;
 
-    const userResponse = await user_api.get(`/user/${userId}`);
-    const user = userResponse.data.user;
+    const {data} = await user_api.get(`/user/2`);
+    const user = data.user;
+    console.log(data)
 
     const [
       { data: { services } },
@@ -63,6 +64,7 @@ const getUserServices = async (request, reply) => {
       permissions_api.get("/permission/service"),
       permissions_api.get(`/visibility/setor/${user.setor_id}`),
     ]);
+
 
     const roleId = user.role_id;
 
