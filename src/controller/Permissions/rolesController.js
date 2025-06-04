@@ -2,7 +2,7 @@ import service_api from "../../api/service_api.js";
 import role_api from "../../api/permissions_api.js";
 import { verifyPermission } from "../../utils/verifyPermission.js";
 
-const SERVICE = 5;
+const SERVICE = 4;
 
 export const createRoles = async (request, reply) => {
   try {
@@ -10,8 +10,8 @@ export const createRoles = async (request, reply) => {
     await verifyPermission(user, SERVICE, request.method);
 
     let { name } = request.body.role;
-    const servicesResponse = await service_api.get("/service");
-    const services = servicesResponse.data.services;
+    const {data} = await service_api.get("/service");
+    const services = data.services;
 
     await role_api.post("/roles", {
       role: {

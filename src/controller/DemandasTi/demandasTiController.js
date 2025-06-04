@@ -3,7 +3,7 @@ import user_api from "../../api/user_api.js";
 import setor_api from "../../api/setor_api.js";
 import demandas_api from "../../api/demandas_api.js";
 
-const SERVICE = 4;
+const SERVICE = 5;
 
 const getDemandas = async (request, reply) => {
   try {
