@@ -13,6 +13,11 @@ const Bolsistas = Sequelize.define(
       type: DataTypes.STRING(3), // até 3 caracteres
       allowNull: false,
     },
+    pagador: {
+      type: DataTypes.STRING(50), // até 3 caracteres
+      allowNull: false,
+      defaultValue: "pendente", // valor padrão
+    },
     ag: {
       type: DataTypes.STRING(4), // até 4 caracteres
       allowNull: false,
@@ -36,7 +41,7 @@ const Bolsistas = Sequelize.define(
     cpf: {
       type: DataTypes.STRING(11), // até 11 caracteres
       allowNull: false,
-      unique: true
+      unique: true,
     },
     local: {
       type: DataTypes.STRING, // VARCHAR

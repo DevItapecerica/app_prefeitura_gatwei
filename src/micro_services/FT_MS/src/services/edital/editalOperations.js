@@ -75,6 +75,13 @@ export const vincularBolsista = async (id, data) => {
     };
   }
 
+  if (edital.status === "inativo") {
+    throw {
+      status: 403,
+      message: "Edital inativo",
+    };
+  }
+
   data.forEach((bolsista) => {
     const isBolsista = Bolsistas.findByPk(bolsista);
 

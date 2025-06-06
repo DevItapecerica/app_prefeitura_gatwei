@@ -33,6 +33,10 @@ const Edital = Sequelize.define(
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
+    status: {
+      type: DataTypes.ENUM("ativo", "inativo"),
+      defaultValue: "ativo",
+    },
   },
   {
     tableName: "Edital", // Nome da tabela no banco (pode personalizar)

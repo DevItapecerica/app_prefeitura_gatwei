@@ -25,6 +25,7 @@
     "fastify": "^5.2.1",
     "file-type": "^20.5.0",
     "json2csv": "^6.0.0-alpha.2",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "node-cron": "^4.1.0"
   }
 }
