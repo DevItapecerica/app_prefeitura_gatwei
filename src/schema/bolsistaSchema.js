@@ -7,11 +7,12 @@ const bolsistaProperties = {
   dig_ag: { type: "string", maxLength: 1 },
   conta: { type: "string", maxLength: 10 },
   dig_conta: { type: "string", maxLength: 1 },
+  status: { type: "string" },
   nome: { type: "string" },
   vencimento: { type: "integer" },
-  cpf: { 
-    type: "string", 
-    maxLength: 11, 
+  cpf: {
+    type: "string",
+    maxLength: 11,
     pattern: "^[0-9]{11}$", // Regex para validar CPF com 11 dígitos
   },
   local: { type: "string" },
@@ -28,7 +29,10 @@ const getBolsistaSchema = {
     200: {
       type: "object",
       properties: {
-        message: { type: "string", example: "Bolsistas retrieved successfully" },
+        message: {
+          type: "string",
+          example: "Bolsistas retrieved successfully",
+        },
         bolsista: {
           type: "array",
           items: {
@@ -92,9 +96,9 @@ const createBolsistaSchema = {
       conta: { type: "string", maxLength: 10 },
       dig_conta: { type: "string", maxLength: 1 },
       nome: { type: "string" },
-      cpf: { 
-        type: "string", 
-        maxLength: 11, 
+      cpf: {
+        type: "string",
+        maxLength: 11,
         pattern: "^[0-9]{11}$", // Regex para validar CPF com 11 dígitos
       },
       local: { type: "string" },
@@ -139,10 +143,10 @@ const updateBolsistaSchema = {
       conta: { type: "string", maxLength: 10 },
       dig_conta: { type: "string", maxLength: 1 },
       nome: { type: "string" },
-      cpf: { 
-        type: "string", 
-        maxLength: 11, 
-        pattern: "^[0-9]{11}$", 
+      cpf: {
+        type: "string",
+        maxLength: 11,
+        pattern: "^[0-9]{11}$",
       },
       local: { type: "string" },
     },

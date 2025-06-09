@@ -14,6 +14,7 @@ const bolsista = {
     vencimento: { type: "integer" },
     cpf: { type: "string", maxLength: 11 },
     local: { type: "string" },
+    status: { type: "string" },
     createdAt: { type: "string", format: "date-time" },
     updatedAt: { type: "string", format: "date-time" },
   },

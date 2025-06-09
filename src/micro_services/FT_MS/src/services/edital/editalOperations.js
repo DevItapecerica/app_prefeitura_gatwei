@@ -90,7 +90,11 @@ export const vincularBolsista = async (id, data) => {
         status: 404,
         message: "Bolsista not found",
       };
-    }
+    } else if (bolsista.status != "inativo")
+      throw {
+        status: 403,
+        message: "Bolsista com documentos pendentes",
+        };
   });
 
   await edital.addBolsista(data);
@@ -104,6 +108,20 @@ export const getAllWithBolsista = async () => {
     include: [
       {
         model: Bolsistas,
+        as: "bolsistas",
+        through: { attributes: [] },
+      },
+    ],
+  });
+
+  return edital_bolsista;
+};
+
+export const getEditalWithBolsista = async (id) => {
+  const edital_bolsista = await Edital.findByPk(id, {
+    include: [
+      {
+        model: Bolsistas,    attributes: ["name", "id"],
         as: "bolsistas",
         through: { attributes: [] },
       },

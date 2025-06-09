@@ -16,6 +16,7 @@ const task = async () => {
         data_vencimento: {
           [Op.lt]: new Date(), // Data vencida
         },
+        status: "ativo",
       },
       include: [
         {
@@ -36,17 +37,17 @@ const task = async () => {
       );
 
       edital.bolsistas.forEach((bolsista) => {
-        bolsista.status = "inativo"
-        bolsista.save()
-      });
+        bolsista.status = "inativo";
+        bolsista.save();
 
-      logScheduler(
-        edital.id,
-        "Edital expirado, alterado com sucesso",
-        i,
-        null,
-        null
-      );
+        logScheduler(
+          edital.id,
+          "Edital expirado, alterado com sucesso",
+          i,
+          bolsistas,
+          null
+        );
+      });
     });
   } catch (error) {
     console.error("Erro ao atualizar editais expirados:", error);

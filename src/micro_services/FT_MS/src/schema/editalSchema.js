@@ -6,6 +6,7 @@ const editalProperties = {
   data_vencimento: { type: "string", format: "date-time" },
   dia_pagamento: { type: "integer" },
   valor_bolsa: { type: "number" },
+  status: { type: "string" },
 };
 
 const edital = {

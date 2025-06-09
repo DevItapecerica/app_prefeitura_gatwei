@@ -11,7 +11,7 @@ import { PORT } from "./src/config/env.js";
 import { swaggerConfig, swaggerUiConfig } from "./src/config/swaggerConfig.js";
 import corsConfig from "./src/config/corsConfig.js";
 import errorHook from "./src/hooks/errorHook.js";
-import './src/services/schedular.js/editalVerify.js'
+import './src/services/schedular/editalVerify.js'
 
 // routers
 import bolsistaRouter from "./src/router/bolsistasRouter.js";
