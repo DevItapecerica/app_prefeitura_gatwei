@@ -24,13 +24,13 @@ Sequelize.authenticate()
 
 
 // Sincronizar modelos sem excluir tabelas existentes
-// Sequelize.sync({ alter: true })
-// .then(() => {
-//     console.log("Modelos sincronizados com sucesso!");
-// })
-// .catch((err) => {
-//     console.error("Erro ao sincronizar modelos:", err);
-// });
+//  Sequelize.sync({ alter: true })
+//  .then(() => {
+//      console.log("Modelos sincronizados com sucesso!");
+//  })
+//  .catch((err) => {
+//      console.error("Erro ao sincronizar modelos:", err);
+//  });
 
 export default Sequelize;
 

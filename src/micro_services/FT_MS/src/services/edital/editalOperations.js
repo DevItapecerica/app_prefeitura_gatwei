@@ -65,41 +65,51 @@ export const DeleteEdital = async (id) => {
   return;
 };
 
-export const vincularBolsista = async (id, data) => {
-  const edital = await Edital.findByPk(id);
+export const vincularBolsista = async (id, bolsistas) => {
+    let edital = await Edital.findByPk(id);
 
-  if (!edital) {
-    throw {
-      status: 404,
-      message: "Edital not found",
-    };
-  }
-
-  if (edital.status === "inativo") {
-    throw {
-      status: 403,
-      message: "Edital inativo",
-    };
-  }
-
-  data.forEach((bolsista) => {
-    const isBolsista = Bolsistas.findByPk(bolsista);
-
-    if (!isBolsista) {
+    if (!edital) {
       throw {
         status: 404,
-        message: "Bolsista not found",
+        message: "Edital not found",
       };
-    } else if (bolsista.status != "inativo")
+    }
+
+    if (edital.status === "inativo") {
       throw {
         status: 403,
-        message: "Bolsista com documentos pendentes",
+        message: "Edital inativo",
+      };
+    }
+
+    for (let bolsista of bolsistas) {
+      let isBolsista = await Bolsistas.findByPk(bolsista);
+
+
+      if (!isBolsista) {
+        throw {
+          status: 404,
+          message: "Bolsista not found",
         };
-  });
+      } 
+      
+      if (isBolsista.status == "pendente") {
+        throw {
+          status: 403,
+          message: "Bolsista com documentos pendentes",
+        };
+      }
 
-  await edital.addBolsista(data);
+      isBolsista.status = "ativo";
+      await isBolsista.save();
 
-  console.log("bolsista adicionado com sucesso");
+
+      await edital.addBolsista(isBolsista);
+    };
+
+    console.log("bolsista adicionado com sucesso");
+
+    return;
 };
 
 export const getAllWithBolsista = async () => {
@@ -117,11 +127,12 @@ export const getAllWithBolsista = async () => {
   return edital_bolsista;
 };
 
-export const getEditalWithBolsista = async (id) => {
+export const getWithBolsista = async (id) => {
   const edital_bolsista = await Edital.findByPk(id, {
     include: [
       {
-        model: Bolsistas,    attributes: ["name", "id"],
+        model: Bolsistas,
+        attributes: ["nome", "id"],
         as: "bolsistas",
         through: { attributes: [] },
       },

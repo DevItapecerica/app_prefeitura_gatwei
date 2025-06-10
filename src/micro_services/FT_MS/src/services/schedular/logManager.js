@@ -1,16 +1,13 @@
 import fs from "fs";
 import path from "path";
 
-const logFilePath = path.join(process.cwd(), 'logs', 'scheduler.log');
 
-const logScheduler = (id, message, dayWithoutError, users, error) => {
+const logScheduler = (message, location) => {
+const logFilePath = path.join(process.cwd(), 'logs', location);
+
   const logEntry = {
     timestamp: new Date().toISOString(),
-    id: id,
     message: message,
-    dayWithoutError: dayWithoutError,
-    users: users || null,
-    error: error || null
   };
 
   const line = JSON.stringify(logEntry) + "\n";

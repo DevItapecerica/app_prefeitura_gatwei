@@ -75,11 +75,11 @@ export const vincularBolsista = async (req, res) => {
     const { id } = req.params;
     const { bolsista } = req.body;
 
-    const vinculo = await Edital.vincularBolsista(id, bolsista);
+    await Edital.vincularBolsista(id, bolsista);
 
     return res
       .status(201)
-      .send({ message: "Bolsista vinculado com sucesso", vinculo });
+      .send({ message: "Bolsista vinculado com sucesso" });
       
   } catch (error) {
     console.error("Error vinculando bolsista:", error);
@@ -90,6 +90,13 @@ export const vincularBolsista = async (req, res) => {
 
 export const getAllEditalWithBolsista = async (req, res) => {
   const bolsista_edital = await Edital.getAllWithBolsista()
+
+  res.status(200).send({message: "Todos os editais com bolsistas", bolsista_edital})
+}
+
+export const getEditalWithBolsista = async (req, res) => {
+  const { id } = req.params;
+  const bolsista_edital = await Edital.getWithBolsista(id)
 
   res.status(200).send({message: "Todos os editais com bolsistas", bolsista_edital})
 }

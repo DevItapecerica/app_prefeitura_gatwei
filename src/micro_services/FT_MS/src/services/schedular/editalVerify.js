@@ -7,55 +7,65 @@ import Bolsistas from "../../db/model/Bolsistas.js";
 import logScheduler from "./logManager.js";
 
 let i = 0;
-
 const task = async () => {
+  // Log para saber quantos dias sem erro
   console.log(`Dias sem erros: ${i++}`);
   try {
     const editalExpirado = await Edital.findAll({
       where: {
-        data_vencimento: {
-          [Op.lt]: new Date(), // Data vencida
-        },
+        data_vencimento: { [Op.lt]: new Date() },
         status: "ativo",
       },
       include: [
         {
           model: Bolsistas,
-          as: "bolsistas", // alias definido na associação
-          attributes: ["id", "nome", "status"],
-          through: { attributes: [] }, // ignora colunas da tabela pivô
+          as: "bolsistas",
+          through: { attributes: ["bolsista_id", "edital_id", "status"] },
         },
       ],
     });
 
-    editalExpirado.forEach(async (edital) => {
+    for (const edital of editalExpirado) {
+      // Altera status do edital quando vencer
       edital.status = "inativo";
       await edital.save();
 
-      console.log(
-        `Edital ${edital.id} - '${edital.name}' foi marcado como inativo.`
+      logScheduler(
+        `Edital ${edital.id} - '${edital.name}' foi marcado como inativo.`,
+        "scheduler.log"
       );
 
-      edital.bolsistas.forEach((bolsista) => {
+      for (const bolsista of edital.bolsistas) {
+        // Altera status do Bolsista no fim do relacionamento
         bolsista.status = "inativo";
-        bolsista.save();
+        await bolsista.save();
 
         logScheduler(
-          edital.id,
-          "Edital expirado, alterado com sucesso",
-          i,
-          bolsistas,
-          null
+          `Bolsista ${bolsista.nome} (ID ${bolsista.id}) foi marcado como inativo`,
+          "scheduler.log"
         );
-      });
-    });
+
+        // Altera status do relacionamento do edita com o bolsista
+        bolsista.BolsistasEdital.status = "concluido";
+        await bolsista.BolsistasEdital.save();
+
+        logScheduler(
+          `Relacionamento Bolsista ${bolsista.id} - Edital ${edital.id} (${edital.name}) foi marcado como concluído`,
+          "scheduler.log"
+        );
+      }
+    }
   } catch (error) {
     console.error("Erro ao atualizar editais expirados:", error);
     i = 0;
     throw error;
   } finally {
-    logScheduler();
+    logScheduler(
+      "--------------------------------------------------------------",
+      "scheduler.log"
+    );
   }
 };
 
+// cronometro do agendador
 schedule("*/1 * * * *", task);

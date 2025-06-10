@@ -105,6 +105,17 @@ export const getEditalWithBolsista = async (request, response) => {
   let user = request.user;
   await verifyPermission(user, SERVICE, request.method);
 
+  const {id} = request.params;
+
+  const { data } = await FT_API.get(`/ft/edital/${id}/bolsista`);
+
+  response.status(200).send({ ...data });
+};
+
+export const getAllWithBolsista = async (request, response) => {
+  let user = request.user;
+  await verifyPermission(user, SERVICE, request.method);
+
   const { data } = await FT_API.get(`/ft/edital/bolsista`);
 
   response.status(200).send({ ...data });
