@@ -53,19 +53,19 @@ const task = async () => {
           `Relacionamento Bolsista ${bolsista.id} - Edital ${edital.id} (${edital.name}) foi marcado como concluído`,
           "scheduler.log"
         );
+
+        logScheduler(
+          "--------------------------------------------------------------",
+          "scheduler.log"
+        );
       }
     }
   } catch (error) {
     console.error("Erro ao atualizar editais expirados:", error);
     i = 0;
     throw error;
-  } finally {
-    logScheduler(
-      "--------------------------------------------------------------",
-      "scheduler.log"
-    );
   }
 };
 
 // cronometro do agendador
-schedule("*/1 * * * *", task);
+schedule("0 1 */1 * *", task);

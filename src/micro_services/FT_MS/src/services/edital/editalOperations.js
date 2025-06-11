@@ -132,7 +132,6 @@ export const getWithBolsista = async (id) => {
     include: [
       {
         model: Bolsistas,
-        attributes: ["nome", "id"],
         as: "bolsistas",
         through: { attributes: [] },
       },

@@ -14,10 +14,7 @@ import errorHook from "./src/hooks/errorHook.js";
 import './src/services/schedular/editalVerify.js'
 
 // routers
-import bolsistaRouter from "./src/router/bolsistasRouter.js";
-import uploadRouter from "./src/router/uploadRouter.js";
-import authRouter from "./src/router/authRouter.js";
-import editalRouter from "./src/router/editalRouter.js";
+import router from './src/router/router.js';
 
 // outros
 import "./src/db/model/associations.js";
@@ -46,10 +43,7 @@ fastify.setErrorHandler((error, request, reply) => {
 });
 
 // Rotas
-await fastify.register(bolsistaRouter, { prefix: "/ft/bolsista" });
-await fastify.register(uploadRouter, { prefix: "/ft/img" });
-await fastify.register(authRouter, { prefix: "/ft/auth" });
-await fastify.register(editalRouter, { prefix: "/ft/edital" });
+fastify.register(router, { prefix: '/ft' });
 
 // Start server
 const start = async () => {

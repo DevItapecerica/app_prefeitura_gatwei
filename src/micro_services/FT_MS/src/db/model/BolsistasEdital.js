@@ -27,7 +27,7 @@ const BolsistasEdital = Sequelize.define(
     data_vinculo: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: new Date(),
+      defaultValue: () => new Date(), // melhor usar função para pegar o momento de criação
     },
     data_vencimento: {
       type: DataTypes.DATE,
@@ -47,7 +47,29 @@ const BolsistasEdital = Sequelize.define(
     tableName: "BolsistasEdital",
     timestamps: false,
     paranoid: true,
+
+    hooks: {
+      beforeCreate: (bolsistaEdital) => {
+        if (!bolsistaEdital.data_vencimento) {
+          const vencimento = new Date(bolsistaEdital.data_vinculo);
+          vencimento.setFullYear(vencimento.getFullYear() + 1);
+          bolsistaEdital.data_vencimento = vencimento;
+        }
+      },
+    },
   }
 );
+
+BolsistasEdital.beforeBulkCreate((records, options) => {
+  records.forEach((record) => {
+    if (!record.data_vencimento) {
+      const dataVinculo = record.data_vinculo || new Date();
+      const dataVencimento = new Date(dataVinculo);
+      dataVencimento.setFullYear(dataVinculo.getFullYear() + 1);
+      record.data_vinculo = dataVinculo; // caso não venha
+      record.data_vencimento = dataVencimento;
+    }
+  });
+});
 
 export default BolsistasEdital;

@@ -27,9 +27,7 @@ const getArchivePath = (archives) => {
 const getOneArchive = (archive) => {
     const filepath = path.join(path.dirname(import.meta.url.split("file:")[1]), "../../uploads", archive);
 
-
     console.log(filepath)
-
 
   if (!fs.existsSync(filepath)) {
     throw { status: 404, message: "File not found" };
