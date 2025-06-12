@@ -24,4 +24,16 @@ async function handleFileUpload(data, bolsistaFiles, bolsista, name) {
   return { file, existingFile, type };
 }
 
+export async function handleFileBulkRemove(bolsistaFiles) {
+  const filePaths = [];
+
+  for (const file of bolsistaFiles) {  // for..of correto aqui
+    console.log(file);
+    const filePath = path.join(UPLOAD_DIR, file.path);
+    filePaths.push(filePath);
+  }
+
+  return filePaths;
+}
+
 export default handleFileUpload;

@@ -143,5 +143,7 @@ dist
 *.svg
 *.ico
 *.pdf
+*.csv
 
 uploads/*
+*.sh

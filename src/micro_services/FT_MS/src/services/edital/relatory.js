@@ -58,7 +58,7 @@ export const sendRelatory = async () => {
 
   const file = fs.createReadStream(filePath);
 
-  const type = "text/csv " || "application/octet-stream";
+  const type = "text/csv";
 
   return { file, type };
 };

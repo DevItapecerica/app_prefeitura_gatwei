@@ -3,64 +3,101 @@ import * as Bolsista from "../services/bolsista/bolsistaOperation.js";
 import saveBolsista from "../services/bolsista/saveBolsista.js";
 
 export const getBolsista = async (request, reply) => {
-  const bolsista = await Bolsista.getAllBolsistas();
+  try {
+    const bolsista = await Bolsista.getAllBolsistas();
 
-  return reply.status(200).send({
-    message: "Bolsista get successfully",
-    bolsista,
-  });
+    return reply.status(200).send({
+      message: "Bolsista get successfully",
+      bolsista,
+    });
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getOneBolsista = async (request, reply) => {
-  const { id } = request.params;
-  const bolsista = await Bolsista.getBolsistaById(id);
+  try {
+    const { id } = request.params;
+    const bolsista = await Bolsista.getBolsistaById(id);
 
-  return reply.status(200).send({
-    message: "Bolsista get successfully",
-    bolsista,
-  });
+    return reply.status(200).send({
+      message: "Bolsista get successfully",
+      bolsista,
+    });
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const createBolsista = async (request, reply) => {
-  const data = request.body;
+  try {
+    const data = request.body;
 
-  let bolsista = await saveBolsista(data);
+    let bolsista = await saveBolsista(data);
 
-  return reply.status(201).send({
-    message: "Bolsista created successfully",
-    bolsista,
-  });
+    return reply.status(201).send({
+      message: "Bolsista created successfully",
+      bolsista,
+    });
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const updateBolsista = async (request, reply) => {
-  const { id } = request.params;
-  const data = request.body;
+  try {
+    const { id } = request.params;
+    const data = request.body;
 
-  const bolsista = await saveBolsista(data, id);
+    const bolsista = await saveBolsista(data, id);
 
-  return reply.status(200).send({
-    message: "Bolsista updated successfully",
-    bolsista,
-  });
+    return reply.status(200).send({
+      message: "Bolsista updated successfully",
+      bolsista,
+    });
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const deleteBolsista = async (request, reply) => {
-  const { id } = request.params;
+  try {
+    const { id } = request.params;
 
-  await Bolsista.deleteBolsista(id);
+    await Bolsista.deleteBolsista(id);
 
-  return reply.status(200).send({
-    message: "Bolsista deleted successfully",
-  });
+    return reply.status(200).send({
+      message: "Bolsista deleted successfully",
+    });
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getBolsistaEdital = async (request, reply) => {
-  const { id } = request.params;
+  try {
+    const { id } = request.params;
 
-  const bolsista = await Bolsista.getBolsistaByEditalId(id);
+    const bolsista = await Bolsista.getBolsistaByEditalId(id);
 
-  reply.status(200).send({
-    message: "Bolsista get successfully",
-    bolsista,
-  })
+    reply.status(200).send({
+      message: "Bolsista get successfully",
+      bolsista,
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const toggleBolsistaEdital = async (request, reply) => {
+  try {
+    const { bolsista } = request.params;
+    const { edital } = request.params;
+
+    await Bolsista.toggleBolsistaEdital(bolsista, edital);
+
+    reply.status(201).send({message: "Bolsista alterado com sucesso!"})
+  } catch (error) {
+    throw error;
+  }
 };

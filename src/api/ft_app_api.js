@@ -5,6 +5,7 @@ const FT_API = axios.create({
   baseURL: FT_APP_API_HOST,
   headers: {
     // "Content-Type": "application/json",
+    
   },
 });
 

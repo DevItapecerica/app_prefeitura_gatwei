@@ -4,7 +4,6 @@ import { createRelatory, sendRelatory } from "../services/edital/relatory.js";
 export const getRelatory = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
     const editalData = await getWithBolsista(id);
 
     if (!editalData) {

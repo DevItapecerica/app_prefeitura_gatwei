@@ -93,10 +93,10 @@ export const vincularBolsista = async (id, bolsistas) => {
         };
       } 
       
-      if (isBolsista.status == "pendente") {
+      if (isBolsista.status == "pendente" || isBolsista.status == "ativo") {
         throw {
           status: 403,
-          message: "Bolsista com documentos pendentes",
+          message: "Bolsista com documentos pendentes ou já ativo em outro edital",
         };
       }
 

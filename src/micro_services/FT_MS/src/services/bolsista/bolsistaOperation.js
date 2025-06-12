@@ -1,5 +1,11 @@
 import Bolsistas from "../../db/model/Bolsistas.js";
 import Edital from "../../db/model/Edital.js";
+import BolsistasEdital from "../../db/model/BolsistasEdital.js";
+import { searchArchive } from "../upload/archiveDBManipulation.js";
+import { handleFileBulkRemove } from "../upload/handleFileOperations.js";
+import removeFile from "../../utils/removeFile.js";
+
+const pagador = [];
 
 export const getBolsistaById = async (id) => {
   const bolsista = await Bolsistas.findByPk(id);
@@ -23,11 +29,10 @@ export const createBolsista = async (data) => {
     dig_conta: data.dig_conta,
     nome: data.nome,
     vencimento: data.vencimento,
+    pagador: data.pagador,
     cpf: data.cpf,
     local: data.local,
   });
-
-  console.log(newBolsista);
 
   return newBolsista;
 };
@@ -49,6 +54,7 @@ export const updateBolsista = async (data, id) => {
   bolsista.dig_conta = data.dig_conta;
   bolsista.nome = data.nome;
   bolsista.vencimento = data.vencimento;
+  bolsista.pagador = data.pagador;
   bolsista.cpf = data.cpf;
   bolsista.local = data.local;
 
@@ -59,6 +65,7 @@ export const updateBolsista = async (data, id) => {
 
 export const deleteBolsista = async (id) => {
   const bolsista = await getBolsistaById(id);
+  const bolsistaFiles = await searchArchive(id);
 
   if (!bolsista) {
     throw {
@@ -66,6 +73,13 @@ export const deleteBolsista = async (id) => {
       message: "Bolsista não encontrado",
     };
   }
+
+  const paths = await handleFileBulkRemove(bolsistaFiles);
+
+  for (const path of paths) {
+    removeFile(path);
+  }
+
   await bolsista.destroy();
   return {
     message: "Bolsista deletado com sucesso",
@@ -83,9 +97,8 @@ export const getBolsistaByEditalId = async (id) => {
         model: Edital,
         as: "edital", // mesmo alias usado na associação
         where: { id: id },
-        attributes: [], // opcional: evita trazer dados do edital
         through: {
-          attributes: [], // não traz dados da tabela intermediária
+          attributes: ["status"], // não traz dados da tabela intermediária
         },
       },
     ],
@@ -93,6 +106,7 @@ export const getBolsistaByEditalId = async (id) => {
 
   return bolsista;
 };
+
 export const getBolsistaByCpf = async (cpf) => {
   const bolsista = await Bolsistas.findOne({
     where: { cpf: cpf },
@@ -121,4 +135,35 @@ export const getBolsistaByName = async (name) => {
   }
 
   return bolsista;
+};
+
+export const toggleBolsistaEdital = async (bolsista, edital) => {
+  let bolsistaTarget = await Bolsistas.findByPk(bolsista);
+  const editalTarget = await Edital.findByPk(edital);
+  let vinculo = await BolsistasEdital.findOne({
+    where: {
+      bolsista_id: bolsista,
+      edital_id: edital,
+    },
+  });
+
+  if (
+    !bolsistaTarget ||
+    !editalTarget ||
+    (vinculo.status != "ativo" && vinculo.status != "inativo") ||
+    (editalTarget.status != "ativo" && editalTarget.status != "inativo")
+  ) {
+    throw {
+      status: 404,
+      message: "Bolsista ou Edital não válido para essa operação",
+    };
+  }
+
+  bolsistaTarget.status =
+    bolsistaTarget.status == "ativo" ? "inativo" : "ativo";
+  bolsistaTarget.save();
+  vinculo.status = vinculo.status == "ativo" ? "inativo" : "ativo";
+  vinculo.save();
+
+  return;
 };

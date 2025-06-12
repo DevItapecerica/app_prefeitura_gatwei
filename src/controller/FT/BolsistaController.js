@@ -142,3 +142,20 @@ export const getBolsistaEdital = async (request, reply) => {
     throw error;
   }
 };
+
+export const toggleBolsistaEdital = async (request, reply) => {
+  try {
+    let user = request.user;
+    await verifyPermission(user, SERVICE, request.method);
+
+    const { bolsista } = request.params;
+    const { edital } = request.params;
+
+    const { data } = await ft_app_api.put(`/ft/bolsista/${bolsista}/edital/${edital}`, {});
+
+    reply.status(200).send(data);
+  } catch (error) {
+    throw error;
+  }
+};
+

@@ -98,7 +98,7 @@ export const getEditalWithBolsista = async (req, res) => {
   const { id } = req.params;
   const bolsista_edital = await Edital.getWithBolsista(id)
 
-  res.status(200).send({message: "Todos os editais com bolsistas", bolsista_edital})
+  res.status(200).send({message: "Edital com bolsistas", bolsista_edital})
 }
 
 

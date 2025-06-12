@@ -1,4 +1,4 @@
-import handleFileUpload from "../services/upload/handleFileUpload.js";
+import handleFileUpload from "../services/upload/handleFileOperations.js";
 import { getArchivePath, getOneArchive } from "../utils/getArchive.js";
 import { mimeValidation, fieldBD } from "../services/upload/validations.js";
 import removeFile from "../utils/removeFile.js";
@@ -34,12 +34,11 @@ export const postDoc = async (request, reply) => {
         response.file.fieldname
       );
 
-      console.log(mime);
       // caso seja updateArchive, atualiza e remove o antigo
       if (response.existingFile) {
         console.log("Arquivo já existe, atualizando...");
         await updateArchive(response.file, id, response.type, mime.ext);
-        removeFile(response.existingFile.path);
+        await removeFile(response.existingFile.path);
       } else {
         await saveArchive(response.file, id, response.type, mime.ext);
       }

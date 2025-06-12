@@ -1,8 +1,6 @@
-
 import auth from "../middleware/authAPI.js";
 import * as BolsistaSchema from "../schema/bolsistaSchema.js";
 import * as Bolsista from "../controller/bolsistaController.js";
-
 
 const bolsistaRouter = async (fastify, options) => {
   fastify.addHook("preHandler", auth);
@@ -15,14 +13,13 @@ const bolsistaRouter = async (fastify, options) => {
     handler: Bolsista.getBolsista,
   });
 
-    //get one de bolsistas route
-    fastify.route({
-      method: "GET",
-      url: "/:id",
-      schema: BolsistaSchema.getOneBolsistaSchema,
-      handler: Bolsista.getOneBolsista,
-    });
-  
+  //get one de bolsistas route
+  fastify.route({
+    method: "GET",
+    url: "/:id",
+    schema: BolsistaSchema.getOneBolsistaSchema,
+    handler: Bolsista.getOneBolsista,
+  });
 
   //post de bolsistas route
   fastify.route({
@@ -53,8 +50,14 @@ const bolsistaRouter = async (fastify, options) => {
     url: "/edital/:id",
     // schema: BolsistaSchema.getEditalSchema,
     handler: Bolsista.getBolsistaEdital,
-  })
+  });
 
+  fastify.route({
+    method: "PUT",
+    url: "/:bolsista/edital/:edital",
+    // schema:
+    handler: Bolsista.toggleBolsistaEdital,
+  });
 };
 
 export default bolsistaRouter;

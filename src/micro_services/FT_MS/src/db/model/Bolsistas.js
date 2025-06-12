@@ -16,6 +16,7 @@ const Bolsistas = Sequelize.define(
     pagador: {
       type: DataTypes.STRING(50), // até 3 caracteres
       allowNull: false,
+      // defaultValue: "pendente", // valor padrão
       defaultValue: "pendente", // valor padrão
     },
     ag: {
@@ -50,7 +51,8 @@ const Bolsistas = Sequelize.define(
     status: {
       type: DataTypes.ENUM("ativo", "inativo", "pendente"), // valores possíveis
       allowNull: false,
-      defaultValue: "pendente", // valor padrão
+      defaultValue: "inativo", // valor padrão
+      // defaultValue: "pendente", // valor padrão
     },
   },
   {
