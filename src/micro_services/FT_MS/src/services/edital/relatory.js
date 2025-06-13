@@ -20,9 +20,12 @@ export async function createRelatory(data) {
         message: "Data not passed to generate relatory",
       };
 
-    const { headerBlock, bolsistasHeader, bolsistasRows } = await DataFormat(
+
+    const { headerBlock, bolsistasRows } = await DataFormat(
       data
     );
+
+      console.log(bolsistasRows)
 
     await fs.promises.mkdir(outputDir, { recursive: true });
 
@@ -34,7 +37,7 @@ export async function createRelatory(data) {
     }
 
     // Escrevendo bloco 2 (bolsistas via fast-csv)
-    const csvStream = format({ headers: bolsistasHeader });
+    const csvStream = format();
     const pass = new PassThrough();
     csvStream.pipe(pass).pipe(writeStream);
 

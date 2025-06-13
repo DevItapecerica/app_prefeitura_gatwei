@@ -11,6 +11,7 @@ const bolsista = {
     dig_conta: { type: "string", maxLength: 1 },
     nome: { type: "string" },
     bolsa: { type: "number" },
+    pagador: { type: "string", format: "uuid" },
     vencimento: { type: "integer" },
     cpf: { type: "string", maxLength: 11 },
     local: { type: "string" },
@@ -33,6 +34,17 @@ const getBolsistaSchema = {
         bolsista: {
           type: "array",
           items: bolsista,
+        },
+        pagador: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              id: { type: "string", format: "uuid" },
+              name: { type: "string" },
+              max_bolsista: { type: "integer" },
+            },
+          },
         },
       },
     },
@@ -98,7 +110,7 @@ const createBolsistaSchema = {
       type: "object",
       properties: {
         message: { type: "string", example: "Bolsista created successfully" },
-        bolsista
+        bolsista,
       },
     },
     ...errorSchema,
@@ -138,7 +150,7 @@ const updateBolsistaSchema = {
       type: "object",
       properties: {
         message: { type: "string", example: "Bolsista updated successfully" },
-        bolsista
+        bolsista,
       },
     },
     ...errorSchema,

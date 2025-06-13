@@ -8,6 +8,7 @@ const bolsistaProperties = {
   conta: { type: "string", maxLength: 10 },
   dig_conta: { type: "string", maxLength: 1 },
   status: { type: "string" },
+  pagador: { type: "string", format: "uuid" },
   nome: { type: "string" },
   vencimento: { type: "integer" },
   cpf: {
@@ -38,6 +39,17 @@ const getBolsistaSchema = {
           items: {
             type: "object",
             properties: bolsistaProperties,
+          },
+        },
+        pagador: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              id: { type: "string", format: "uuid" },
+              name: { type: "string" },
+              max_bolsista: { type: "integer" },
+            },
           },
         },
         uploadToken: { type: "string" },

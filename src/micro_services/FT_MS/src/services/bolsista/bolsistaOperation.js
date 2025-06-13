@@ -5,7 +5,33 @@ import { searchArchive } from "../upload/archiveDBManipulation.js";
 import { handleFileBulkRemove } from "../upload/handleFileOperations.js";
 import removeFile from "../../utils/removeFile.js";
 
-const pagador = [];
+const pagador = [
+  { id: "9d0f3aa1-1143-48d2-9cc2-45d38998fe36", name: "Secretaria de Esporte e Lazer", max_bolsista: 12 },
+  {
+    id: "e3f162d8-6187-456c-b85d-fc9243dcbce8",
+    name: "Secretaria de Planejamento e Meio Ambiente",
+    max_bolsista: 20,
+  },
+  { id: "22bb6f70-e3fe-49ac-bd62-1fb25afe0a4a", name: "Secretaria de Turismo", max_bolsista: 5 },
+  {
+    id: "a763d7f0-8d38-45c6-b985-e9143ca7f4d1",
+    name: "Secretaria do Desenvolvimento Social e Relações do Trabalho",
+    max_bolsista: 20,
+  },
+  { id: "20e5601e-d3e8-4e63-8991-68d03a14ba2f", name: "Secretaria de Serviços Urbanos", max_bolsista: 193 },
+  { id: "d5f9db73-ea63-442d-9aec-05dd5edcd990", name: "Secretaria de Educação", max_bolsista: 100 },
+  { id: "290d6314-54d9-4879-8220-0deb321ef892", name: "Secretaria de Cultura", max_bolsista: 5 },
+];
+
+const verifyPagador = (target) => {
+  console.log(target)
+
+  const isPagador = pagador.some((pg) => pg.id === target);
+
+  if (!isPagador) {
+    throw { status: 403, message: "Pagador não encontrado" };
+  }
+};
 
 export const getBolsistaById = async (id) => {
   const bolsista = await Bolsistas.findByPk(id);
@@ -21,6 +47,8 @@ export const getBolsistaById = async (id) => {
 };
 
 export const createBolsista = async (data) => {
+  await verifyPagador(data.pagador);
+
   const newBolsista = await Bolsistas.create({
     bco: data.bco,
     ag: data.ag,
@@ -46,6 +74,8 @@ export const updateBolsista = async (data, id) => {
       message: "Bolsista não encontrado",
     };
   }
+
+  await verifyPagador(data.pagador);
 
   bolsista.bco = data.bco;
   bolsista.ag = data.ag;
@@ -85,9 +115,10 @@ export const deleteBolsista = async (id) => {
     message: "Bolsista deletado com sucesso",
   };
 };
+
 export const getAllBolsistas = async () => {
-  const bolsistas = await Bolsistas.findAll();
-  return bolsistas;
+  const bolsista = await Bolsistas.findAll();
+  return { bolsista, pagador };
 };
 
 export const getBolsistaByEditalId = async (id) => {

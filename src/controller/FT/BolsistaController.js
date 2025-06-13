@@ -54,6 +54,7 @@ export const createBolsistas = async (request, reply) => {
       vencimento,
       cpf,
       local,
+      pagador,
     } = request.body;
 
     const response = await ft_app_api.post(`/ft/bolsista`, {
@@ -67,6 +68,7 @@ export const createBolsistas = async (request, reply) => {
       vencimento,
       cpf,
       local,
+      pagador,
     });
     const bolsista = response.data;
 
@@ -92,6 +94,7 @@ export const updateBolsistas = async (request, reply) => {
       vencimento,
       cpf,
       local,
+      pagador,
     } = request.body;
 
     const { data } = await ft_app_api.put(`/ft/bolsista/${id}`, {
@@ -105,6 +108,7 @@ export const updateBolsistas = async (request, reply) => {
       vencimento,
       cpf,
       local,
+      pagador,
     });
     const bolsista = data;
 

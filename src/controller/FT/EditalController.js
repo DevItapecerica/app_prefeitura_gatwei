@@ -9,7 +9,6 @@ export const getEditais = async (request, reply) => {
     await verifyPermission(user, SERVICE, request.method);
     const response = await FT_API.get("/ft/edital");
     const { data } = response;
-    console.log(data);
     reply.status(200).send({ ...data });
   } catch (error) {
     throw error;

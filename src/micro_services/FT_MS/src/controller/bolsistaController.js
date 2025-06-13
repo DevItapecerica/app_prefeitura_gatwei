@@ -4,11 +4,12 @@ import saveBolsista from "../services/bolsista/saveBolsista.js";
 
 export const getBolsista = async (request, reply) => {
   try {
-    const bolsista = await Bolsista.getAllBolsistas();
+    const { bolsista, pagador } = await Bolsista.getAllBolsistas();
 
     return reply.status(200).send({
       message: "Bolsista get successfully",
       bolsista,
+      pagador,
     });
   } catch (error) {
     throw error;
@@ -96,7 +97,7 @@ export const toggleBolsistaEdital = async (request, reply) => {
 
     await Bolsista.toggleBolsistaEdital(bolsista, edital);
 
-    reply.status(201).send({message: "Bolsista alterado com sucesso!"})
+    reply.status(201).send({ message: "Bolsista alterado com sucesso!" });
   } catch (error) {
     throw error;
   }
