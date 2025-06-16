@@ -33,11 +33,11 @@ export async function createRelatory(data) {
 
     // Escrevendo bloco 1 (cabeçalho manual)
     for (const line of headerBlock) {
-      writeStream.write(line.join(",") + "\n");
+      writeStream.write(line.join(";") + "\n");
     }
 
     // Escrevendo bloco 2 (bolsistas via fast-csv)
-    const csvStream = format();
+    const csvStream = format({ delimiter: ';' });
     const pass = new PassThrough();
     csvStream.pipe(pass).pipe(writeStream);
 
