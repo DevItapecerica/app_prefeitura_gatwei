@@ -107,6 +107,7 @@ const createBolsistaSchema = {
       dig_ag: { type: "string", maxLength: 1 },
       conta: { type: "string", maxLength: 10 },
       dig_conta: { type: "string", maxLength: 1 },
+      data_inicio: { type: "string", format: "date-time" },
       nome: { type: "string" },
       cpf: {
         type: "string",

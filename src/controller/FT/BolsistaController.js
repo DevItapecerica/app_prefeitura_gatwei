@@ -55,20 +55,24 @@ export const createBolsistas = async (request, reply) => {
       cpf,
       local,
       pagador,
+      data_inicio,
     } = request.body;
 
     const response = await ft_app_api.post(`/ft/bolsista`, {
-      bco,
-      ag,
-      dig_ag,
-      conta,
-      dig_conta,
-      nome,
-      bolsa,
-      vencimento,
-      cpf,
-      local,
-      pagador,
+      bolsista: {
+        bco,
+        ag,
+        dig_ag,
+        conta,
+        dig_conta,
+        nome,
+        bolsa,
+        vencimento,
+        cpf,
+        local,
+        pagador,
+      },
+      data_inicio,
     });
     const bolsista = response.data;
 
@@ -155,11 +159,13 @@ export const toggleBolsistaEdital = async (request, reply) => {
     const { bolsista } = request.params;
     const { edital } = request.params;
 
-    const { data } = await ft_app_api.put(`/ft/bolsista/${bolsista}/edital/${edital}`, {});
+    const { data } = await ft_app_api.put(
+      `/ft/bolsista/${bolsista}/edital/${edital}`,
+      {}
+    );
 
     reply.status(200).send(data);
   } catch (error) {
     throw error;
   }
 };
-

@@ -32,13 +32,13 @@ export const getOneBolsista = async (request, reply) => {
 
 export const createBolsista = async (request, reply) => {
   try {
-    const data = request.body;
+    const {bolsista} = request.body;
 
-    let bolsista = await saveBolsista(data);
+    let newBolsista = await saveBolsista(bolsista);
 
     return reply.status(201).send({
       message: "Bolsista created successfully",
-      bolsista,
+      newBolsista,
     });
   } catch (error) {
     throw error;

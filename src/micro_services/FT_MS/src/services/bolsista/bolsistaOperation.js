@@ -4,6 +4,7 @@ import BolsistasEdital from "../../db/model/BolsistasEdital.js";
 import { searchArchive } from "../upload/archiveDBManipulation.js";
 import { handleFileBulkRemove } from "../upload/handleFileOperations.js";
 import removeFile from "../../utils/removeFile.js";
+import { verifyPagador } from "../../utils/verifyPagador.js";
 
 const pagador = [
   { id: "9d0f3aa1-1143-48d2-9cc2-45d38998fe36", name: "Secretaria de Esporte e Lazer", max_bolsista: 12 },
@@ -23,16 +24,6 @@ const pagador = [
   { id: "290d6314-54d9-4879-8220-0deb321ef892", name: "Secretaria de Cultura", max_bolsista: 5 },
 ];
 
-const verifyPagador = (target) => {
-  console.log(target)
-
-  const isPagador = pagador.some((pg) => pg.id === target);
-
-  if (!isPagador) {
-    throw { status: 403, message: "Pagador não encontrado" };
-  }
-};
-
 export const getBolsistaById = async (id) => {
   const bolsista = await Bolsistas.findByPk(id);
 
@@ -47,7 +38,7 @@ export const getBolsistaById = async (id) => {
 };
 
 export const createBolsista = async (data) => {
-  await verifyPagador(data.pagador);
+  await verifyPagador(data.pagador, pagador);
 
   const newBolsista = await Bolsistas.create({
     bco: data.bco,
@@ -75,7 +66,7 @@ export const updateBolsista = async (data, id) => {
     };
   }
 
-  await verifyPagador(data.pagador);
+  await verifyPagador(data.pagador, pagador);
 
   bolsista.bco = data.bco;
   bolsista.ag = data.ag;

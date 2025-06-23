@@ -68,5 +68,5 @@ const task = async () => {
 };
 
 // cronometro do agendador
-// schedule("0 1 */1 * *", task);
-schedule("*/1 * * * *", task);
+schedule("0 1 */1 * *", task);
+// schedule("*/1 * * * *", task);

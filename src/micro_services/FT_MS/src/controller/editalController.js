@@ -74,8 +74,9 @@ export const vincularBolsista = async (req, res) => {
   try {
     const { id } = req.params;
     const { bolsista } = req.body;
+    const { data_vinculo } = req.body;
 
-    await Edital.vincularBolsista(id, bolsista);
+    await Edital.vincularBolsista(id, bolsista, data_vinculo);
 
     return res
       .status(201)

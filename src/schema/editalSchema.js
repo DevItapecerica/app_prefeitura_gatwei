@@ -149,7 +149,7 @@ export const vincularBolsista = {
   summary: "Vincular bolsistas a um edital",
   body: {
     type: "object",
-    required: ["bolsista"],
+    required: ["bolsista", "data_vinculo"],
     properties: {
       bolsista: {
         type: "array",
@@ -158,6 +158,10 @@ export const vincularBolsista = {
           format: "uuid",
         },
       },
+      data_vinculo: {
+        type: "string",
+        format: "date-time",
+      }
     },
   },
   response: {

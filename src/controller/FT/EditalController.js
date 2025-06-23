@@ -89,9 +89,11 @@ export const vincularBolsista = async (request, reply) => {
 
     const { id } = request.params;
     const { bolsista } = request.body;
+    const { data_vinculo } = request.body;
 
     const { data } = await FT_API.post(`/ft/edital/vincularbolsista/${id}`, {
       bolsista,
+      data_vinculo
     });
 
     reply.status(200).send({ ...data });

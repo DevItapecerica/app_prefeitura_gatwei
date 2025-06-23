@@ -65,7 +65,7 @@ export const DeleteEdital = async (id) => {
   return;
 };
 
-export const vincularBolsista = async (id, bolsistas) => {
+export const vincularBolsista = async (id, bolsistas, data_vinculo) => {
     let edital = await Edital.findByPk(id);
 
     if (!edital) {
@@ -104,7 +104,7 @@ export const vincularBolsista = async (id, bolsistas) => {
       await isBolsista.save();
 
 
-      await edital.addBolsista(isBolsista);
+      await edital.addBolsista(isBolsista, {through: {data_vinculo: data_vinculo}});
     };
 
     console.log("bolsista adicionado com sucesso");
@@ -133,7 +133,7 @@ export const getWithBolsista = async (id) => {
       {
         model: Bolsistas,
         as: "bolsistas",
-        through: { attributes: [] },
+        through: { attributes: ["data_vinculo", "prorrogado", "status", "data_vencimento"] },
       },
     ],
   });
