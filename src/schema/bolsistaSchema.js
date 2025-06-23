@@ -49,6 +49,7 @@ const getBolsistaSchema = {
               id: { type: "string", format: "uuid" },
               name: { type: "string" },
               max_bolsista: { type: "integer" },
+              quantity: { type: "integer" },
             },
           },
         },
