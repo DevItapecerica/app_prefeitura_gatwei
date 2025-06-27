@@ -74,7 +74,7 @@ O servidor será iniciado na porta definida em `APPLICATION_PORT` no arquivo `.e
 - `/api/service` — Gerenciamento de serviços
 - `/api/permissions` — Gerenciamento de permissões
 - `/api/demandas` — Gerenciamento de demandas
-- `/api/ft-app` — Integração com FT App
+- `/api/ft-app` — Integração com FT (Frente de Trabalho) App
 
 > Consulte a documentação Swagger em `/docs` (se habilitado) para detalhes completos dos endpoints.
 

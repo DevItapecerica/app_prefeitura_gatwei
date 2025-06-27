@@ -21,6 +21,17 @@ const bolsistaProperties = {
   updatedAt: { type: "string", format: "date-time" },
 };
 
+const editalProperties = {
+  name: { type: "string" },
+  data_publicacao: { type: "string", format: "date-time" },
+  data_vencimento: { type: "string", format: "date-time" },
+  dia_pagamento: { type: "integer" },
+  valor_bolsa: { type: "number" },
+  status: { type: "string" },
+};
+
+// basic operations
+
 const getBolsistaSchema = {
   tags: ["Bolsista"],
   security: [{ APIKey: [], JWTToken: [] }],
@@ -196,10 +207,81 @@ const deleteBolsistaSchema = {
   },
 };
 
+// Others Operations
+
+const getBolsistaEditalSchema = {
+  tags: ["Bolsista"],
+  security: [{ APIKey: [], JWTToken: [] }],
+  description: "Get bolsistas by edital ID",
+  summary: "Retrieve bolsistas associated with a specific edital",
+  params: {
+    type: "object",
+    properties: {
+      id: { type: "string", description: "Edital ID" },
+    },
+  },
+  response: {
+    200: {
+      type: "object",
+      properties: {
+        message: {
+          type: "string",
+          example: "Bolsistas retrieved successfully",
+        },
+        bolsista: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              ...bolsistaProperties,
+              edital: { type: "array", items: {type: "object", properties: editalProperties} },
+            },
+          },
+        },
+      },
+    },
+    ...errorSchema,
+  },
+};
+
+const toggleBolsistaEditalSchema = {
+  tags: ["Bolsista"],
+  security: [{ APIKey: [], JWTToken: [] }],
+  description: "Toggle bolsista's edital association",
+  summary: "Add or remove a bolsista from an edital",
+  params: {
+    type: "object",
+    properties: {
+      bolsista: { type: "string", description: "Bolsista ID" },
+      edital: { type: "string", description: "Edital ID" },
+    },
+  },
+  response: {
+    200: {
+      type: "object",
+      properties: {
+        message: {
+          type: "string",
+          example: "Bolsista edital association toggled successfully",
+        },
+        bolsista: {
+          type: "object",
+          properties: {
+            ...bolsistaProperties,
+            edital: { type: "array", items: {type: "object", properties: editalProperties} },
+          },
+        },
+      },
+    },
+    ...errorSchema,
+  },
+};
+
 export {
   createBolsistaSchema,
   getBolsistaSchema,
   updateBolsistaSchema,
   deleteBolsistaSchema,
   getOneBolsistaSchema,
+  getBolsistaEditalSchema,
 };

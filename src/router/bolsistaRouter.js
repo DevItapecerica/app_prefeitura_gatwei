@@ -3,7 +3,6 @@ import { getAuth } from '../controller/FT/FTAuth.js';
 import { authJWT } from '../middleware/authJWT.js';
 
 import * as BolsistaSchema from '../schema/bolsistaSchema.js';
-import * as FtAppSchema from '../api/ft_app_api.js';
 
 const bolsistaRouter = async (fastify, _options) => {
   // Protege todas as rotas do grupo com JWT
@@ -47,21 +46,21 @@ const bolsistaRouter = async (fastify, _options) => {
   fastify.route({
     method: 'GET',
     url: '/edital/:id',
-    // schema: FtAppSchema.getEditalSchema,
+    schema: BolsistaSchema.getBolsistaEditalSchema,
     handler: BolsistaController.getBolsistaEdital,
   })
 
   fastify.route({
     method: 'GET',
     url: '/auth',
-    schema: FtAppSchema.getTokenSchema,
+    // schema: FtAppSchema.getTokenSchema,
     handler: getAuth,
   });
 
   fastify.route({
     method: "PUT",
     url: '/:bolsista/edital/:edital',
-    // schema:
+    // schema: BolsistaSchema.toggleBolsistaEditalSchema,
     handler: BolsistaController.toggleBolsistaEdital,
   })
 };
