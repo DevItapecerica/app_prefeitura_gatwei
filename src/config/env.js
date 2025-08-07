@@ -1,6 +1,12 @@
-const path = require("path");
-const dotenv = require("dotenv");
+import path from "path";
+import dotenv from "dotenv";
+import { fileURLToPath } from "url";
 
+// Emular __dirname em ES Module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Carregar variáveis do .env
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 function must(name) {
