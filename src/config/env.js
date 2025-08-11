@@ -31,9 +31,6 @@ export const SERVICE_API_KEY = must("SERVICE_API_KEY");
 export const PERMISSION_API_HOST = must("PERMISSION_API_HOST");
 export const PERMISSION_API_KEY = must("PERMISSION_API_KEY");
 
-export const DEMANDAS_API_HOST = must("DEMANDAS_API_HOST");
-export const DEMANDAS_API_KEY = must("DEMANDAS_API_KEY");
-
 export const FT_APP_API_HOST = must("FT_APP_API_HOST");
 export const FT_APP_API_KEY = must("FT_APP_API_KEY");
 
