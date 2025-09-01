@@ -1,35 +1,48 @@
 export const errorHook = (error, reply) => {
-  const statusCode = error.status || error.statusCode || 500;
-  const messageError = error.response?.data?.message || error.message || "Erro desconhecido";
+  // Obtém o código de status ou define como 500 por padrão
+  const { code, message, ok, api, validation } = error;
 
-  const payload = {
-    statusCode,
-    error: "",
-    message: "",
-  };
+  // Constrói uma mensagem de erro apropriada
+  let messageError = message || "Erro interno no servidor";
 
-  switch (statusCode) {
-    case 400:
-      payload.error = "Bad Request";
-      break;
-    case 401:
-      payload.error = "Unauthorized";
-      break;
-    case 403:
-      payload.error = "Forbidden";
-      break;
-    case 404:
-      payload.error = "Not Found";
-      break;
-    case 500:
-      payload.error = "Internal Server Error";
-      break;
-    default:
-      payload.statusCode = 500;
-      payload.error = "Internal Server Error";
+  // Loga o erro em ambiente de desenvolvimento
+  if (
+    process.env.NODE_ENV === "development" ||
+    process.env.NODE_ENV === "dev"
+  ) {
+    console.error("Error details:", error);
   }
 
-  payload.message = `${payload.error} - ${messageError}`;
+  // Formata resposta de erro de forma padronizada
+  const errorResponse = {};
 
-  reply.status(payload.statusCode).send(payload);
+  // Se for erro de validação, adiciona detalhes
+  if (validation) {
+    errorResponse = {
+      ok: false,
+      message: messageError,
+      api: api || "gatwei",
+    };
+  } else {
+    errorResponse = {
+      ok: ok,
+      message: messageError,
+      api: api,
+    };
+  }
+
+  const payloadRegistrer = {
+    ...errorResponse,
+    env: process.env.NODE_ENV,
+    timestamp: new Date().toISOString(),
+    path: request.url,
+    method: request.method,
+  };
+  // Lógica para log de erros
+
+  // Envia resposta com o código de status apropriado
+  reply
+    .code(code || 500)
+    .header("Content-Type", "application/json; charset=utf-8")
+    .send(errorResponse);
 };

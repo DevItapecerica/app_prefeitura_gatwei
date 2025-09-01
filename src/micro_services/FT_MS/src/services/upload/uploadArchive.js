@@ -3,10 +3,19 @@ import { promisify } from "util";
 import fs from "fs";
 import path from "path";
 
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const uploadDir = path.join(__dirname, "../../../uploads");
+
 const pump = promisify(pipeline);
-const uploadDir = path.join(path.dirname(import.meta.url.split("file:")[1]), "../../../uploads");
 if (!uploadDir) {
-  throw {statusCode: 500, message: "Upload directory path could not be determined."};
+  throw {
+    statusCode: 500,
+    message: "Upload directory path could not be determined.",
+  };
 }
 // Define the maximum file size (2 MB in this case)
 
