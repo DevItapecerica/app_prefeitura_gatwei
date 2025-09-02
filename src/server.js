@@ -44,16 +44,13 @@ await fastify.register(fastifyCookie);
 await fastify.register(fastifySwagger, swaggerConfig(port));
 await fastify.register(fastifySwaggerUi, swaggerUiConfig);
 
-// hooks
-fastify.setErrorHandler((error, request, reply) => {
-  console.log("----------------------------------------------------------");
-  console.log("error: " + error);
-  console.log("----------------------------------------------------------");
-  errorHook(error, reply);
-});
-
 // rotas
 fastify.register(Router, { prefix: "/api" });
+
+// hooks
+fastify.setErrorHandler((error, request, reply) => {
+  errorHook(error, reply);
+});
 
 // server
 const start = async () => {

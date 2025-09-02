@@ -11,11 +11,14 @@ const login = async (request, reply) => {
     reply.status(200).send(login);
   } catch (error) {
     const data = error.response ? error.response.data : null;
+
+    console.log(data);
     throw {
       ok: false,
-      message: data ? data.message : "Erro ao conectar com o serviço de login",
+      validation: data.validation,
+      message: data.message || "Erro ao conectar com o serviço de login",
       code: error.status,
-      api: data ? data.api : "login",
+      api: data.api || "login",
     }; // O erro será tratado pelo hook onError
   }
 };

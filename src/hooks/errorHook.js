@@ -20,12 +20,14 @@ export const errorHook = (error, reply) => {
   if (validation) {
     errorResponse = {
       ok: false,
+      validation: validation,
       message: messageError,
       api: api || "gatwei",
     };
   } else {
     errorResponse = {
       ok: ok,
+      validation: validation,
       message: messageError,
       api: api,
     };
