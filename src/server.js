@@ -31,11 +31,7 @@ const fastify = Fastify({
           method: req.method,
           url: req.url,
           parameters: req.params,
-          // Including the headers in the log could be in violation
-          // of privacy laws, e.g. GDPR. You should use the "redact" option to
-          // remove sensitive fields. It could also leak authentication data in
-          // the logs.
-          headers: req.headers,
+          body: req.body,
         };
       },
     },

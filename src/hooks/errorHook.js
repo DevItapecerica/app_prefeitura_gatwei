@@ -14,7 +14,7 @@ export const errorHook = (error, reply) => {
   }
 
   // Formata resposta de erro de forma padronizada
-  const errorResponse = {};
+  var errorResponse = {};
 
   // Se for erro de validação, adiciona detalhes
   if (validation) {
@@ -30,15 +30,6 @@ export const errorHook = (error, reply) => {
       api: api,
     };
   }
-
-  const payloadRegistrer = {
-    ...errorResponse,
-    env: process.env.NODE_ENV,
-    timestamp: new Date().toISOString(),
-    path: request.url,
-    method: request.method,
-  };
-  // Lógica para log de erros
 
   // Envia resposta com o código de status apropriado
   reply

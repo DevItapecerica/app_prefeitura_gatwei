@@ -10,8 +10,14 @@ const login = async (request, reply) => {
 
     reply.status(200).send(login);
   } catch (error) {
-    throw error; // O erro será tratado pelo hook onError
+    const data = error.response ? error.response.data : null;
+    throw {
+      ok: false,
+      message: data ? data.message : "Erro ao conectar com o serviço de login",
+      code: error.status,
+      api: data ? data.api : "login",
+    }; // O erro será tratado pelo hook onError
   }
 };
 
-export default login ;
+export default login;
