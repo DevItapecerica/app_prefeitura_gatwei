@@ -1,45 +1,48 @@
 const errorHook = (error, reply) => {
-  let payload = {};
-  const statusCode = error.status || error.statusCode || 500;
-  let messageError =
-    error.response?.data.message || error.message || "Erro desconhecido";
-  // Verifica o tipo de erro e responde com o status adequado
-  switch (statusCode) {
-    case 400:
-      payload.statusCode = statusCode;
-      payload.error = "Bad Request";
-      payload.message = `${payload.error} ${messageError}`;
-      break;
-    case 401:
-      payload.statusCode = statusCode;
-      payload.error = "Unauthorized";
-      payload.message = `${payload.error} ${messageError}`;
-      break;
-    case 403:
-      payload.statusCode = statusCode;
-      payload.error = "Bad Request";
-      payload.message = `${payload.error} ${messageError}`;
-      break;
-    case 404:
-      payload.statusCode = statusCode;
-      payload.error = "Not Found";
-      payload.message = `${payload.error} ${messageError}`;
-      break;
-    case 500:
-      payload.statusCode = statusCode;
-      payload.error = "Bad Request";
-      payload.message = `${payload.error} ${messageError}`;
-      break;
-    default:
-      payload.statusCode = 500;
-      payload.error = "Bad Request";
-      payload.message = `${payload.error} Erro interno no servidor`;
+  // Obtém o código de status ou define como 500 por padrão
+  var {
+    code = 500,
+    message = "Internal Server Error",
+    ok = false,
+    api = "FT_MS",
+    validation = false,
+  } = error;
+
+  // Loga o erro em ambiente de desenvolvimento
+  if (
+    process.env.NODE_ENV === "development" ||
+    process.env.NODE_ENV === "dev"
+  ) {
+    console.error("Error details:", error);
   }
 
-  reply.status(statusCode).send({
-    ...payload,
-  });
-  // Verifica o tipo de erro e responde com o status adequado
+  // Formata resposta de erro de forma padronizada
+  var errorResponse = {};
+
+  // Se for erro de validação, adiciona detalhes
+  if (validation) {
+    code = 400;
+    errorResponse = {
+      ok,
+      validation: true,
+      message: "Confira o corpo da requisição e tente novamente",
+      api: api,
+    };
+  } else {
+    fastify.log.error(error);
+    errorResponse = {
+      ok,
+      validation,
+      message: message,
+      api: api,
+    };
+  }
+
+  // Envia resposta com o código de status apropriado
+  reply
+    .code(code)
+    .header("Content-Type", "application/json; charset=utf-8")
+    .send(errorResponse);
 };
 
 export default errorHook;

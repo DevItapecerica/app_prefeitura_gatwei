@@ -12,7 +12,7 @@ export const getBolsista = async (request, reply) => {
       pagador,
     });
   } catch (error) {
-    throw error;
+    throw { code: error.code, message: error.message, ok: false, api: "FT_MS" };
   }
 };
 
@@ -32,7 +32,7 @@ export const getOneBolsista = async (request, reply) => {
 
 export const createBolsista = async (request, reply) => {
   try {
-    const {bolsista} = request.body;
+    const { bolsista } = request.body;
 
     let newBolsista = await saveBolsista(bolsista);
 

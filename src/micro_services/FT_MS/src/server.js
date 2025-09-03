@@ -5,45 +5,49 @@ import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import fastifyMultipart from "@fastify/multipart";
 
+// Porta
+import { PORT } from "./config/env.js";
+
 // plugins
-import loggerPlugin from "./plugins/logger.js";
-import { PORT } from "./src/config/env.js";
-import { swaggerConfig, swaggerUiConfig } from "./src/config/swaggerConfig.js";
-import corsConfig from "./src/config/corsConfig.js";
-import errorHook from "./src/hooks/errorHook.js";
-import './src/services/schedular/editalVerify.js'
+import { swaggerConfig, swaggerUiConfig } from "./config/swaggerConfig.js";
+import corsConfig from "./config/corsConfig.js";
+import errorHook from "./hooks/errorHook.js";
+import "./services/schedular/editalVerify.js";
 
 // routers
-import router from './src/router/router.js';
+import router from "./router/router.js";
 
 // outros
-import "./src/db/model/associations.js";
+import "./db/model/associations.js";
 
-const port = PORT || 8001;
+const port = PORT;
 
-const fastify = Fastify();
+const fastify = Fastify({
+  logger: {
+    level: "info",
+    file: "logs/server.log", // Will use pino.destination()
+  },
+});
 
 // Plugins
-await fastify.register(loggerPlugin);
 await fastify.register(cors, corsConfig);
+
 await fastify.register(fastifyMultipart, {
   limits: {
     fileSize: 5 * 1024 * 1024, // 5MB
   },
 });
+
 await fastify.register(fastifySwagger, swaggerConfig(port));
 await fastify.register(fastifySwaggerUi, swaggerUiConfig);
 
 // Hooks
 fastify.setErrorHandler((error, request, reply) => {
-  console.log("----------------------------------------------------------");
-  console.log("error:", error);
-  console.log("----------------------------------------------------------");
   errorHook(error, reply);
 });
 
 // Rotas
-fastify.register(router, { prefix: '/ft' });
+fastify.register(router, { prefix: "/ft" });
 
 // Start server
 const start = async () => {

@@ -234,7 +234,10 @@ const getBolsistaEditalSchema = {
             type: "object",
             properties: {
               ...bolsistaProperties,
-              edital: { type: "array", items: {type: "object", properties: editalProperties} },
+              edital: {
+                type: "array",
+                items: { type: "object", properties: editalProperties },
+              },
             },
           },
         },
@@ -268,7 +271,10 @@ const toggleBolsistaEditalSchema = {
           type: "object",
           properties: {
             ...bolsistaProperties,
-            edital: { type: "array", items: {type: "object", properties: editalProperties} },
+            edital: {
+              type: "array",
+              items: { type: "object", properties: editalProperties },
+            },
           },
         },
       },
