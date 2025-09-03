@@ -1,9 +1,12 @@
 export const errorHook = (error, reply) => {
   // Obtém o código de status ou define como 500 por padrão
-  const { code, message, ok, api, validation } = error;
-
-  // Constrói uma mensagem de erro apropriada
-  let messageError = message || "Erro interno no servidor";
+  var {
+    code = 500,
+    message = "Internal Server Error",
+    ok = false,
+    api = "Gatwei",
+    validation = false,
+  } = error;
 
   // Loga o erro em ambiente de desenvolvimento
   if (
@@ -18,24 +21,25 @@ export const errorHook = (error, reply) => {
 
   // Se for erro de validação, adiciona detalhes
   if (validation) {
+    code = 400;
     errorResponse = {
       ok: false,
       validation: validation,
-      message: messageError,
-      api: api || "gatwei",
+      message: "Confira o corpo da requisição e tente novamente",
+      api: api,
     };
   } else {
     errorResponse = {
       ok: ok,
       validation: validation,
-      message: messageError,
+      message: message,
       api: api,
     };
   }
 
   // Envia resposta com o código de status apropriado
   reply
-    .code(code || 500)
+    .code(code)
     .header("Content-Type", "application/json; charset=utf-8")
     .send(errorResponse);
 };

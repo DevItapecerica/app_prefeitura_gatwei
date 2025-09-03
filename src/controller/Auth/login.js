@@ -1,7 +1,8 @@
 import login_api from "../../api/login_api.js";
 
 const login = async (request, reply) => {
-  const payload = request.body.credentials;
+  const { password, email } = request.body;
+  const payload = { email, password };
 
   try {
     const response = await login_api.post("/login", { ...payload });

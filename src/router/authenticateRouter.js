@@ -1,19 +1,19 @@
-import Login from '../controller/Auth/login.js';
-import loginSchema from '../schema/loginSchema.js';
-import authSchema from '../schema/authSchema.js';
-import authUser from '../controller/Auth/authUser.js';
+import Login from "../controller/Auth/login.js";
+import loginSchema from "../schema/loginSchema.js";
+import authSchema from "../schema/authSchema.js";
+import authUser from "../controller/Auth/authUser.js";
 
 const authenticateRouter = (fastify, options) => {
   fastify.route({
-    method: 'POST',
-    url: '/login',
+    method: "POST",
+    url: "/login",
     schema: loginSchema,
     handler: Login,
   });
 
   fastify.route({
-    method: 'GET',
-    url: '/',
+    method: "GET",
+    url: "/",
     schema: authSchema,
     handler: authUser,
   });

@@ -1,4 +1,4 @@
-import errorSchema from './errorSchema.js';
+import errorResponseSchema from "./errorSchema.js";
 
 const loginSchema = {
   description: "Verificação de usuário",
@@ -6,26 +6,19 @@ const loginSchema = {
   security: [{ APIKey: [] }],
   body: {
     type: "object",
-    required: ["credentials"],
+    required: ["email", "password"],
     properties: {
-      credentials: {
-        type: "object",
-        required: ["email", "password"],
-        properties: {
-          email: {
-            type: "string",
-          },
-          password: {
-            type: "string",
-          },
-        },
+      email: {
+        type: "string",
+      },
+      password: {
+        type: "string",
       },
     },
   },
-
   response: {
     200: {
-      description: "Verificação bem sucedido",
+      description: "Verificação bem sucedida",
       type: "object",
       properties: {
         message: { type: "string", example: "Login bem sucedido" },
@@ -36,7 +29,8 @@ const loginSchema = {
         scopo: { type: "string", example: "admin" },
       },
     },
-    ...errorSchema
+
+    ...errorResponseSchema,
   },
 };
 
