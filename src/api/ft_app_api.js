@@ -5,7 +5,6 @@ const FT_API = axios.create({
   baseURL: FT_APP_API_HOST,
   headers: {
     // "Content-Type": "application/json",
-    
   },
 });
 
@@ -18,6 +17,5 @@ FT_API.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
 
 export default FT_API;

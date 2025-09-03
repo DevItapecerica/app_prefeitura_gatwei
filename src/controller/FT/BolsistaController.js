@@ -1,4 +1,4 @@
-import ft_app_api from "../../api/ft_app_api.js";
+import FT_API from "../../api/ft_app_api.js";
 import { verifyPermission } from "../../utils/verifyPermission.js";
 
 const SERVICE = 6;
@@ -14,27 +14,42 @@ export const getBolsistas = async (request, reply) => {
         data: { token },
       },
     ] = await Promise.all([
-      ft_app_api.get("/ft/bolsista"),
-      ft_app_api.get(`/ft/auth/${user}`),
+      FT_API.get("/ft/bolsista"),
+      FT_API.get(`/ft/auth/${user}`),
     ]);
 
     reply.status(200).send({ ...data, uploadToken: token });
   } catch (error) {
-    throw error;
+    const data = error.response ? error.response.data : error;
+    throw {
+      ok: false,
+      validation: data.validation,
+      message: data.message,
+      code: error.status || data.code,
+      api: data.api,
+    };
   }
 };
 
 export const getOneBolsistas = async (request, reply) => {
   try {
-    let user = request.user;
-    await verifyPermission(user, SERVICE, request.method);
+    await verifyPermission(request.user, SERVICE, request.method);
+
     const { id } = request.params;
-    const response = await ft_app_api.get(`/ft/bolsista/${id}`);
-    const bolsistas = response.data;
+    const { data } = await FT_API.get(`/ft/bolsista/${id}`);
+    const bolsistas = data;
 
     reply.status(200).send(bolsistas);
   } catch (error) {
-    throw error;
+    console.log(error.response.data);
+    const data = error.response ? error.response.data : error;
+    throw {
+      ok: false,
+      validation: data.validation,
+      message: data.message,
+      code: error.status || data.code,
+      api: data.api,
+    };
   }
 };
 

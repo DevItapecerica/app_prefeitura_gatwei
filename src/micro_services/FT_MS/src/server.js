@@ -11,7 +11,6 @@ import { PORT } from "./config/env.js";
 // plugins
 import { swaggerConfig, swaggerUiConfig } from "./config/swaggerConfig.js";
 import corsConfig from "./config/corsConfig.js";
-import errorHook from "./hooks/errorHook.js";
 import "./services/schedular/editalVerify.js";
 
 // routers
@@ -30,20 +29,62 @@ const fastify = Fastify({
 });
 
 // Plugins
-await fastify.register(cors, corsConfig);
+fastify.register(cors, corsConfig);
 
-await fastify.register(fastifyMultipart, {
+fastify.register(fastifyMultipart, {
   limits: {
     fileSize: 5 * 1024 * 1024, // 5MB
   },
 });
 
-await fastify.register(fastifySwagger, swaggerConfig(port));
-await fastify.register(fastifySwaggerUi, swaggerUiConfig);
+fastify.register(fastifySwagger, swaggerConfig(port));
+fastify.register(fastifySwaggerUi, swaggerUiConfig);
 
 // Hooks
 fastify.setErrorHandler((error, request, reply) => {
-  errorHook(error, reply);
+  var {
+    code = 500,
+    message = "Internal Server Error",
+    ok = false,
+    api = "FT_MS",
+    validation = false,
+  } = error;
+
+  // Loga o erro em ambiente de desenvolvimento
+  if (
+    process.env.NODE_ENV === "development" ||
+    process.env.NODE_ENV === "dev"
+  ) {
+    console.error("Error details:", error);
+  }
+
+  // Formata resposta de erro de forma padronizada
+  var errorResponse = {};
+
+  // Se for erro de validação, adiciona detalhes
+  if (validation) {
+    code = 400;
+    errorResponse = {
+      ok,
+      validation: true,
+      message: "Confira o corpo da requisição e tente novamente",
+      api: api,
+    };
+  } else {
+    fastify.log.error(error);
+    errorResponse = {
+      ok,
+      validation,
+      message: message,
+      api: api,
+    };
+  }
+
+  // Envia resposta com o código de status apropriado
+  reply
+    .code(code)
+    .header("Content-Type", "application/json; charset=utf-8")
+    .send(errorResponse);
 });
 
 // Rotas
@@ -52,7 +93,7 @@ fastify.register(router, { prefix: "/ft" });
 // Start server
 const start = async () => {
   try {
-    await fastify.listen({ port, host: "0.0.0.0" });
+    fastify.listen({ port, host: "0.0.0.0" });
     console.log(`Server is running on port ${port}`);
   } catch (error) {
     console.error("Erro ao iniciar o servidor:", error);

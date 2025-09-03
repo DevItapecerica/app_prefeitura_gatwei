@@ -8,6 +8,7 @@ import {
   verifyPagador,
   verifyQuantityPagador,
 } from "../../utils/verifyPagador.js";
+import { OK } from "zod";
 
 const pagador = [
   {
@@ -51,13 +52,14 @@ export const getBolsistaById = async (id) => {
   const bolsista = await Bolsistas.findByPk(id);
 
   if (!bolsista) {
-    throw {
-      status: 404,
-      message: "Nenhum bolsista encontrado",
+    return {
+      ok: false,
+      code: 404,
+      message: "Bolsista not found",
     };
   }
 
-  return bolsista;
+  return { bolsista, ok: true, message: "Bolsista retrieved successfully" };
 };
 
 export const createBolsista = async (data) => {
@@ -148,8 +150,7 @@ export const getAllBolsistas = async () => {
     pg.quantity = bolsista.filter((b) => b.pagador === pg.id).length;
   });
 
-
-  return { bolsista, pagador };
+  return { bolsista, pagador, message: "Bolsistas retrieved successfully" };
 };
 
 export const getBolsistaByEditalId = async (id) => {

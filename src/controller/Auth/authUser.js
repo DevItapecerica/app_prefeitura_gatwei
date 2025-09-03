@@ -21,6 +21,7 @@ const authUser = async (request, reply) => {
     reply.status(200).send(user);
   } catch (error) {
     const response = error.response?.data || error;
+
     throw {
       code: error.status || error.code,
       message: response.message,

@@ -4,10 +4,10 @@ import saveBolsista from "../services/bolsista/saveBolsista.js";
 
 export const getBolsista = async (request, reply) => {
   try {
-    const { bolsista, pagador } = await Bolsista.getAllBolsistas();
+    const { bolsista, pagador, message } = await Bolsista.getAllBolsistas();
 
     return reply.status(200).send({
-      message: "Bolsista get successfully",
+      message,
       bolsista,
       pagador,
     });
@@ -19,14 +19,23 @@ export const getBolsista = async (request, reply) => {
 export const getOneBolsista = async (request, reply) => {
   try {
     const { id } = request.params;
-    const bolsista = await Bolsista.getBolsistaById(id);
+    const response = await Bolsista.getBolsistaById(id);
+
+    if (!response.ok) {
+      throw {
+        code: response.code,
+        message: response.message,
+        ok: false,
+        api: "FT_MS",
+      };
+    }
 
     return reply.status(200).send({
-      message: "Bolsista get successfully",
-      bolsista,
+      message: response.message,
+      bolsista: response.bolsista,
     });
   } catch (error) {
-    throw error;
+    throw { code: error.code, message: error.message, ok: false, api: "FT_MS" };
   }
 };
 
