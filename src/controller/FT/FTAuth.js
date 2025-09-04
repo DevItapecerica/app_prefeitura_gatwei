@@ -9,6 +9,11 @@ export const getAuth = async (request, reply) => {
 
     reply.status(200).send({ token });
   } catch (error) {
-    throw error;
+    throw {
+      code: error.code,
+      message: error.message,
+      ok: false,
+      api: "Gatwei",
+    };
   }
 };

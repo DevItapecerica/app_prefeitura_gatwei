@@ -1,4 +1,4 @@
-import FT_API from "../../api/ft_app_api.js";
+import ft_app_api from "../../api/ft_app_api.js";
 import { verifyPermission } from "../../utils/verifyPermission.js";
 
 const SERVICE = 6;
@@ -14,19 +14,18 @@ export const getBolsistas = async (request, reply) => {
         data: { token },
       },
     ] = await Promise.all([
-      FT_API.get("/ft/bolsista"),
-      FT_API.get(`/ft/auth/${user}`),
+      ft_app_api.get("/ft/bolsista"),
+      ft_app_api.get(`/ft/auth/${user}`),
     ]);
 
     reply.status(200).send({ ...data, uploadToken: token });
   } catch (error) {
-    const data = error.response ? error.response.data : error;
+    const response = error.response ? error.response.data : error;
     throw {
+      code: response.status || response.code,
+      message: response.message,
       ok: false,
-      validation: data.validation,
-      message: data.message,
-      code: error.status || data.code,
-      api: data.api,
+      api: response.api,
     };
   }
 };
@@ -36,19 +35,17 @@ export const getOneBolsistas = async (request, reply) => {
     await verifyPermission(request.user, SERVICE, request.method);
 
     const { id } = request.params;
-    const { data } = await FT_API.get(`/ft/bolsista/${id}`);
+    const { data } = await ft_app_api.get(`/ft/bolsista/${id}`);
     const bolsistas = data;
 
     reply.status(200).send(bolsistas);
   } catch (error) {
-    console.log(error.response.data);
-    const data = error.response ? error.response.data : error;
+    const response = error.response ? error.response.data : error;
     throw {
+      code: response.status || response.code,
+      message: response.message,
       ok: false,
-      validation: data.validation,
-      message: data.message,
-      code: error.status || data.code,
-      api: data.api,
+      api: response.api,
     };
   }
 };
@@ -93,7 +90,13 @@ export const createBolsistas = async (request, reply) => {
 
     reply.status(200).send(bolsista);
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: response.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -133,7 +136,13 @@ export const updateBolsistas = async (request, reply) => {
 
     reply.status(200).send(bolsista);
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: response.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -148,7 +157,13 @@ export const deleteBolsistas = async (request, reply) => {
 
     reply.status(200).send(message);
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: response.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -162,7 +177,13 @@ export const getBolsistaEdital = async (request, reply) => {
     const bolsista = data;
     reply.status(200).send(bolsista);
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: response.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -181,6 +202,12 @@ export const toggleBolsistaEdital = async (request, reply) => {
 
     reply.status(200).send(data);
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: response.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };

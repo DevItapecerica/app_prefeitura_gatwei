@@ -8,7 +8,6 @@ import {
   verifyPagador,
   verifyQuantityPagador,
 } from "../../utils/verifyPagador.js";
-import { OK } from "zod";
 
 const pagador = [
   {
@@ -122,13 +121,15 @@ export const updateBolsista = async (data, id) => {
 };
 
 export const deleteBolsista = async (id) => {
-  const bolsista = await getBolsistaById(id);
+  const { bolsista } = await getBolsistaById(id);
   const bolsistaFiles = await searchArchive(id);
 
   if (!bolsista) {
     throw {
-      status: 404,
+      code: 404,
       message: "Bolsista não encontrado",
+      ok: false,
+      api: "FT_MS",
     };
   }
 
@@ -166,6 +167,15 @@ export const getBolsistaByEditalId = async (id) => {
       },
     ],
   });
+
+  if (!bolsista) {
+    throw {
+      code: 404,
+      ok: false,
+      api: "FT_MS",
+      message: "Nenhum bolsista encontrado para esse edital",
+    };
+  }
 
   return bolsista;
 };
@@ -213,8 +223,10 @@ export const toggleBolsistaEdital = async (bolsista, edital) => {
 
   if (!bolsistaTarget || !editalTarget) {
     throw {
-      status: 404,
+      code: 404,
       message: "Bolsista ou Edital não encontrados",
+      ok: false,
+      api: "FT_MS",
     };
   }
 
@@ -230,15 +242,19 @@ export const toggleBolsistaEdital = async (bolsista, edital) => {
     (editalTarget.status != "ativo" && editalTarget.status != "inativo")
   ) {
     throw {
-      status: 403,
+      code: 400,
       message: "Bolsista ou Edital inválidos",
+      ok: false,
+      api: "FT_MS",
     };
   }
 
   if (vinculo.status != "ativo" && bolsistaTarget.status == "ativo") {
     throw {
-      status: 403,
+      status: 400,
       message: "Bolsista já ativo em outro edital",
+      ok: false,
+      api: "FT_MS",
     };
   }
 

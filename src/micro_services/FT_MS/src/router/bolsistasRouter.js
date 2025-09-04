@@ -9,7 +9,7 @@ const bolsistaRouter = async (fastify, options) => {
   fastify.route({
     method: "GET",
     url: "/",
-    schema: BolsistaSchema.getBolsistaSchema,
+    // schema: BolsistaSchema.getBolsistaSchema,
     handler: Bolsista.getBolsista,
   });
 
@@ -17,7 +17,7 @@ const bolsistaRouter = async (fastify, options) => {
   fastify.route({
     method: "GET",
     url: "/:id",
-    schema: BolsistaSchema.getOneBolsistaSchema,
+    // schema: BolsistaSchema.getOneBolsistaSchema,
     handler: Bolsista.getOneBolsista,
   });
 
@@ -25,7 +25,7 @@ const bolsistaRouter = async (fastify, options) => {
   fastify.route({
     method: "POST",
     url: "/",
-    schema: BolsistaSchema.createBolsistaSchema,
+    // schema: BolsistaSchema.createBolsistaSchema,
     handler: Bolsista.createBolsista,
   });
 
@@ -33,7 +33,7 @@ const bolsistaRouter = async (fastify, options) => {
   fastify.route({
     method: "PUT",
     url: "/:id",
-    schema: BolsistaSchema.updateBolsistaSchema,
+    // schema: BolsistaSchema.updateBolsistaSchema,
     handler: Bolsista.updateBolsista,
   });
 
@@ -41,7 +41,7 @@ const bolsistaRouter = async (fastify, options) => {
   fastify.route({
     method: "DELETE",
     url: "/:id",
-    schema: BolsistaSchema.deleteBolsistaSchema,
+    // schema: BolsistaSchema.deleteBolsistaSchema,
     handler: Bolsista.deleteBolsista,
   });
 

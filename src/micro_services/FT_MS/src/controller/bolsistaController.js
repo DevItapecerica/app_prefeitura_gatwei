@@ -50,7 +50,7 @@ export const createBolsista = async (request, reply) => {
       newBolsista,
     });
   } catch (error) {
-    throw error;
+    throw { code: error.code, message: error.message, ok: false, api: "FT_MS" };
   }
 };
 
@@ -66,7 +66,7 @@ export const updateBolsista = async (request, reply) => {
       bolsista,
     });
   } catch (error) {
-    throw error;
+    throw { code: error.code, message: error.message, ok: false, api: "FT_MS" };
   }
 };
 
@@ -80,7 +80,7 @@ export const deleteBolsista = async (request, reply) => {
       message: "Bolsista deleted successfully",
     });
   } catch (error) {
-    throw error;
+    throw { code: error.code, message: error.message, ok: false, api: "FT_MS" };
   }
 };
 
@@ -95,7 +95,12 @@ export const getBolsistaEdital = async (request, reply) => {
       bolsista,
     });
   } catch (error) {
-    throw error;
+    throw {
+      code: error.code,
+      message: error.message,
+      ok: false,
+      api: error.api,
+    };
   }
 };
 
@@ -108,6 +113,6 @@ export const toggleBolsistaEdital = async (request, reply) => {
 
     reply.status(201).send({ message: "Bolsista alterado com sucesso!" });
   } catch (error) {
-    throw error;
+    throw { code: error.code, message: error.message, ok: false, api: "FT_MS" };
   }
 };
