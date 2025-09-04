@@ -8,8 +8,12 @@ export const getEdital = async (req, res) => {
       .status(200)
       .send({ message: "Edital selecionados com sucesso", edital });
   } catch (error) {
-    console.error("Error fetching edital:", error);
-    throw error;
+    throw {
+      code: error.code,
+      message: error.message,
+      ok: error.ok,
+      api: error.api,
+    };
   }
 };
 
@@ -23,8 +27,12 @@ export const getEditalById = async (req, res) => {
       .status(200)
       .send({ message: "Edital selecionados com sucesso", edital });
   } catch (error) {
-    console.error("Error fetching edital:", error);
-    throw error;
+    throw {
+      code: error.code,
+      message: error.message,
+      ok: error.ok,
+      api: error.api,
+    };
   }
 };
 
@@ -38,8 +46,12 @@ export const postEdital = async (req, res) => {
       .status(201)
       .send({ message: "Edital criado com sucesso", newEdital });
   } catch (error) {
-    console.error("Error creating edital:", error);
-    throw error;
+    throw {
+      code: error.code,
+      message: error.message,
+      ok: error.ok,
+      api: error.api,
+    };
   }
 };
 export const updateEdital = async (req, res) => {
@@ -53,7 +65,12 @@ export const updateEdital = async (req, res) => {
       .status(200)
       .send({ message: "Edital criado com sucesso", edital: newEdital });
   } catch (error) {
-    throw error;
+    throw {
+      code: error.code,
+      message: error.message,
+      ok: error.ok,
+      api: error.api,
+    };
   }
 };
 
@@ -65,8 +82,12 @@ export const deleteEdital = async (req, res) => {
 
     return res.status(201).send({ message: "Edital deletado com sucesso" });
   } catch (error) {
-    console.error("Error deleting edital:", error);
-    throw error;
+    throw {
+      code: error.code,
+      message: error.message,
+      ok: error.ok,
+      api: error.api,
+    };
   }
 };
 
@@ -80,29 +101,46 @@ export const vincularBolsista = async (req, res) => {
 
     return res.status(201).send({ message: "Bolsista vinculado com sucesso" });
   } catch (error) {
-    const response = error.response ? error.response.data : error;
     throw {
-      code: response.status || response.code,
-      message: response.message,
-      ok: false,
-      api: response.api,
+      code: error.code,
+      message: error.message,
+      ok: error.ok,
+      api: error.api,
     };
   }
 };
 
 export const getAllEditalWithBolsista = async (req, res) => {
-  const bolsista_edital = await Edital.getAllWithBolsista();
+  try {
+    const bolsista_edital = await Edital.getAllWithBolsista();
 
-  res
-    .status(200)
-    .send({ message: "Todos os editais com bolsistas", bolsista_edital });
+    res
+      .status(200)
+      .send({ message: "Todos os editais com bolsistas", bolsista_edital });
+  } catch (error) {
+    throw {
+      code: error.code,
+      message: error.message,
+      ok: error.ok,
+      api: error.api,
+    };
+  }
 };
 
 export const getEditalWithBolsista = async (req, res) => {
-  const { id } = req.params;
-  const bolsista_edital = await Edital.getWithBolsista(id);
+  try {
+    const { id } = req.params;
+    const bolsista_edital = await Edital.getWithBolsista(id);
 
-  res.status(200).send({ message: "Edital com bolsistas", bolsista_edital });
+    res.status(200).send({ message: "Edital com bolsistas", bolsista_edital });
+  } catch (error) {
+    throw {
+      code: error.code,
+      message: error.message,
+      ok: error.ok,
+      api: error.api,
+    };
+  }
 };
 
 // a serem implementados
@@ -121,8 +159,12 @@ export const getEditalByDate = async (req, res) => {
     });
     return res.status(200).json(edital);
   } catch (error) {
-    console.error("Error fetching edital by date:", error);
-    return res.status(500).json({ message: "Internal server error" });
+    throw {
+      code: error.code,
+      message: error.message,
+      ok: error.ok,
+      api: error.api,
+    };
   }
 };
 
@@ -143,8 +185,12 @@ export const getEditalByTitle = async (req, res) => {
     });
     return res.status(200).json(edital);
   } catch (error) {
-    console.error("Error fetching edital by title:", error);
-    return res.status(500).json({ message: "Internal server error" });
+    throw {
+      code: error.code,
+      message: error.message,
+      ok: error.ok,
+      api: error.api,
+    };
   }
 };
 
@@ -165,8 +211,12 @@ export const getEditalByDateRange = async (req, res) => {
     });
     return res.status(200).json(edital);
   } catch (error) {
-    console.error("Error fetching edital by date range:", error);
-    return res.status(500).json({ message: "Internal server error" });
+    throw {
+      code: error.code,
+      message: error.message,
+      ok: error.ok,
+      api: error.api,
+    };
   }
 };
 export const getEditalByPagination = async (req, res) => {
@@ -184,8 +234,12 @@ export const getEditalByPagination = async (req, res) => {
       data: edital.rows,
     });
   } catch (error) {
-    console.error("Error fetching edital with pagination:", error);
-    return res.status(500).json({ message: "Internal server error" });
+    throw {
+      code: error.code,
+      message: error.message,
+      ok: error.ok,
+      api: error.api,
+    };
   }
 };
 export const getEditalBySorting = async (req, res) => {
@@ -196,7 +250,11 @@ export const getEditalBySorting = async (req, res) => {
     });
     return res.status(200).json(edital);
   } catch (error) {
-    console.error("Error fetching edital with sorting:", error);
-    return res.status(500).json({ message: "Internal server error" });
+    throw {
+      code: error.code,
+      message: error.message,
+      ok: error.ok,
+      api: error.api,
+    };
   }
 };

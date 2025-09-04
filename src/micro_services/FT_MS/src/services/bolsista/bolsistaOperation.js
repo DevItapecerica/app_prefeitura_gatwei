@@ -242,7 +242,7 @@ export const toggleBolsistaEdital = async (bolsista, edital) => {
     (editalTarget.status != "ativo" && editalTarget.status != "inativo")
   ) {
     throw {
-      code: 400,
+      code: 403,
       message: "Bolsista ou Edital inválidos",
       ok: false,
       api: "FT_MS",
@@ -251,7 +251,7 @@ export const toggleBolsistaEdital = async (bolsista, edital) => {
 
   if (vinculo.status != "ativo" && bolsistaTarget.status == "ativo") {
     throw {
-      status: 400,
+      status: 403,
       message: "Bolsista já ativo em outro edital",
       ok: false,
       api: "FT_MS",

@@ -4,8 +4,10 @@ import Bolsistas from "../../db/model/Bolsistas.js";
 export const EditalById = async (id) => {
   const edital = await Edital.findByPk(id);
   if (!edital) {
-    throw {
-      status: 404,
+    return {
+      code: 200,
+      ok: true,
+      api: "FT_MS",
       message: "Edital not found",
     };
   }
@@ -102,7 +104,7 @@ export const vincularBolsista = async (id, bolsistas, data_vinculo) => {
 
     if (isBolsista.status == "pendente" || isBolsista.status == "ativo") {
       throw {
-        code: 400,
+        code: 403,
         ok: false,
         api: "FT_MS",
         message:

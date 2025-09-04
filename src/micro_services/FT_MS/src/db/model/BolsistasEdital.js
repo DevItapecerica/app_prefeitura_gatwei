@@ -29,23 +29,25 @@ const BolsistasEdital = Sequelize.define(
       allowNull: false,
       defaultValue: () => new Date(), // melhor usar função para pegar o momento de criação
     },
-    data_vencimento: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    prorrogado: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true,
-    },
     status: {
       type: DataTypes.ENUM("ativo", "inativo", "concluido", "expirado"),
       allowNull: false,
       defaultValue: "ativo",
     },
+
+    expire_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    prorrogated: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   },
   {
     tableName: "BolsistasEdital",
-    timestamps: false,
+    timestamps: true,
     paranoid: true,
 
     hooks: {
@@ -53,7 +55,7 @@ const BolsistasEdital = Sequelize.define(
         if (!bolsistaEdital.data_vencimento) {
           const vencimento = new Date(bolsistaEdital.data_vinculo);
           vencimento.setFullYear(vencimento.getFullYear() + 1);
-          bolsistaEdital.data_vencimento = vencimento;
+          bolsistaEdital.expire_at = vencimento;
         }
       },
     },

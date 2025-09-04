@@ -28,7 +28,7 @@ const Bolsistas = Sequelize.define(
       allowNull: false,
     },
     conta: {
-      type: DataTypes.STRING(10), // até 10 caracteres
+      type: DataTypes.STRING(11), // até 10 caracteres
       allowNull: false,
     },
     dig_conta: {

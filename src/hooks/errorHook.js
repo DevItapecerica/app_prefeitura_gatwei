@@ -14,7 +14,7 @@ export const errorHook = (fastify, options) => {
       process.env.NODE_ENV === "development" ||
       process.env.NODE_ENV === "dev"
     ) {
-      // console.error("Error details:", error);
+      console.error("Error details:", error);
     }
 
     // Formata resposta de erro de forma padronizada
