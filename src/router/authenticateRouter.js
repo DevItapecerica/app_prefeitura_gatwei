@@ -8,6 +8,9 @@ const authenticateRouter = (fastify, options) => {
     method: "POST",
     url: "/login",
     schema: loginSchema,
+    preHandler: fastify.rateLimit({
+      keyGenerator: (request) => request.body["email"],
+    }),
     handler: Login,
   });
 

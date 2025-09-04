@@ -4,6 +4,7 @@ import cors from "@fastify/cors";
 import fastifyCookie from "@fastify/cookie";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
+import rateLimit from "@fastify/rate-limit";
 
 import { PORT } from "./config/env.js";
 
@@ -13,6 +14,7 @@ import { errorHook } from "./hooks/errorHook.js";
 
 // router
 import Router from "./router/router.js";
+import notFound from "./hooks/notFound.js";
 
 const port = PORT;
 const fastify = Fastify({
@@ -39,18 +41,32 @@ const fastify = Fastify({
 });
 
 // plugins
-await fastify.register(cors, corsConfig);
-await fastify.register(fastifyCookie);
-await fastify.register(fastifySwagger, swaggerConfig(port));
-await fastify.register(fastifySwaggerUi, swaggerUiConfig);
+fastify.register(cors, corsConfig);
+fastify.register(fastifyCookie);
+fastify.register(fastifySwagger, swaggerConfig(port));
+fastify.register(fastifySwaggerUi, swaggerUiConfig);
+
+fastify.register(import("@fastify/rate-limit"), {
+  global: false,
+  max: 5,
+  timeWindow: 300 * 1000, // 5 minutes
+  keyGenerator: (request) => request.headers["x-real-ip"] || request.ip,
+  errorResponseBuilder: function (req, context) {
+    return {
+      statusCode: 429,
+      message: `Too many requests. Try again into ${context.after}.`,
+      ok: false,
+      api: "Gatwei",
+    };
+  },
+});
 
 // rotas
 fastify.register(Router, { prefix: "/api" });
 
 // hooks
-fastify.setErrorHandler((error, request, reply) => {
-  errorHook(error, reply);
-});
+fastify.register(notFound);
+fastify.register(errorHook);
 
 // server
 const start = async () => {
