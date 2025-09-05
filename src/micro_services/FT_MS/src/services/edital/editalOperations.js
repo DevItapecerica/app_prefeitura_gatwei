@@ -147,12 +147,7 @@ export const getWithBolsista = async (id) => {
         model: Bolsistas,
         as: "bolsistas",
         through: {
-          attributes: [
-            "data_vinculo",
-            "prorrogado",
-            "status",
-            "data_vencimento",
-          ],
+          attributes: ["data_vinculo", "prorrogated", "status", "expire_at"],
         },
       },
     ],

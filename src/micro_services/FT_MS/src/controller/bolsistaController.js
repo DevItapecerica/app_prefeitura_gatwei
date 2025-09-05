@@ -4,13 +4,9 @@ import saveBolsista from "../services/bolsista/saveBolsista.js";
 
 export const getBolsista = async (request, reply) => {
   try {
-    const { bolsista, pagador, message } = await Bolsista.getAllBolsistas();
+    const data = await Bolsista.getAllBolsistas();
 
-    return reply.status(200).send({
-      message,
-      bolsista,
-      pagador,
-    });
+    return reply.status(200).send(data);
   } catch (error) {
     throw { code: error.code, message: error.message, ok: false, api: "FT_MS" };
   }
@@ -45,10 +41,7 @@ export const createBolsista = async (request, reply) => {
 
     let newBolsista = await saveBolsista(bolsista);
 
-    return reply.status(201).send({
-      message: "Bolsista created successfully",
-      newBolsista,
-    });
+    return reply.status(201).send(newBolsista);
   } catch (error) {
     throw { code: error.code, message: error.message, ok: false, api: "FT_MS" };
   }

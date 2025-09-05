@@ -40,7 +40,7 @@ const Edital = Sequelize.define(
   },
   {
     tableName: "Edital", // Nome da tabela no banco (pode personalizar)
-    timestamps: false, // Desativa createdAt/updatedAt se não forem usados
+    timestamps: true, // Desativa createdAt/updatedAt se não forem usados
     paranoid: true,
   }
 );

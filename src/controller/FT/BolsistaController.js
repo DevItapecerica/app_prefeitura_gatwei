@@ -42,7 +42,7 @@ export const getOneBolsistas = async (request, reply) => {
   } catch (error) {
     const response = error.response ? error.response.data : error;
     throw {
-      code: response.status || response.code,
+      code: error.status || error.code,
       message: response.message,
       ok: false,
       api: response.api,
@@ -55,44 +55,17 @@ export const createBolsistas = async (request, reply) => {
     let user = request.user;
     await verifyPermission(user, SERVICE, request.method);
 
-    const {
-      bco,
-      ag,
-      dig_ag,
-      conta,
-      dig_conta,
-      nome,
-      bolsa,
-      vencimento,
-      cpf,
-      local,
-      pagador,
-      data_inicio,
-    } = request.body;
+    const { bolsista } = request.body;
 
-    const response = await ft_app_api.post(`/ft/bolsista`, {
-      bolsista: {
-        bco,
-        ag,
-        dig_ag,
-        conta,
-        dig_conta,
-        nome,
-        bolsa,
-        vencimento,
-        cpf,
-        local,
-        pagador,
-      },
-      data_inicio,
+    const { data } = await ft_app_api.post(`/ft/bolsista`, {
+      bolsista,
     });
-    const bolsista = response.data;
 
-    reply.status(200).send(bolsista);
+    reply.status(200).send({ bolsista: data });
   } catch (error) {
     const response = error.response ? error.response.data : error;
     throw {
-      code: response.status || response.code,
+      code: error.status || error.code,
       message: response.message,
       ok: false,
       api: response.api,
@@ -105,33 +78,9 @@ export const updateBolsistas = async (request, reply) => {
     let user = request.user;
     await verifyPermission(user, SERVICE, request.method);
     const { id } = request.params;
-    const {
-      bco,
-      ag,
-      dig_ag,
-      conta,
-      dig_conta,
-      nome,
-      bolsa,
-      vencimento,
-      cpf,
-      local,
-      pagador,
-    } = request.body;
+    const updatedData = request.body.bolsista;
 
-    const { data } = await ft_app_api.put(`/ft/bolsista/${id}`, {
-      bco,
-      ag,
-      dig_ag,
-      conta,
-      dig_conta,
-      nome,
-      bolsa,
-      vencimento,
-      cpf,
-      local,
-      pagador,
-    });
+    const { data } = await ft_app_api.put(`/ft/bolsista/${id}`, updatedData);
     const bolsista = data;
 
     reply.status(200).send(bolsista);

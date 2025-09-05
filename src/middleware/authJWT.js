@@ -18,10 +18,9 @@ export const authJWT = async (request, reply) => {
     request.user = decodedUserResponse.data.user;
   } catch (error) {
     const response = error.response ? error.response.data : error;
-    response.code = error.response ? error.response.status : error.code;
-    // Lança o erro para o error handler do Fastify
     throw {
-      code: response.code,
+      validation: response.validation,
+      code: error.status || response.code,
       message: response.message,
       ok: false,
       api: response.api,

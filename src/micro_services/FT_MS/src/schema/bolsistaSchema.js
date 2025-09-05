@@ -103,7 +103,7 @@ const createBolsistaSchema = {
           bco: { type: "string", maxLength: 3 },
           ag: { type: "string", maxLength: 4 },
           dig_ag: { type: "string", maxLength: 1 },
-          conta: { type: "string", maxLength: 10 },
+          conta: { type: "string", maxLength: 11 },
           dig_conta: { type: "string", maxLength: 1 },
           nome: { type: "string" },
           cpf: { type: "string", maxLength: 11 },

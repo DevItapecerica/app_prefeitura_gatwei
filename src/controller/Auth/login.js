@@ -17,7 +17,7 @@ const login = async (request, reply) => {
       ok: false,
       validation: data.validation,
       message: data.message || "Erro ao conectar com o serviço de login",
-      code: error.status || error.code,
+      code: error.status || data.code,
       api: data.api || "login",
     }; // O erro será tratado pelo hook onError
   }

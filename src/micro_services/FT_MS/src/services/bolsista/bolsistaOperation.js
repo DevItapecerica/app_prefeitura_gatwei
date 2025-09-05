@@ -8,6 +8,7 @@ import {
   verifyPagador,
   verifyQuantityPagador,
 } from "../../utils/verifyPagador.js";
+import PaymentInfo from "../../db/model/Payment_Info.js";
 
 const pagador = [
   {
@@ -48,7 +49,15 @@ const pagador = [
 ];
 
 export const getBolsistaById = async (id) => {
-  const bolsista = await Bolsistas.findByPk(id);
+  const bolsista = await Bolsistas.findByPk(id, {
+    include: [
+      {
+        model: PaymentInfo,
+        as: "payment_info",
+        attributes: { exclude: ["bolsista_id"] },
+      },
+    ],
+  });
 
   if (!bolsista) {
     return {
@@ -63,30 +72,44 @@ export const getBolsistaById = async (id) => {
 
 export const createBolsista = async (data) => {
   try {
-    await verifyPagador(data.pagador, pagador);
+    const pay_info = data.payment_info;
+    await verifyPagador(data.payment_info.pagador, pagador);
 
     const newBolsista = await Bolsistas.create({
-      bco: data.bco,
-      ag: data.ag,
-      dig_ag: data.dig_ag,
-      conta: data.conta,
-      dig_conta: data.dig_conta,
       nome: data.nome,
-      vencimento: data.vencimento,
-      pagador: data.pagador,
       cpf: data.cpf,
       local: data.local,
     });
 
-    return newBolsista;
+    const newPaymentInfo = await PaymentInfo.create({
+      bolsista_id: newBolsista.id,
+      bco: pay_info.bco,
+      ag: pay_info.ag,
+      dig_ag: pay_info.dig_ag,
+      conta: pay_info.conta,
+      dig_conta: pay_info.dig_conta,
+      pagador_id: pay_info.pagador,
+    });
+
+    return {
+      ...newBolsista.dataValues,
+      payment_info: newPaymentInfo.dataValues,
+      ok: true,
+      message: "Bolsista created successfully",
+    };
   } catch (error) {
-    console.error("Error creating bolsista:", error);
-    throw error;
+    console.error(error);
+    throw {
+      code: error.code || 500,
+      message: error.message,
+      ok: false,
+      api: "FT_MS",
+    };
   }
 };
 
 export const updateBolsista = async (data, id) => {
-  const bolsista = await getBolsistaById(id);
+  const { bolsista } = await getBolsistaById(id);
 
   if (!bolsista) {
     throw {
@@ -95,27 +118,35 @@ export const updateBolsista = async (data, id) => {
     };
   }
 
-  await verifyPagador(data.pagador, pagador);
+  await verifyPagador(data.payment_info.pagador, pagador);
 
-  if (bolsista.status == "ativo" && bolsista.pagador != data.pagador) {
+  if (
+    bolsista.status == "ativo" &&
+    bolsista.payment_info.pagador != data.payment_info.pagador_id
+  ) {
     await verifyQuantityPagador(
       data.pagador,
       pagador.find((pg) => pg.id === data.pagador).max_bolsista
     );
   }
 
-  bolsista.bco = data.bco;
-  bolsista.ag = data.ag;
-  bolsista.dig_ag = data.dig_ag;
-  bolsista.conta = data.conta;
-  bolsista.dig_conta = data.dig_conta;
   bolsista.nome = data.nome;
-  bolsista.vencimento = data.vencimento;
-  bolsista.pagador = data.pagador;
   bolsista.cpf = data.cpf;
   bolsista.local = data.local;
 
-  bolsista.save();
+  console.log(data.payment_info);
+
+  // Atualiza dados de pagamento
+  let paymentInfo = bolsista.payment_info;
+  paymentInfo.bco = data.payment_info.bco;
+  paymentInfo.ag = data.payment_info.ag;
+  paymentInfo.dig_ag = data.payment_info.dig_ag;
+  paymentInfo.conta = data.payment_info.conta;
+  paymentInfo.dig_conta = data.payment_info.dig_conta;
+  paymentInfo.pagador_id = data.payment_info.pagador;
+
+  await bolsista.save();
+  await paymentInfo.save();
 
   return bolsista;
 };
@@ -146,12 +177,27 @@ export const deleteBolsista = async (id) => {
 };
 
 export const getAllBolsistas = async () => {
-  const bolsista = await Bolsistas.findAll();
+  const bolsista = await Bolsistas.findAll({
+    include: [
+      {
+        model: PaymentInfo,
+        as: "payment_info",
+        attributes: { exclude: ["bolsista_id"] },
+      },
+    ],
+  });
+
   pagador.forEach((pg) => {
     pg.quantity = bolsista.filter((b) => b.pagador === pg.id).length;
   });
 
-  return { bolsista, pagador, message: "Bolsistas retrieved successfully" };
+  return {
+    code: 200,
+    bolsista,
+    pagador,
+    message: "Bolsistas retrieved successfully",
+    ok: true,
+  };
 };
 
 export const getBolsistaByEditalId = async (id) => {

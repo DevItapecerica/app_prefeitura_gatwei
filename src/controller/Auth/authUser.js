@@ -23,7 +23,7 @@ const authUser = async (request, reply) => {
     const response = error.response?.data || error;
 
     throw {
-      code: error.status || error.code,
+      code: error.status || response.code,
       message: response.message,
       ok: response.ok,
       api: response.api,

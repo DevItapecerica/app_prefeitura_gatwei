@@ -1,21 +1,37 @@
 import Bolsistas from "../db/model/Bolsistas.js";
+import PaymentInfo from "../db/model/Payment_Info.js";
 
 export const verifyPagador = async (target, pagador) => {
-  console.log(target)
-
   const isPagador = pagador.find((pg) => pg.id === target);
 
   if (!isPagador) {
-    throw { status: 403, message: "Pagador não encontrado" };
+    throw {
+      code: 403,
+      api: "FT_MS",
+      ok: false,
+      message: "Pagador não encontrado",
+    };
   }
 };
 
 export const verifyQuantityPagador = async (id, max_bolsista) => {
   const bolsistaQuantity = await Bolsistas.count({
-    where: { pagador: id, status: "ativo" }
+    where: { status: "ativo" },
+    include: [
+      {
+        model: PaymentInfo,
+        as: "paymentInfo",
+        where: { pagador: id },
+      },
+    ],
   });
 
   if (max_bolsista <= bolsistaQuantity) {
-    throw { status: 403, message: "Quantidade máxima de bolsistas alcansada" };
+    throw {
+      code: 403,
+      api: "FT_MS",
+      ok: false,
+      message: "Quantidade máxima de bolsistas alcansada",
+    };
   }
-}
+};
