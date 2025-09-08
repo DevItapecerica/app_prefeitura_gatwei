@@ -41,7 +41,7 @@ export const createBolsista = async (request, reply) => {
 
     let newBolsista = await saveBolsista(bolsista);
 
-    return reply.status(201).send(newBolsista);
+    return reply.status(200).send(newBolsista);
   } catch (error) {
     throw { code: error.code, message: error.message, ok: false, api: "FT_MS" };
   }

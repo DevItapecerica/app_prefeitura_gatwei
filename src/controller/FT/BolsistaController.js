@@ -86,8 +86,9 @@ export const updateBolsistas = async (request, reply) => {
     reply.status(200).send(bolsista);
   } catch (error) {
     const response = error.response ? error.response.data : error;
+
     throw {
-      code: response.status || response.code,
+      code: error.status || error.code,
       message: response.message,
       ok: false,
       api: response.api,

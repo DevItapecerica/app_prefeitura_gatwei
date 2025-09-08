@@ -67,13 +67,29 @@ export const getBolsistaById = async (id) => {
     };
   }
 
-  return { bolsista, ok: true, message: "Bolsista retrieved successfully" };
+  return {
+    bolsista,
+    ok: true,
+    message: "Bolsista retrieved successfully",
+    code: 200,
+  };
 };
 
 export const createBolsista = async (data) => {
   try {
     const pay_info = data.payment_info;
-    await verifyPagador(data.payment_info.pagador, pagador);
+    await verifyPagador(data.payment_info.pagador_id, pagador);
+
+    await Bolsistas.findOne({ where: { cpf: data.cpf } }).then((repeated) => {
+      if (repeated) {
+        throw {
+          code: 403,
+          message: "Bolsista already exists",
+          ok: false,
+          api: "FT_MS",
+        };
+      }
+    });
 
     const newBolsista = await Bolsistas.create({
       nome: data.nome,
@@ -111,30 +127,21 @@ export const createBolsista = async (data) => {
 export const updateBolsista = async (data, id) => {
   const { bolsista } = await getBolsistaById(id);
 
-  if (!bolsista) {
-    throw {
-      status: 404,
-      message: "Bolsista não encontrado",
-    };
-  }
-
-  await verifyPagador(data.payment_info.pagador, pagador);
+  await verifyPagador(data.payment_info.pagador_id, pagador);
 
   if (
     bolsista.status == "ativo" &&
-    bolsista.payment_info.pagador != data.payment_info.pagador_id
+    bolsista.payment_info.pagador_id != data.payment_info.pagador_id
   ) {
     await verifyQuantityPagador(
-      data.pagador,
-      pagador.find((pg) => pg.id === data.pagador).max_bolsista
+      data.payment_info.pagador_id,
+      pagador.find((pg) => pg.id === data.payment_info.pagador_id).max_bolsista
     );
   }
 
   bolsista.nome = data.nome;
   bolsista.cpf = data.cpf;
   bolsista.local = data.local;
-
-  console.log(data.payment_info);
 
   // Atualiza dados de pagamento
   let paymentInfo = bolsista.payment_info;
@@ -143,7 +150,7 @@ export const updateBolsista = async (data, id) => {
   paymentInfo.dig_ag = data.payment_info.dig_ag;
   paymentInfo.conta = data.payment_info.conta;
   paymentInfo.dig_conta = data.payment_info.dig_conta;
-  paymentInfo.pagador_id = data.payment_info.pagador;
+  paymentInfo.pagador_id = data.payment_info.pagador_id;
 
   await bolsista.save();
   await paymentInfo.save();
@@ -188,7 +195,9 @@ export const getAllBolsistas = async () => {
   });
 
   pagador.forEach((pg) => {
-    pg.quantity = bolsista.filter((b) => b.pagador === pg.id).length;
+    pg.quantity = bolsista.filter(
+      (b) => b.payment_info.pagador_id === pg.id
+    ).length;
   });
 
   return {
@@ -257,7 +266,9 @@ export const getBolsistaByName = async (name) => {
 };
 
 export const toggleBolsistaEdital = async (bolsista, edital) => {
-  let bolsistaTarget = await Bolsistas.findByPk(bolsista);
+  let bolsistaTarget = await Bolsistas.findByPk(bolsista, {
+    include: [{ model: PaymentInfo, as: "payment_info" }],
+  });
   const editalTarget = await Edital.findByPk(edital);
 
   let vinculo = await BolsistasEdital.findOne({
@@ -279,7 +290,8 @@ export const toggleBolsistaEdital = async (bolsista, edital) => {
   if (bolsistaTarget.status == "inativo") {
     await verifyQuantityPagador(
       bolsistaTarget.pagador,
-      pagador.find((pg) => pg.id === bolsistaTarget.pagador).max_bolsista
+      pagador.find((pg) => pg.id === bolsistaTarget.payment_info.pagador_id)
+        .max_bolsista
     );
   }
 

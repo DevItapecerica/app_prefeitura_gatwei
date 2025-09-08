@@ -20,8 +20,8 @@ export const verifyQuantityPagador = async (id, max_bolsista) => {
     include: [
       {
         model: PaymentInfo,
-        as: "paymentInfo",
-        where: { pagador: id },
+        as: "payment_info",
+        where: { pagador_id: id },
       },
     ],
   });
