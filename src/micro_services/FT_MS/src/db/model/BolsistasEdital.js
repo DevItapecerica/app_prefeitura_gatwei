@@ -52,7 +52,7 @@ const BolsistasEdital = Sequelize.define(
 
     hooks: {
       beforeCreate: (bolsistaEdital) => {
-        if (!bolsistaEdital.data_vencimento) {
+        if (!bolsistaEdital.expire_at) {
           const vencimento = new Date(bolsistaEdital.data_vinculo);
           vencimento.setFullYear(vencimento.getFullYear() + 1);
           bolsistaEdital.expire_at = vencimento;
@@ -64,12 +64,12 @@ const BolsistasEdital = Sequelize.define(
 
 BolsistasEdital.beforeBulkCreate((records, options) => {
   records.forEach((record) => {
-    if (!record.data_vencimento) {
+    if (!record.expire_at) {
       const dataVinculo = record.data_vinculo || new Date();
       const dataVencimento = new Date(dataVinculo);
       dataVencimento.setFullYear(dataVinculo.getFullYear() + 1);
       record.data_vinculo = dataVinculo; // caso não venha
-      record.data_vencimento = dataVencimento;
+      record.expire_at = dataVencimento;
     }
   });
 });
