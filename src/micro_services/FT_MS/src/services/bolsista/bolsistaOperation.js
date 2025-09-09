@@ -303,7 +303,7 @@ export const toggleBolsistaEdital = async (bolsista, edital) => {
 
   if (bolsistaTarget.status == "inativo") {
     await verifyQuantityPagador(
-      bolsistaTarget.pagador,
+      bolsistaTarget.payment_info.pagador_id,
       pagador.find((pg) => pg.id === bolsistaTarget.payment_info.pagador_id)
         .max_bolsista
     );

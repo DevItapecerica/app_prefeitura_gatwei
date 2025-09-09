@@ -17,24 +17,16 @@ import Router from "./router/router.js";
 import notFound from "./hooks/notFound.js";
 
 const port = PORT;
+
 const fastify = Fastify({
   logger: {
-    level: "info",
-    file: "./logs/server.log",
-    serializers: {
-      res(res) {
-        // The default
-        return {
-          statusCode: res.statusCode,
-        };
-      },
-      req(req) {
-        return {
-          method: req.method,
-          url: req.url,
-          parameters: req.params,
-          body: req.body,
-        };
+    transport: {
+      target: "pino-pretty",
+      options: {
+        translateTime: "HH:MM:ss",
+        ignore: "pid,hostname",
+        colorize: false,
+        destination: "logs/server.log",
       },
     },
   },
@@ -81,7 +73,7 @@ fastify.setErrorHandler((error, request, reply) => {
     process.env.NODE_ENV === "development" ||
     process.env.NODE_ENV === "dev"
   ) {
-    console.error("Error details:", error);
+    fastify.log.error("Error details:", error);
   }
 
   // Formata resposta de erro de forma padronizada
