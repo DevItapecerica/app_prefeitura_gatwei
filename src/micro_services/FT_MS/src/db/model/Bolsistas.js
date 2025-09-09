@@ -28,6 +28,34 @@ const Bolsistas = Sequelize.define(
       defaultValue: "inativo", // valor padrão
       // defaultValue: "pendente", // valor padrão
     },
+    cep: {
+      type: DataTypes.STRING(8), // até 8 caracteres
+      allowNull: false,
+    },
+    numero: {
+      type: DataTypes.STRING, // VARCHAR
+      allowNull: false,
+    },
+    logradouro: {
+      type: DataTypes.STRING, // VARCHAR
+      allowNull: false,
+    },
+    bairro: {
+      type: DataTypes.STRING, // VARCHAR
+      allowNull: false,
+    },
+    cidade: {
+      type: DataTypes.STRING, // VARCHAR
+      allowNull: false,
+    },
+    uf: {
+      type: DataTypes.STRING(2), // até 2 caracteres
+      allowNull: false,
+    },
+    telefone: {
+      type: DataTypes.STRING(11), // até 11 caracteres
+      allowNull: true,
+    },
   },
   {
     tableName: "Bolsistas", // Nome da tabela no banco

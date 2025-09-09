@@ -28,17 +28,17 @@ const pagador = [
   },
   {
     id: "a763d7f0-8d38-45c6-b985-e9143ca7f4d1",
-    name: "Secretaria do Desenvolvimento Social e Relações do Trabalho",
+    name: "Secretaria do Desenvolvimento Social e Relacoes do Trabalho",
     max_bolsista: 20,
   },
   {
     id: "20e5601e-d3e8-4e63-8991-68d03a14ba2f",
-    name: "Secretaria de Serviços Urbanos",
+    name: "Secretaria de Servicos Urbanos",
     max_bolsista: 193,
   },
   {
     id: "d5f9db73-ea63-442d-9aec-05dd5edcd990",
-    name: "Secretaria de Educação",
+    name: "Secretaria de Educacao",
     max_bolsista: 100,
   },
   {
@@ -94,7 +94,14 @@ export const createBolsista = async (data) => {
     const newBolsista = await Bolsistas.create({
       nome: data.nome,
       cpf: data.cpf,
+      telefone: data.telefone,
       local: data.local,
+      cep: data.cep,
+      numero: data.numero,
+      logradouro: data.logradouro,
+      bairro: data.bairro,
+      cidade: data.cidade,
+      uf: data.uf,
     });
 
     const newPaymentInfo = await PaymentInfo.create({
@@ -141,7 +148,14 @@ export const updateBolsista = async (data, id) => {
 
   bolsista.nome = data.nome;
   bolsista.cpf = data.cpf;
+  bolsista.telefone = data.telefone;
   bolsista.local = data.local;
+  bolsista.cep = data.cep;
+  bolsista.numero = data.numero;
+  bolsista.logradouro = data.logradouro;
+  bolsista.bairro = data.bairro;
+  bolsista.cidade = data.cidade;
+  bolsista.uf = data.uf;
 
   // Atualiza dados de pagamento
   let paymentInfo = bolsista.payment_info;
