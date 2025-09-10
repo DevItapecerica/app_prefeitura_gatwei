@@ -60,20 +60,14 @@ fastify.register(Router, { prefix: "/api" });
 fastify.register(notFound);
 fastify.setErrorHandler((error, request, reply) => {
   // Obtém o código de status ou define como 500 por padrão
-  var {
-    code = 500,
-    message = "Internal Server Error",
-    ok = false,
-    api = "Gatwei",
-    validation = false,
-  } = error;
+  var { code, message, ok, api, validation = false } = error;
 
   // Loga o erro em ambiente de desenvolvimento
   if (
     process.env.NODE_ENV === "development" ||
     process.env.NODE_ENV === "dev"
   ) {
-    fastify.log.error("Error details:", error);
+    console.log("Error details:", error);
   }
 
   // Formata resposta de erro de forma padronizada
@@ -86,20 +80,23 @@ fastify.setErrorHandler((error, request, reply) => {
       ok: false,
       validation: validation,
       message: "Confira o corpo da requisição e tente novamente",
-      api: api,
+      api: api || "Gatwei",
     };
   } else {
     errorResponse = {
-      ok: ok,
-      validation: validation,
-      message: message,
-      api: api,
+      ok: ok || false,
+      validation: false,
+      message: message || "Internal Server Error",
+      api: api || "Gatwei",
     };
   }
 
+  fastify.log.warn(`Error details: `);
+  fastify.log.error(errorResponse);
+
   // Envia resposta com o código de status apropriado
   reply
-    .code(code)
+    .code(code || 500)
     .header("Content-Type", "application/json; charset=utf-8")
     .send(errorResponse);
 });
