@@ -11,7 +11,7 @@ export const getAuth = async (request, reply) => {
   } catch (error) {
     const response = error.response ? error.response.data : error;
     throw {
-      code: response.status || response.code,
+      code: error.status || response.code,
       message: response.message,
       ok: false,
       api: response.api,

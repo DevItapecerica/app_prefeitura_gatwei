@@ -22,7 +22,7 @@ export const getBolsistas = async (request, reply) => {
   } catch (error) {
     const response = error.response ? error.response.data : error;
     throw {
-      code: response.status || response.code,
+      code: error.status || response.code,
       message: response.message,
       ok: false,
       api: response.api,
@@ -109,7 +109,7 @@ export const deleteBolsistas = async (request, reply) => {
   } catch (error) {
     const response = error.response ? error.response.data : error;
     throw {
-      code: response.status || response.code,
+      code: error.status || response.code,
       message: response.message,
       ok: false,
       api: response.api,
@@ -129,7 +129,7 @@ export const getBolsistaEdital = async (request, reply) => {
   } catch (error) {
     const response = error.response ? error.response.data : error;
     throw {
-      code: response.status || response.code,
+      code: error.status || response.code,
       message: response.message,
       ok: false,
       api: response.api,
@@ -154,7 +154,7 @@ export const toggleBolsistaEdital = async (request, reply) => {
   } catch (error) {
     const response = error.response ? error.response.data : error;
     throw {
-      code: response.status || response.code,
+      code: error.status || response.code,
       message: response.message,
       ok: false,
       api: response.api,
