@@ -48,6 +48,7 @@ fastify.register(import("@fastify/rate-limit"), {
     return {
       statusCode: 429,
       message: `Too many requests. Try again into ${context.after}.`,
+      validation: false,
       ok: false,
       api: "Gatwei",
     };
@@ -84,6 +85,7 @@ fastify.setErrorHandler((error, request, reply) => {
       api: api || "Gatwei",
     };
   } else {
+    if (typeof code === "string") code = 500;
     errorResponse = {
       ok: ok || false,
       validation: false,

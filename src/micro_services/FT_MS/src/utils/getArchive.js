@@ -17,7 +17,12 @@ const getArchivePath = (archives) => {
     const filepath = path.join(UPLOAD_DIR, archive);
 
     if (!fs.existsSync(filepath)) {
-      throw { status: 404, message: "File not found " + archiveName };
+      throw {
+        code: 404,
+        message: "Arquivo não encontrado" + archiveName,
+        api: "FT_MS",
+        ok: false,
+      };
     }
 
     const url = `/ft/img?target=${archiveName}`;
@@ -30,9 +35,6 @@ const getArchivePath = (archives) => {
 
 const getOneArchive = (archive) => {
   const filepath = path.join(UPLOAD_DIR, archive);
-
-  console.log(archive);
-  console.log(filepath);
 
   // if (!fs.existsSync(filepath)) {
   //   throw { status: 404, message: "File not found" };

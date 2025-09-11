@@ -6,7 +6,6 @@ import path from "path";
 const removeFile = (filename) => {
   try {
     // const arch = path.join(UPLOAD_DIR, filename);
-    // fs.unlink(arch, (error) => {
     fs.unlink(filename, (error) => {
       if (error) {
         console.error("Error deleting file:", error);

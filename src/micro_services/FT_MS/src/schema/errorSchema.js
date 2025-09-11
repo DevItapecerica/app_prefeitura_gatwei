@@ -1,24 +1,31 @@
-const errorSchema = {
+const errorType = {
+  ok: { type: "boolean", example: false },
+  api: { type: "string", example: "auth" },
+  validation: { type: "boolean", example: false },
+};
+
+const errorResponseSchema = {
   400: {
-    description: "Erro no 400",
+    description: "Erro no 400: Requisição inválida",
     type: "object",
     properties: {
-      statusCode: { type: "integer", example: 400 },
-      error: { type: "string", example: "Bad Request" },
-      message: { type: "string", example: "Bad Request" },
+      ...errorType,
+      message: { type: "string", example: "Requisição inválida" },
     },
   },
   401: {
     description: "Token de autenticação inválido",
     type: "object",
     properties: {
-      message: { type: "string", example: "Token de autenticação inválido" },
+      ...errorType,
+      message: { type: "string", example: "Token Inválido" },
     },
   },
   403: {
-    description: "Ação Não permitida",
+    description: "Ação não permitida",
     type: "object",
     properties: {
+      ...errorType,
       message: { type: "string", example: "Ação não permitida" },
     },
   },
@@ -26,9 +33,10 @@ const errorSchema = {
     description: "Erro interno no servidor",
     type: "object",
     properties: {
+      ...errorType,
       message: { type: "string", example: "Erro interno no servidor" },
     },
   },
 };
 
-export default errorSchema;
+export default errorResponseSchema;

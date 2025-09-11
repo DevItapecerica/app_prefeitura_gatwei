@@ -15,8 +15,13 @@ const getRandomToken = async (request, reply) => {
     });
     return reply.send({ token });
   } catch (error) {
-    error.message += " Error generating token";
-    throw error;
+    error.message += "Error generating token";
+    throw {
+      code: error.code,
+      message: error.message,
+      ok: false,
+      api: "FT_MS",
+    };
   }
 };
 

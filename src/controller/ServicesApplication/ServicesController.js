@@ -231,10 +231,6 @@ const deleteService = async (request, reply) => {
     reply.status(204);
   } catch (error) {
     const response = error.response ? error.response.data : error;
-    console.log(
-      "----------------------------------------------\n\n\n\n\n",
-      error
-    );
     throw {
       code: error.status || response.code,
       message: response.message,

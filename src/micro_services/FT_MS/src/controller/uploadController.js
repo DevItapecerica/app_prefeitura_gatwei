@@ -53,13 +53,18 @@ export const postDoc = async (request, reply) => {
       message: "Upload concluído com sucesso " + uploadedFiles,
     });
   } catch (error) {
-
     if (path) await removeFile(path);
 
     error.message += `. Arquivos upados com sucesso: ${
       uploadedFiles.length > 0 ? uploadedFiles : "anyone"
     }`;
-    throw error;
+
+    throw {
+      code: error.code,
+      message: error.message,
+      ok: false,
+      api: "FT_MS",
+    };
   }
 };
 
@@ -78,7 +83,12 @@ export const getDocs = async (request, reply) => {
 
     return reply.status(200).send({ archives: files, types: fieldBD });
   } catch (error) {
-    throw error;
+    throw {
+      code: error.code,
+      message: error.message,
+      ok: false,
+      api: "FT_MS",
+    };
   }
 };
 
@@ -92,6 +102,11 @@ export const getOneDoc = async (request, reply) => {
 
     return reply.status(200).type(archive.type).send(archive.file);
   } catch (error) {
-    throw error;
+    throw {
+      code: error.code,
+      message: error.message,
+      ok: false,
+      api: "FT_MS",
+    };
   }
 };
