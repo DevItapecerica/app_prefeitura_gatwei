@@ -31,26 +31,32 @@ const Bolsistas = Sequelize.define(
     cep: {
       type: DataTypes.STRING(8), // até 8 caracteres
       allowNull: false,
+      defaultValue: "Nao definido",
     },
     numero: {
       type: DataTypes.STRING, // VARCHAR
       allowNull: false,
+      defaultValue: "Nao definido",
     },
     logradouro: {
       type: DataTypes.STRING, // VARCHAR
       allowNull: false,
+      defaultValue: "Nao definido",
     },
     bairro: {
       type: DataTypes.STRING, // VARCHAR
       allowNull: false,
+      defaultValue: "Nao definido",
     },
     cidade: {
       type: DataTypes.STRING, // VARCHAR
       allowNull: false,
+      defaultValue: "Nao definido",
     },
     uf: {
       type: DataTypes.STRING(2), // até 2 caracteres
       allowNull: false,
+      defaultValue: "Nao definido",
     },
     telefone: {
       type: DataTypes.STRING(11), // até 11 caracteres

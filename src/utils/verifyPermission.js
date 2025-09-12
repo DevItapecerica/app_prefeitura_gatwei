@@ -24,7 +24,7 @@ export const verifyPermission = async (user, service, methode) => {
     case "GET":
       if (!roles_permission?.read || !isVisible) {
         throw {
-          code: 401,
+          code: 403,
           message: "You don't have the right to read this service",
           ok: false,
           api: "Gatwei",
@@ -35,7 +35,7 @@ export const verifyPermission = async (user, service, methode) => {
     case "POST":
       if (!roles_permission?.write || !isVisible) {
         throw {
-          code: 401,
+          code: 403,
           message: "You don't have the right to write this service",
           ok: false,
           api: "Gatwei",
@@ -46,7 +46,7 @@ export const verifyPermission = async (user, service, methode) => {
     case "PUT":
       if (!roles_permission?.edit || !isVisible) {
         throw {
-          code: 401,
+          code: 403,
           message: "You don't have the right to edit this service",
           api: "Gatwei",
           ok: false,
@@ -57,7 +57,7 @@ export const verifyPermission = async (user, service, methode) => {
     case "DELETE":
       if (!roles_permission?.del || !isVisible) {
         throw {
-          code: 401,
+          code: 403,
           message: "You don't have the right to delete this service",
           ok: false,
           api: "Gatwei",
