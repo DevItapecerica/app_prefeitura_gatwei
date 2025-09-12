@@ -147,9 +147,10 @@ export const getEditalWithBolsista = async (request, response) => {
 
     const { data } = await FT_API.get(`/ft/edital/${id}/bolsista`);
 
-    error.status(200).send({ ...data });
+    response.status(200).send({ ...data });
   } catch (error) {
     const response = error.response ? error.response.data : error;
+    console.log(error);
     throw {
       code: error.status || response.code,
       message: response.message,
@@ -166,7 +167,7 @@ export const getAllWithBolsista = async (request, response) => {
 
     const { data } = await FT_API.get(`/ft/edital/bolsista`);
 
-    error.status(200).send({ ...data });
+    response.status(200).send({ ...data });
   } catch (error) {
     const response = error.response ? error.response.data : error;
     throw {

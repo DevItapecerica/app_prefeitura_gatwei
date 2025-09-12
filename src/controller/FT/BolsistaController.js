@@ -78,7 +78,7 @@ export const updateBolsistas = async (request, reply) => {
     let user = request.user;
     await verifyPermission(user, SERVICE, request.method);
     const { id } = request.params;
-    const updatedData = request.body.bolsista;
+    const updatedData = request.body;
 
     const { data } = await ft_app_api.put(`/ft/bolsista/${id}`, updatedData);
     const bolsista = data;

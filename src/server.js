@@ -4,13 +4,11 @@ import cors from "@fastify/cors";
 import fastifyCookie from "@fastify/cookie";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
-import rateLimit from "@fastify/rate-limit";
 
 import { PORT } from "./config/env.js";
 
 import { swaggerConfig, swaggerUiConfig } from "./config/swaggerConfig.js";
 import { corsConfig } from "./config/corsConfig.js";
-import { errorHook } from "./hooks/errorHook.js";
 
 // router
 import Router from "./router/router.js";
@@ -23,8 +21,8 @@ const fastify = Fastify({
     transport: {
       target: "pino-pretty",
       options: {
+        minimumLevel: "warn",
         translateTime: "HH:MM:ss",
-        ignore: "hostname",
         colorize: false,
         destination: "logs/server.log",
         mkdir: true,
@@ -94,7 +92,6 @@ fastify.setErrorHandler((error, request, reply) => {
     };
   }
 
-  fastify.log.warn(`Error details: `);
   fastify.log.error(errorResponse);
 
   // Envia resposta com o código de status apropriado

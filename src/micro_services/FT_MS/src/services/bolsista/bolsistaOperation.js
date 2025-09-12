@@ -210,7 +210,7 @@ export const getAllBolsistas = async () => {
 
   pagador.forEach((pg) => {
     pg.quantity = bolsista.filter(
-      (b) => b.payment_info.pagador_id === pg.id
+      (b) => b.payment_info.pagador_id === pg.id && b.status == "ativo"
     ).length;
   });
 

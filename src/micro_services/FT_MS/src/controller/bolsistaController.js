@@ -50,13 +50,13 @@ export const createBolsista = async (request, reply) => {
 export const updateBolsista = async (request, reply) => {
   try {
     const { id } = request.params;
-    const data = request.body;
+    const { bolsista, observation } = request.body;
 
-    const bolsista = await saveBolsista(data, id);
+    const updatedBolsista = await saveBolsista(bolsista, id);
 
     return reply.status(200).send({
       message: "Bolsista updated successfully",
-      bolsista,
+      bolsista: updatedBolsista,
     });
   } catch (error) {
     throw { code: error.code, message: error.message, ok: false, api: "FT_MS" };
@@ -101,6 +101,7 @@ export const toggleBolsistaEdital = async (request, reply) => {
   try {
     const { bolsista } = request.params;
     const { edital } = request.params;
+    const { observation } = request.body;
 
     await Bolsista.toggleBolsistaEdital(bolsista, edital);
 
