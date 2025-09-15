@@ -8,6 +8,7 @@ import {
   verifyPagador,
   verifyQuantityPagador,
 } from "../../utils/verifyPagador.js";
+import PaymentInfo from "../../db/model/Payment_Info.js";
 
 const pagador = [
   {
@@ -27,17 +28,17 @@ const pagador = [
   },
   {
     id: "a763d7f0-8d38-45c6-b985-e9143ca7f4d1",
-    name: "Secretaria do Desenvolvimento Social e Relações do Trabalho",
+    name: "Secretaria do Desenvolvimento Social e Relacoes do Trabalho",
     max_bolsista: 20,
   },
   {
     id: "20e5601e-d3e8-4e63-8991-68d03a14ba2f",
-    name: "Secretaria de Serviços Urbanos",
+    name: "Secretaria de Servicos Urbanos",
     max_bolsista: 193,
   },
   {
     id: "d5f9db73-ea63-442d-9aec-05dd5edcd990",
-    name: "Secretaria de Educação",
+    name: "Secretaria de Educacao",
     max_bolsista: 100,
   },
   {
@@ -48,85 +49,139 @@ const pagador = [
 ];
 
 export const getBolsistaById = async (id) => {
-  const bolsista = await Bolsistas.findByPk(id);
+  const bolsista = await Bolsistas.findByPk(id, {
+    include: [
+      {
+        model: PaymentInfo,
+        as: "payment_info",
+        attributes: { exclude: ["bolsista_id"] },
+      },
+    ],
+  });
 
   if (!bolsista) {
-    throw {
-      status: 404,
-      message: "Nenhum bolsista encontrado",
+    return {
+      ok: false,
+      code: 404,
+      message: "Bolsista not found",
     };
   }
 
-  return bolsista;
+  return {
+    bolsista,
+    ok: true,
+    message: "Bolsista retrieved successfully",
+    code: 200,
+  };
 };
 
 export const createBolsista = async (data) => {
   try {
-    await verifyPagador(data.pagador, pagador);
+    const pay_info = data.payment_info;
+    await verifyPagador(data.payment_info.pagador_id, pagador);
 
-    const newBolsista = await Bolsistas.create({
-      bco: data.bco,
-      ag: data.ag,
-      dig_ag: data.dig_ag,
-      conta: data.conta,
-      dig_conta: data.dig_conta,
-      nome: data.nome,
-      vencimento: data.vencimento,
-      pagador: data.pagador,
-      cpf: data.cpf,
-      local: data.local,
+    await Bolsistas.findOne({ where: { cpf: data.cpf } }).then((repeated) => {
+      if (repeated) {
+        throw {
+          code: 403,
+          message: "Bolsista already exists",
+          ok: false,
+          api: "FT_MS",
+        };
+      }
     });
 
-    return newBolsista;
+    const newBolsista = await Bolsistas.create({
+      nome: data.nome,
+      cpf: data.cpf,
+      telefone: data.telefone,
+      local: data.local,
+      cep: data.cep,
+      numero: data.numero,
+      logradouro: data.logradouro,
+      bairro: data.bairro,
+      cidade: data.cidade,
+      uf: data.uf,
+    });
+
+    const newPaymentInfo = await PaymentInfo.create({
+      bolsista_id: newBolsista.id,
+      bco: pay_info.bco,
+      ag: pay_info.ag,
+      dig_ag: pay_info.dig_ag,
+      conta: pay_info.conta,
+      dig_conta: pay_info.dig_conta,
+      pagador_id: pay_info.pagador,
+    });
+
+    return {
+      ...newBolsista.dataValues,
+      payment_info: newPaymentInfo.dataValues,
+      ok: true,
+      message: "Bolsista created successfully",
+    };
   } catch (error) {
-    console.error("Error creating bolsista:", error);
-    throw error;
+    console.error(error);
+    throw {
+      code: error.code || 500,
+      message: error.message,
+      ok: false,
+      api: "FT_MS",
+    };
   }
 };
 
 export const updateBolsista = async (data, id) => {
-  const bolsista = await getBolsistaById(id);
+  const { bolsista } = await getBolsistaById(id);
 
-  if (!bolsista) {
-    throw {
-      status: 404,
-      message: "Bolsista não encontrado",
-    };
-  }
+  await verifyPagador(data.payment_info.pagador_id, pagador);
 
-  await verifyPagador(data.pagador, pagador);
-
-  if (bolsista.status == "ativo" && bolsista.pagador != data.pagador) {
+  if (
+    bolsista.status == "ativo" &&
+    bolsista.payment_info.pagador_id != data.payment_info.pagador_id
+  ) {
     await verifyQuantityPagador(
-      data.pagador,
-      pagador.find((pg) => pg.id === data.pagador).max_bolsista
+      data.payment_info.pagador_id,
+      pagador.find((pg) => pg.id === data.payment_info.pagador_id).max_bolsista
     );
   }
 
-  bolsista.bco = data.bco;
-  bolsista.ag = data.ag;
-  bolsista.dig_ag = data.dig_ag;
-  bolsista.conta = data.conta;
-  bolsista.dig_conta = data.dig_conta;
   bolsista.nome = data.nome;
-  bolsista.vencimento = data.vencimento;
-  bolsista.pagador = data.pagador;
   bolsista.cpf = data.cpf;
+  bolsista.telefone = data.telefone;
   bolsista.local = data.local;
+  bolsista.cep = data.cep;
+  bolsista.numero = data.numero;
+  bolsista.logradouro = data.logradouro;
+  bolsista.bairro = data.bairro;
+  bolsista.cidade = data.cidade;
+  bolsista.uf = data.uf;
 
-  bolsista.save();
+  // Atualiza dados de pagamento
+  let paymentInfo = bolsista.payment_info;
+  paymentInfo.bco = data.payment_info.bco;
+  paymentInfo.ag = data.payment_info.ag;
+  paymentInfo.dig_ag = data.payment_info.dig_ag;
+  paymentInfo.conta = data.payment_info.conta;
+  paymentInfo.dig_conta = data.payment_info.dig_conta;
+  paymentInfo.pagador_id = data.payment_info.pagador_id;
+
+  await bolsista.save();
+  await paymentInfo.save();
 
   return bolsista;
 };
 
 export const deleteBolsista = async (id) => {
-  const bolsista = await getBolsistaById(id);
+  const { bolsista } = await getBolsistaById(id);
   const bolsistaFiles = await searchArchive(id);
 
   if (!bolsista) {
     throw {
-      status: 404,
+      code: 404,
       message: "Bolsista não encontrado",
+      ok: false,
+      api: "FT_MS",
     };
   }
 
@@ -143,13 +198,29 @@ export const deleteBolsista = async (id) => {
 };
 
 export const getAllBolsistas = async () => {
-  const bolsista = await Bolsistas.findAll();
-  pagador.forEach((pg) => {
-    pg.quantity = bolsista.filter((b) => b.pagador === pg.id).length;
+  const bolsista = await Bolsistas.findAll({
+    include: [
+      {
+        model: PaymentInfo,
+        as: "payment_info",
+        attributes: { exclude: ["bolsista_id"] },
+      },
+    ],
   });
 
+  pagador.forEach((pg) => {
+    pg.quantity = bolsista.filter(
+      (b) => b.payment_info.pagador_id === pg.id && b.status == "ativo"
+    ).length;
+  });
 
-  return { bolsista, pagador };
+  return {
+    code: 200,
+    bolsista,
+    pagador,
+    message: "Bolsistas retrieved successfully",
+    ok: true,
+  };
 };
 
 export const getBolsistaByEditalId = async (id) => {
@@ -165,6 +236,15 @@ export const getBolsistaByEditalId = async (id) => {
       },
     ],
   });
+
+  if (!bolsista) {
+    throw {
+      code: 404,
+      ok: false,
+      api: "FT_MS",
+      message: "Nenhum bolsista encontrado para esse edital",
+    };
+  }
 
   return bolsista;
 };
@@ -200,7 +280,9 @@ export const getBolsistaByName = async (name) => {
 };
 
 export const toggleBolsistaEdital = async (bolsista, edital) => {
-  let bolsistaTarget = await Bolsistas.findByPk(bolsista);
+  let bolsistaTarget = await Bolsistas.findByPk(bolsista, {
+    include: [{ model: PaymentInfo, as: "payment_info" }],
+  });
   const editalTarget = await Edital.findByPk(edital);
 
   let vinculo = await BolsistasEdital.findOne({
@@ -212,15 +294,18 @@ export const toggleBolsistaEdital = async (bolsista, edital) => {
 
   if (!bolsistaTarget || !editalTarget) {
     throw {
-      status: 404,
+      code: 404,
       message: "Bolsista ou Edital não encontrados",
+      ok: false,
+      api: "FT_MS",
     };
   }
 
   if (bolsistaTarget.status == "inativo") {
     await verifyQuantityPagador(
-      bolsistaTarget.pagador,
-      pagador.find((pg) => pg.id === bolsistaTarget.pagador).max_bolsista
+      bolsistaTarget.payment_info.pagador_id,
+      pagador.find((pg) => pg.id === bolsistaTarget.payment_info.pagador_id)
+        .max_bolsista
     );
   }
 
@@ -229,8 +314,10 @@ export const toggleBolsistaEdital = async (bolsista, edital) => {
     (editalTarget.status != "ativo" && editalTarget.status != "inativo")
   ) {
     throw {
-      status: 403,
+      code: 403,
       message: "Bolsista ou Edital inválidos",
+      ok: false,
+      api: "FT_MS",
     };
   }
 
@@ -238,6 +325,8 @@ export const toggleBolsistaEdital = async (bolsista, edital) => {
     throw {
       status: 403,
       message: "Bolsista já ativo em outro edital",
+      ok: false,
+      api: "FT_MS",
     };
   }
 

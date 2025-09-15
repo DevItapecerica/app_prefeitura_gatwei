@@ -1,8 +1,8 @@
-import setor_api from '../../api/setor_api.js';
-import user_api from '../../api/user_api.js';
-import services_api from '../../api/service_api.js';
-import permission_api from '../../api/permissions_api.js';
-import { verifyPermission } from '../../utils/verifyPermission.js';
+import setor_api from "../../api/setor_api.js";
+import user_api from "../../api/user_api.js";
+import services_api from "../../api/service_api.js";
+import permission_api from "../../api/permissions_api.js";
+import { verifyPermission } from "../../utils/verifyPermission.js";
 
 const SERVICE = 2;
 
@@ -11,12 +11,18 @@ export const getSetores = async (request, reply) => {
     let user = request.user;
     await verifyPermission(user, SERVICE, request.method);
 
-    const response = await setor_api.get('/setor');
+    const response = await setor_api.get("/setor");
     let setores = response.data;
 
     reply.status(200).send(setores);
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -31,7 +37,13 @@ export const getOneSetor = async (request, reply) => {
 
     reply.status(200).send(setor);
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -41,9 +53,9 @@ export const createSetor = async (request, reply) => {
     await verifyPermission(user, SERVICE, request.method);
 
     let setor = request.body.setor;
-    const response = await setor_api.post('/setor', { setor });
+    const response = await setor_api.post("/setor", { setor });
 
-    let responseServices = await services_api.get('/service');
+    let responseServices = await services_api.get("/service");
     let services = responseServices.data.services;
 
     await permission_api.post(`/visibility/setor/${response.data.setor.id}`, {
@@ -52,7 +64,13 @@ export const createSetor = async (request, reply) => {
 
     reply.status(200).send(response.data);
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -67,7 +85,13 @@ export const updateSetor = async (request, reply) => {
 
     reply.status(204);
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -87,6 +111,12 @@ export const deleteSetor = async (request, reply) => {
 
     reply.status(204);
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };

@@ -5,10 +5,21 @@ const verifyToken = async (request, reply) => {
     const token = request.headers["x-access-token"]?.split(" ")[1];
 
     if (!token)
-      throw { statusCode: 403, auth: false, message: "No token provided." };
+      throw {
+        code: 401,
+        message: "No token provided.",
+        ok: false,
+        api: "FT_MS",
+      };
 
     await jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
-      if (err) throw { status: 401, message: "Incorrect Token." };
+      if (err)
+        throw {
+          code: 401,
+          message: "Token is not valid.",
+          ok: false,
+          api: "FT_MS",
+        };
 
       request.user = decoded;
     });

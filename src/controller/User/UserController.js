@@ -25,7 +25,13 @@ export const cadastrarUser = async (request, reply) => {
 
     reply.status(200).send("usuário criado com sucesso");
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -41,7 +47,13 @@ export const getOneUser = async (request, reply) => {
 
     reply.status(200).send(userTarget);
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -61,7 +73,13 @@ export const getAllUser = async (request, reply) => {
 
     reply.status(200).send({ ...usersTarget, ...setores, ...roles });
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -88,7 +106,13 @@ export const atualizarUser = async (request, reply) => {
 
     reply.status(204).send(); // Adicionado .send() para finalizar resposta
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -103,6 +127,12 @@ export const deletarUser = async (request, reply) => {
 
     reply.status(204).send(); // Adicionado .send() para finalizar resposta
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };

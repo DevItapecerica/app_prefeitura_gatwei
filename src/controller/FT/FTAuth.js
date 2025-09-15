@@ -9,6 +9,12 @@ export const getAuth = async (request, reply) => {
 
     reply.status(200).send({ token });
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };

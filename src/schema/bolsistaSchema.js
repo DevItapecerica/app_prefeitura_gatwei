@@ -117,7 +117,7 @@ const createBolsistaSchema = {
       bco: { type: "string", maxLength: 3 },
       ag: { type: "string", maxLength: 4 },
       dig_ag: { type: "string", maxLength: 1 },
-      conta: { type: "string", maxLength: 10 },
+      conta: { type: "string", maxLength: 11 },
       dig_conta: { type: "string", maxLength: 1 },
       data_inicio: { type: "string", format: "date-time" },
       nome: { type: "string" },
@@ -165,7 +165,7 @@ const updateBolsistaSchema = {
       bco: { type: "string", maxLength: 3 },
       ag: { type: "string", maxLength: 4 },
       dig_ag: { type: "string", maxLength: 1 },
-      conta: { type: "string", maxLength: 10 },
+      conta: { type: "string", maxLength: 11 },
       dig_conta: { type: "string", maxLength: 1 },
       nome: { type: "string" },
       cpf: {
@@ -234,7 +234,10 @@ const getBolsistaEditalSchema = {
             type: "object",
             properties: {
               ...bolsistaProperties,
-              edital: { type: "array", items: {type: "object", properties: editalProperties} },
+              edital: {
+                type: "array",
+                items: { type: "object", properties: editalProperties },
+              },
             },
           },
         },
@@ -268,7 +271,10 @@ const toggleBolsistaEditalSchema = {
           type: "object",
           properties: {
             ...bolsistaProperties,
-            edital: { type: "array", items: {type: "object", properties: editalProperties} },
+            edital: {
+              type: "array",
+              items: { type: "object", properties: editalProperties },
+            },
           },
         },
       },

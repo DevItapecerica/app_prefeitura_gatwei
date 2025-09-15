@@ -20,21 +20,33 @@ export const getBolsistas = async (request, reply) => {
 
     reply.status(200).send({ ...data, uploadToken: token });
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
 export const getOneBolsistas = async (request, reply) => {
   try {
-    let user = request.user;
-    await verifyPermission(user, SERVICE, request.method);
+    await verifyPermission(request.user, SERVICE, request.method);
+
     const { id } = request.params;
-    const response = await ft_app_api.get(`/ft/bolsista/${id}`);
-    const bolsistas = response.data;
+    const { data } = await ft_app_api.get(`/ft/bolsista/${id}`);
+    const bolsistas = data;
 
     reply.status(200).send(bolsistas);
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || error.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -43,42 +55,21 @@ export const createBolsistas = async (request, reply) => {
     let user = request.user;
     await verifyPermission(user, SERVICE, request.method);
 
-    const {
-      bco,
-      ag,
-      dig_ag,
-      conta,
-      dig_conta,
-      nome,
-      bolsa,
-      vencimento,
-      cpf,
-      local,
-      pagador,
-      data_inicio,
-    } = request.body;
+    const { bolsista } = request.body;
 
-    const response = await ft_app_api.post(`/ft/bolsista`, {
-      bolsista: {
-        bco,
-        ag,
-        dig_ag,
-        conta,
-        dig_conta,
-        nome,
-        bolsa,
-        vencimento,
-        cpf,
-        local,
-        pagador,
-      },
-      data_inicio,
+    const { data } = await ft_app_api.post(`/ft/bolsista`, {
+      bolsista,
     });
-    const bolsista = response.data;
 
-    reply.status(200).send(bolsista);
+    reply.status(200).send({ bolsista: data });
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || error.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -87,38 +78,21 @@ export const updateBolsistas = async (request, reply) => {
     let user = request.user;
     await verifyPermission(user, SERVICE, request.method);
     const { id } = request.params;
-    const {
-      bco,
-      ag,
-      dig_ag,
-      conta,
-      dig_conta,
-      nome,
-      bolsa,
-      vencimento,
-      cpf,
-      local,
-      pagador,
-    } = request.body;
+    const updatedData = request.body;
 
-    const { data } = await ft_app_api.put(`/ft/bolsista/${id}`, {
-      bco,
-      ag,
-      dig_ag,
-      conta,
-      dig_conta,
-      nome,
-      bolsa,
-      vencimento,
-      cpf,
-      local,
-      pagador,
-    });
+    const { data } = await ft_app_api.put(`/ft/bolsista/${id}`, updatedData);
     const bolsista = data;
 
     reply.status(200).send(bolsista);
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+
+    throw {
+      code: error.status || error.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -133,7 +107,13 @@ export const deleteBolsistas = async (request, reply) => {
 
     reply.status(200).send(message);
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -147,7 +127,13 @@ export const getBolsistaEdital = async (request, reply) => {
     const bolsista = data;
     reply.status(200).send(bolsista);
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -166,6 +152,12 @@ export const toggleBolsistaEdital = async (request, reply) => {
 
     reply.status(200).send(data);
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };

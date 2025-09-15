@@ -25,16 +25,31 @@ const mimeValidation = async (file, mimeFile, fieldname) => {
     const fileType = await fileTypeFromFile(file);
 
     if (!mimeTypes[fileType?.ext]) {
-      throw { status: 400, message: `Tipo de arquivo inválido: ${fieldname}` };
+      throw {
+        code: 400,
+        message: `Tipo de arquivo inválido: ${fieldname}`,
+        ok: false,
+        api: "FT_MS",
+      };
     }
 
     if (mimeFile !== fileType.mime) {
-      throw { status: 400, message: "Para de graça, salafrário" };
+      throw {
+        code: 400,
+        message: "Para de graça, salafrário",
+        ok: false,
+        api: "FT_MS",
+      };
     }
 
     return fileType;
   } catch (error) {
-    throw error;
+    throw {
+      code: error.code,
+      message: error.message,
+      ok: false,
+      api: "FT_MS",
+    };
   }
 };
 
@@ -43,8 +58,10 @@ const archiveValidation = (Data) => {
   const type = fieldBD.indexOf(Data.fieldname);
   if (type == -1) {
     throw {
-      status: 400,
+      code: 400,
       message: "Tipo de arquivo não encontrado " + Data.fieldname,
+      ok: false,
+      api: "FT_MS",
     };
   }
 

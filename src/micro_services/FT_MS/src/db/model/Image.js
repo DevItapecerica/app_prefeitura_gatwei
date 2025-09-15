@@ -33,7 +33,7 @@ const Image = Sequelize.define(
     },
   },
   {
-    tableName: "Image",
+    tableName: "image",
     timestamps: true,
     paranoid: true,
   }

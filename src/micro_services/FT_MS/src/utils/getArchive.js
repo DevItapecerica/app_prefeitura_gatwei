@@ -1,8 +1,12 @@
 import fs from "fs";
 import path from "path";
 import { mimeTypes } from "../services/upload/validations.js";
+import { fileURLToPath } from "url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
+const UPLOAD_DIR = path.join(__dirname, "../../uploads");
 
 const getArchivePath = (archives) => {
   let archivesGeted = [];
@@ -10,10 +14,15 @@ const getArchivePath = (archives) => {
   archives.forEach((archive) => {
     const archiveName = archive.dataValues.path;
 
-    const filepath = path.join(path.dirname(import.meta.url.split("file:")[1]), "../../uploads", archive);
+    const filepath = path.join(UPLOAD_DIR, archive);
 
     if (!fs.existsSync(filepath)) {
-      throw { status: 404, message: "File not found " + archiveName };
+      throw {
+        code: 404,
+        message: "Arquivo não encontrado" + archiveName,
+        api: "FT_MS",
+        ok: false,
+      };
     }
 
     const url = `/ft/img?target=${archiveName}`;
@@ -25,17 +34,15 @@ const getArchivePath = (archives) => {
 };
 
 const getOneArchive = (archive) => {
-    const filepath = path.join(path.dirname(import.meta.url.split("file:")[1]), "../../uploads", archive);
+  const filepath = path.join(UPLOAD_DIR, archive);
 
-    console.log(filepath)
-
-  if (!fs.existsSync(filepath)) {
-    throw { status: 404, message: "File not found" };
-  }
+  // if (!fs.existsSync(filepath)) {
+  //   throw { status: 404, message: "File not found" };
+  // }
 
   const file = fs.createReadStream(filepath);
 
-  const extname = filepath.split(".")[1];
+  const extname = path.extname(filepath).slice(1); // mais seguro que split(".")[1]
 
   const type = mimeTypes[extname] || "application/octet-stream";
 

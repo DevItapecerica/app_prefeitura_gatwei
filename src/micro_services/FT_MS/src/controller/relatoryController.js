@@ -7,7 +7,12 @@ export const getRelatory = async (req, res) => {
     const editalData = await getWithBolsista(id);
 
     if (!editalData) {
-      throw { statusCode: 403, message: "not data found to this edital" };
+      throw {
+        code: 403,
+        message: "not data found to this edital",
+        ok: false,
+        api: "FT_MS",
+      };
     }
 
     await createRelatory(editalData);
@@ -16,6 +21,11 @@ export const getRelatory = async (req, res) => {
 
     return res.status(200).type(archive.type).send(archive.file);
   } catch (error) {
-    throw error;
+    throw {
+      code: error.code,
+      message: error.message,
+      ok: false,
+      api: "FT_MS",
+    };
   }
 };

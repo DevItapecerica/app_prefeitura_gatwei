@@ -10,7 +10,7 @@ export const createRoles = async (request, reply) => {
     await verifyPermission(user, SERVICE, request.method);
 
     let { name } = request.body.role;
-    const {data} = await service_api.get("/service");
+    const { data } = await service_api.get("/service");
     const services = data.services;
 
     await role_api.post("/roles", {
@@ -21,7 +21,13 @@ export const createRoles = async (request, reply) => {
     });
     reply.status(201).send("Created role");
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -35,7 +41,13 @@ export const getRoles = async (request, reply) => {
 
     reply.status(200).send({ roles });
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -54,7 +66,13 @@ export const updateRoles = async (request, reply) => {
     });
     reply.status(201).send("Updated role");
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -69,6 +87,12 @@ export const deleteRoles = async (request, reply) => {
     await role_api.delete(`/permission/role/${id}`);
     reply.status(201).send("Deleted role");
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };

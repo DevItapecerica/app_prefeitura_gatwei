@@ -13,11 +13,21 @@ const getAllServices = async (request, reply) => {
     await verifyPermission(user, SERVICE, request.method);
 
     const [
-      { data: { services } },
-      { data: { permissions } },
-      { data: { roles } },
-      { data: { setores } },
-      { data: { visibility } },
+      {
+        data: { services },
+      },
+      {
+        data: { permissions },
+      },
+      {
+        data: { roles },
+      },
+      {
+        data: { setores },
+      },
+      {
+        data: { visibility },
+      },
     ] = await Promise.all([
       service_api.get("/service"),
       permissions_api.get("/permission/service"),
@@ -25,11 +35,11 @@ const getAllServices = async (request, reply) => {
       setor_api.get("/setor"),
       permissions_api.get(`/visibility`),
     ]);
-    
+
     let role_id = roles.find((role) => role.id == user.role).id;
 
     if (!role_id) {
-      throw { status: 500, message: "Role not found" };
+      throw { code: 404, message: "Role not found", api: "Gatwei" };
     }
 
     services.forEach((service) => {
@@ -43,7 +53,13 @@ const getAllServices = async (request, reply) => {
 
     reply.status(200).send({ services, roles, setores });
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -55,9 +71,15 @@ const getUserServices = async (request, reply) => {
     const user = userResponse.data.user;
 
     const [
-      { data: { services } },
-      { data: { permissions } },
-      { data: { visibility } },
+      {
+        data: { services },
+      },
+      {
+        data: { permissions },
+      },
+      {
+        data: { visibility },
+      },
     ] = await Promise.all([
       service_api.get("/service"),
       permissions_api.get("/permission/service"),
@@ -67,7 +89,13 @@ const getUserServices = async (request, reply) => {
     const roleId = user.role_id;
 
     if (!roleId) {
-      throw { status: 500, message: "Role not found" };
+      const response = error.response ? error.response.data : error;
+      throw {
+        code: error.status || response.code,
+        message: response.message,
+        ok: false,
+        api: response.api,
+      };
     }
 
     const roleService = services.filter((service) => {
@@ -88,9 +116,13 @@ const getUserServices = async (request, reply) => {
 
     reply.status(200).send({ services: userServicesVisible });
   } catch (error) {
-    reply.status(error.status || 500).send({
-      message: error.message || "Erro interno ao buscar serviços do usuário.",
-    });
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -106,7 +138,13 @@ const getService = async (request, reply) => {
 
     reply.status(200).send({ services });
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -127,13 +165,22 @@ const createService = async (request, reply) => {
     const responseSetor = await setor_api.get("/setor");
     const setores = responseSetor.data;
 
-    await permissions_api.post(`/visibility/service/${serviceResult.service.id}`, {
-      setores: setores.setores,
-    });
+    await permissions_api.post(
+      `/visibility/service/${serviceResult.service.id}`,
+      {
+        setores: setores.setores,
+      }
+    );
 
     reply.status(200).send({ ...serviceResult, message: "Tudo okay" });
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -160,7 +207,13 @@ const updateService = async (request, reply) => {
 
     reply.status(204).send();
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -177,7 +230,13 @@ const deleteService = async (request, reply) => {
 
     reply.status(204);
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 

@@ -16,16 +16,13 @@ export async function createRelatory(data) {
   try {
     if (!data)
       throw {
-        statusCode: 403,
+        code: 403,
+        ok: false,
+        api: "FT_MS",
         message: "Data not passed to generate relatory",
       };
 
-
-    const { headerBlock, bolsistasRows } = await DataFormat(
-      data
-    );
-
-      console.log(bolsistasRows)
+    const { headerBlock, bolsistasRows } = await DataFormat(data);
 
     await fs.promises.mkdir(outputDir, { recursive: true });
 
@@ -37,7 +34,7 @@ export async function createRelatory(data) {
     }
 
     // Escrevendo bloco 2 (bolsistas via fast-csv)
-    const csvStream = format({ delimiter: ';' });
+    const csvStream = format({ delimiter: ";" });
     const pass = new PassThrough();
     csvStream.pipe(pass).pipe(writeStream);
 
@@ -45,18 +42,20 @@ export async function createRelatory(data) {
 
     console.log(`Arquivo CSV gerado com sucesso: ${filePath}`);
     return filePath;
-  } catch (err) {
-    console.error("Erro ao gerar CSV:", err);
-    throw err;
+  } catch (error) {
+    console.error("Erro ao gerar CSV:", error);
+    throw {
+      code: error.code,
+      message: error.message,
+      ok: error.ok,
+      api: error.api,
+    };
   }
 }
 
 export const sendRelatory = async () => {
-
-  console.log(filePath);
-
   if (!fs.existsSync(filePath)) {
-    throw { status: 404, message: "File not found" };
+    throw { code: 404, ok: false, api: "FT_MS", message: "File not found" };
   }
 
   const file = fs.createReadStream(filePath);

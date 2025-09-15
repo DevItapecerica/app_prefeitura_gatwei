@@ -29,31 +29,33 @@ const BolsistasEdital = Sequelize.define(
       allowNull: false,
       defaultValue: () => new Date(), // melhor usar função para pegar o momento de criação
     },
-    data_vencimento: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    prorrogado: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true,
-    },
     status: {
       type: DataTypes.ENUM("ativo", "inativo", "concluido", "expirado"),
       allowNull: false,
       defaultValue: "ativo",
     },
+
+    expire_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    prorrogated: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   },
   {
-    tableName: "BolsistasEdital",
-    timestamps: false,
+    tableName: "bolsistas_edital",
+    timestamps: true,
     paranoid: true,
 
     hooks: {
       beforeCreate: (bolsistaEdital) => {
-        if (!bolsistaEdital.data_vencimento) {
+        if (!bolsistaEdital.expire_at) {
           const vencimento = new Date(bolsistaEdital.data_vinculo);
           vencimento.setFullYear(vencimento.getFullYear() + 1);
-          bolsistaEdital.data_vencimento = vencimento;
+          bolsistaEdital.expire_at = vencimento;
         }
       },
     },
@@ -62,12 +64,12 @@ const BolsistasEdital = Sequelize.define(
 
 BolsistasEdital.beforeBulkCreate((records, options) => {
   records.forEach((record) => {
-    if (!record.data_vencimento) {
+    if (!record.expire_at) {
       const dataVinculo = record.data_vinculo || new Date();
       const dataVencimento = new Date(dataVinculo);
       dataVencimento.setFullYear(dataVinculo.getFullYear() + 1);
       record.data_vinculo = dataVinculo; // caso não venha
-      record.data_vencimento = dataVencimento;
+      record.expire_at = dataVencimento;
     }
   });
 });

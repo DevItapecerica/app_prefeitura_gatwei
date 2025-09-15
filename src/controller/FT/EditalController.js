@@ -11,7 +11,13 @@ export const getEditais = async (request, reply) => {
     const { data } = response;
     reply.status(200).send({ ...data });
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -25,7 +31,13 @@ export const getEditalById = async (request, reply) => {
 
     reply.status(200).send({ ...data });
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -44,7 +56,13 @@ export const postEdital = async (request, reply) => {
 
     reply.status(200).send({ ...data });
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -62,7 +80,13 @@ export const updateEdital = async (request, reply) => {
 
     reply.status(200).send({ ...data });
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -78,7 +102,13 @@ export const deleteEdital = async (request, reply) => {
 
     reply.status(200).send({ ...data });
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
@@ -93,31 +123,58 @@ export const vincularBolsista = async (request, reply) => {
 
     const { data } = await FT_API.post(`/ft/edital/vincularbolsista/${id}`, {
       bolsista,
-      data_vinculo
+      data_vinculo,
     });
 
     reply.status(200).send({ ...data });
   } catch (error) {
-    throw error;
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
   }
 };
 
 export const getEditalWithBolsista = async (request, response) => {
-  let user = request.user;
-  await verifyPermission(user, SERVICE, request.method);
+  try {
+    let user = request.user;
+    await verifyPermission(user, SERVICE, request.method);
 
-  const {id} = request.params;
+    const { id } = request.params;
 
-  const { data } = await FT_API.get(`/ft/edital/${id}/bolsista`);
+    const { data } = await FT_API.get(`/ft/edital/${id}/bolsista`);
 
-  response.status(200).send({ ...data });
+    response.status(200).send({ ...data });
+  } catch (error) {
+    const response = error.response ? error.response.data : error;
+    console.log(error);
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
+  }
 };
 
 export const getAllWithBolsista = async (request, response) => {
-  let user = request.user;
-  await verifyPermission(user, SERVICE, request.method);
+  try {
+    let user = request.user;
+    await verifyPermission(user, SERVICE, request.method);
 
-  const { data } = await FT_API.get(`/ft/edital/bolsista`);
+    const { data } = await FT_API.get(`/ft/edital/bolsista`);
 
-  response.status(200).send({ ...data });
+    response.status(200).send({ ...data });
+  } catch (error) {
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
+  }
 };

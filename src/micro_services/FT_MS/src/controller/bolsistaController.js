@@ -4,60 +4,62 @@ import saveBolsista from "../services/bolsista/saveBolsista.js";
 
 export const getBolsista = async (request, reply) => {
   try {
-    const { bolsista, pagador } = await Bolsista.getAllBolsistas();
+    const data = await Bolsista.getAllBolsistas();
 
-    return reply.status(200).send({
-      message: "Bolsista get successfully",
-      bolsista,
-      pagador,
-    });
+    return reply.status(200).send(data);
   } catch (error) {
-    throw error;
+    throw { code: error.code, message: error.message, ok: false, api: "FT_MS" };
   }
 };
 
 export const getOneBolsista = async (request, reply) => {
   try {
     const { id } = request.params;
-    const bolsista = await Bolsista.getBolsistaById(id);
+    const response = await Bolsista.getBolsistaById(id);
+
+    if (!response.ok) {
+      throw {
+        code: response.code,
+        message: response.message,
+        ok: false,
+        api: "FT_MS",
+      };
+    }
 
     return reply.status(200).send({
-      message: "Bolsista get successfully",
-      bolsista,
+      message: response.message,
+      bolsista: response.bolsista,
     });
   } catch (error) {
-    throw error;
+    throw { code: error.code, message: error.message, ok: false, api: "FT_MS" };
   }
 };
 
 export const createBolsista = async (request, reply) => {
   try {
-    const {bolsista} = request.body;
+    const { bolsista } = request.body;
 
     let newBolsista = await saveBolsista(bolsista);
 
-    return reply.status(201).send({
-      message: "Bolsista created successfully",
-      newBolsista,
-    });
+    return reply.status(200).send(newBolsista);
   } catch (error) {
-    throw error;
+    throw { code: error.code, message: error.message, ok: false, api: "FT_MS" };
   }
 };
 
 export const updateBolsista = async (request, reply) => {
   try {
     const { id } = request.params;
-    const data = request.body;
+    const { bolsista, observation } = request.body;
 
-    const bolsista = await saveBolsista(data, id);
+    const updatedBolsista = await saveBolsista(bolsista, id);
 
     return reply.status(200).send({
       message: "Bolsista updated successfully",
-      bolsista,
+      bolsista: updatedBolsista,
     });
   } catch (error) {
-    throw error;
+    throw { code: error.code, message: error.message, ok: false, api: "FT_MS" };
   }
 };
 
@@ -71,7 +73,7 @@ export const deleteBolsista = async (request, reply) => {
       message: "Bolsista deleted successfully",
     });
   } catch (error) {
-    throw error;
+    throw { code: error.code, message: error.message, ok: false, api: "FT_MS" };
   }
 };
 
@@ -86,7 +88,12 @@ export const getBolsistaEdital = async (request, reply) => {
       bolsista,
     });
   } catch (error) {
-    throw error;
+    throw {
+      code: error.code,
+      message: error.message,
+      ok: false,
+      api: error.api,
+    };
   }
 };
 
@@ -94,11 +101,12 @@ export const toggleBolsistaEdital = async (request, reply) => {
   try {
     const { bolsista } = request.params;
     const { edital } = request.params;
+    const { observation } = request.body;
 
     await Bolsista.toggleBolsistaEdital(bolsista, edital);
 
     reply.status(201).send({ message: "Bolsista alterado com sucesso!" });
   } catch (error) {
-    throw error;
+    throw { code: error.code, message: error.message, ok: false, api: "FT_MS" };
   }
 };
