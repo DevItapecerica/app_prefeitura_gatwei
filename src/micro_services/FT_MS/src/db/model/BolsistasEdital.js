@@ -46,7 +46,7 @@ const BolsistasEdital = Sequelize.define(
     },
   },
   {
-    tableName: "BolsistasEdital",
+    tableName: "bolsistas_edital",
     timestamps: true,
     paranoid: true,
 

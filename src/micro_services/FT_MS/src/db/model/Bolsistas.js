@@ -64,7 +64,7 @@ const Bolsistas = Sequelize.define(
     },
   },
   {
-    tableName: "Bolsistas", // Nome da tabela no banco
+    tableName: "bolsistas", // Nome da tabela no banco
     timestamps: true,
   }
 );

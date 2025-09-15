@@ -44,7 +44,7 @@ const PaymentInfo = Sequelize.define(
     },
   },
   {
-    tableName: "PaymentInfo", // Nome da tabela no banco
+    tableName: "payment_info", // Nome da tabela no banco
     timestamps: true,
     paranoid: true,
   }
