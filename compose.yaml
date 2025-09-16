@@ -1,0 +1,27 @@
+services:
+  gatwei:
+    image: node:18
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      APPLICATION_PORT: ${APPLICATION_PORT}
+
+      LOGIN_API_HOST: ${LOGIN_API_HOST}
+      LOGIN_API_KEY: ${LOGIN_API_KEY}
+
+      USER_API_HOST: ${USER_API_HOST}
+      USER_API_KEY: ${USER_API_KEY}
+
+      SETOR_API_HOST: ${SETOR_API_HOST}
+      SETOR_API_KEY: ${SETOR_API_KEY}
+
+      SERVICE_API_HOST: ${SERVICE_API_HOST}
+      SERVICE_API_KEY: ${SERVICE_API_KEY}
+
+      PERMISSION_API_HOST: ${PERMISSION_API_HOST}
+      PERMISSION_API_KEY: ${PERMISSION_API_KEY}
+
+      FT_APP_API_HOST: ${FT_APP_API_HOST}
+      FT_APP_API_KEY: ${FT_APP_API_KEY}
