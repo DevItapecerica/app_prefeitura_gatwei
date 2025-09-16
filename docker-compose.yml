@@ -31,4 +31,4 @@ services:
       - dokploy-network
 networks:
   dokploy-network:
-    externa: true
+    external: true
