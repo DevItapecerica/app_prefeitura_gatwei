@@ -1,7 +1,8 @@
-import Login from "../controller/Auth/login.js";
 import loginSchema from "../schema/loginSchema.js";
 import authSchema from "../schema/authSchema.js";
-import authUser from "../controller/Auth/authUser.js";
+import { authUser, AlterPass, Login } from "../controller/Auth/authUser.js";
+import { authJWT } from "../middleware/authJWT.js";
+import alterPasswordSchema from "../schema/alterPasswordSchema.js";
 
 const authenticateRouter = (fastify, options) => {
   fastify.route({
@@ -19,6 +20,14 @@ const authenticateRouter = (fastify, options) => {
     url: "/",
     schema: authSchema,
     handler: authUser,
+  });
+
+  fastify.route({
+    method: "put",
+    url: "/alterpwd",
+    schema: alterPasswordSchema,
+    preHandler: authJWT,
+    handler: AlterPass,
   });
 };
 
