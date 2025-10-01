@@ -1,4 +1,4 @@
-import iptuRouter from "./iptuRouter.js";
+import iptuRouter from "./iptu/iptuRouter.js";
 
 const Router = (fastify) => {
   fastify.register(import("./userRouter.js"), { prefix: "/user" });
