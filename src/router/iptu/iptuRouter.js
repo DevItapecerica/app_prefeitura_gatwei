@@ -6,6 +6,7 @@ import errorResponseSchema from "../../schema/errorSchema.js";
 const MunicipeProperties = {
   type: "object",
   required: ["municipe"],
+  additionalProperties: false,
   properties: {
     municipe: {
       type: "object",
@@ -53,7 +54,7 @@ const iptuRouter = (fastify, opt) => {
 
   fastify.route({
     method: "GET",
-    url: "/cert/:id",
+    url: "/cert/:uuid",
     handler: IptuCertController.getCertidaoById,
   });
 
@@ -64,9 +65,9 @@ const iptuRouter = (fastify, opt) => {
   });
 
   fastify.route({
-      method: "DELETE",
-      url: "/cert/:uuid",
-      handler: IptuCertController.deleteCertidao,
+    method: "DELETE",
+    url: "/cert/:uuid",
+    handler: IptuCertController.deleteCertidao,
   });
 
   // fastify.update({

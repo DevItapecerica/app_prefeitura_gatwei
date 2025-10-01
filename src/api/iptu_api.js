@@ -4,7 +4,7 @@ import { IPTU_API_HOST, IPTU_API_KEY } from "../config/env.js";
 const IPTU_API = axios.create({
   baseURL: IPTU_API_HOST+"/api/v1",
   headers: {
-    "Content-Type": "application/json",
+    // "Content-Type": "application/json",
   },
 });
 

@@ -11,9 +11,23 @@ export class IptuCertController {
   }
 
   static async getCertidaoById(req, res) {
+    try {
     await verifyPermission(req.user, SERVICE, req.method);
 
-    res.render("certidao by id");
+      const { uuid } = req.params;
+      const { data } = await IPTU_API.get(`/cert/${uuid}`);
+
+      res.send(data);  
+    } catch (error) {
+      const response = error.response ? error.response.data : error;
+      throw {
+        code: error.status || response.code,
+        message: response.message,
+        ok: false,
+        api: response.api,
+        validation: response.validation,
+      };
+    }
   }
 
   static async postCertidao(req, res) {
