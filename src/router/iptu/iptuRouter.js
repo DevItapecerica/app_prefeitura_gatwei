@@ -154,6 +154,35 @@ const iptuRouter = (fastify, opt) => {
     },
     handler: IptuMunicipeController.updateMunicipe,
   });
+
+  fastify.route({
+    method: "DELETE",
+    url: "/municipe/:uuid",
+    schema: {
+      security: [{ APIKey: [] }],
+      tags: ["IPTU"],
+      description: "Delete municipe",
+      summary: "Delete municipe",
+      params: {
+        type: "object",
+        properties: {
+          uuid: { type: "string" },
+        },
+        required: ["uuid"],
+      },
+      response: {
+        200: {
+          type: "object",
+          properties: {
+            message: { type: "string", example: "Sucess" },
+            municipe: MunicipeResponse,
+          },
+        },
+        ...errorResponseSchema,
+      },
+    },
+    handler: IptuMunicipeController.deleteMunicipe,
+  });
 };
 
 export default iptuRouter;
