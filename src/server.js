@@ -21,8 +21,8 @@ const fastify = Fastify({
     transport: {
       target: "pino-pretty",
       options: {
-        minimumLevel: "warn",
-        translateTime: "HH:MM:ss",
+        minimumLevel: "info",
+        translateTime: "dd/mm/yyyy HH:MM:ss",
         colorize: false,
         destination: "logs/server.log",
         mkdir: true,
