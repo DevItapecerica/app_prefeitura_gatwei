@@ -144,10 +144,13 @@ export const getEditalWithBolsista = async (request, response) => {
     await verifyPermission(user, SERVICE, request.method);
 
     const { id } = request.params;
+        const {page = 0, limit = 10, search = ""} = request.query;
 
-    const { data } = await FT_API.get(`/ft/edital/${id}/bolsista`);
+    const { data } = await FT_API.get(`/ft/edital/${id}/bolsista?page=${page}&limit=${limit}&search=${search}`);
 
-    response.status(200).send({ ...data });
+    console.log(data)
+
+    response.status(200).send(data);
   } catch (error) {
     const response = error.response ? error.response.data : error;
     console.log(error);
