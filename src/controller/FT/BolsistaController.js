@@ -8,13 +8,15 @@ export const getBolsistas = async (request, reply) => {
     let user = request.user;
     await verifyPermission(user, SERVICE, request.method);
 
+    const {page = 0, limit = 10, search = ""} = request.query;
+
     const [
       { data },
       {
         data: { token },
       },
     ] = await Promise.all([
-      ft_app_api.get("/ft/bolsista"),
+      ft_app_api.get("/ft/bolsista?page=" + page + "&limit=" + limit + "&search=" + search),
       ft_app_api.get(`/ft/auth/${user}`),
     ]);
 

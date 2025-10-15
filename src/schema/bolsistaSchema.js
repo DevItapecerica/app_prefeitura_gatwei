@@ -45,6 +45,7 @@ const getBolsistaSchema = {
           type: "string",
           example: "Bolsistas retrieved successfully",
         },
+        count: { type: "integer" },
         bolsista: {
           type: "array",
           items: {
