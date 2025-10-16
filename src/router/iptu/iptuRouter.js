@@ -1,5 +1,5 @@
 import { IptuCertController } from "../../controller/iptu/iptuCertController.js";
-import { IptuMunicipeController } from "../../controller/iptu/iptuMunicipeControlelr.js";
+import { IptuMunicipeController } from "../../controller/iptu/iptuMunicipeController.js";
 import { authJWT } from "../../middleware/authJWT.js";
 import errorResponseSchema from "../../schema/errorSchema.js";
 

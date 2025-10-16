@@ -85,4 +85,20 @@ export class IptuMunicipeController {
       };
     }
   }
+
+  static async loginMunicipe(req, res) {
+    try {
+      const { data } = await IPTU_API.post("/municipe/login", req.body);
+      res.send(data);
+    } catch (error) {
+      const response = error.response ? error.response.data : error;
+      throw {
+        code: error.status || response.code,
+        message: response.message,
+        ok: false,
+        api: response.api,
+        validation: response.validation,
+      };
+    }
+  }
 }

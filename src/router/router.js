@@ -1,4 +1,5 @@
 import iptuRouter from "./iptu/iptuRouter.js";
+import municipeRouter from "./iptu/municipeRouter.js";
 
 const Router = (fastify) => {
   fastify.register(import("./userRouter.js"), { prefix: "/user" });
@@ -9,5 +10,6 @@ const Router = (fastify) => {
   fastify.register(import("./editalRouter.js"), { prefix: "/ft/edital" });
   fastify.register(import("./authenticateRouter.js"), { prefix: "/auth" });
   fastify.register(iptuRouter, { prefix: "/iptu" });
+  fastify.register(municipeRouter, { prefix: "/iptu" });
 };
 export default Router;
