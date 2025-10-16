@@ -26,6 +26,9 @@ services:
 
       FT_APP_API_HOST: ${FT_APP_API_HOST}
       FT_APP_API_KEY: ${FT_APP_API_KEY}
+
+      IPTU_API_HOST: ${IPTU_API_HOST}
+      IPTU_API_KEY: ${IPTU_API_KEY}
     ports:
       - 3001:3000
     networks:
