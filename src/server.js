@@ -48,21 +48,21 @@ fastify.register(fastifyCookie);
 fastify.register(fastifySwagger, swaggerConfig(port));
 fastify.register(fastifySwaggerUi, swaggerUiConfig);
 
-// fastify.register(import("@fastify/rate-limit"), {
-//   global: false,
-//   max: 5,
-//   timeWindow: 300 * 1000, // 5 minutes
-//   keyGenerator: (request) => request.headers["x-real-ip"] || request.ip,
-//   errorResponseBuilder: function (req, context) {
-//     return {
-//       statusCode: 429,
-//       message: `Too many requests. Try again into ${context.after}.`,
-//       validation: false,
-//       ok: false,
-//       api: "Gatwei",
-//     };
-//   },
-// });
+fastify.register(import("@fastify/rate-limit"), {
+  global: false,
+  max: 5,
+  timeWindow: 300 * 1000, // 5 minutes
+  keyGenerator: (request) => request.headers["x-real-ip"] || request.ip,
+  errorResponseBuilder: function (req, context) {
+    return {
+      statusCode: 429,
+      message: `Too many requests. Try again into ${context.after}.`,
+      validation: false,
+      ok: false,
+      api: "Gatwei",
+    };
+  },
+});
 
 // rotas
 fastify.register(Router, { prefix: "/api" });
