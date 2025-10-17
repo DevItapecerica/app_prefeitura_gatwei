@@ -1,5 +1,4 @@
 import loginApi from "../api/login_api.js";
-
 export const authJWT = async (request, reply) => {
   try {
     const token = request.headers.authorization?.replace("Bearer ", "");
@@ -16,6 +15,7 @@ export const authJWT = async (request, reply) => {
     const decodedUserResponse = await loginApi.post("/authUser", { token });
 
     request.user = decodedUserResponse.data.user;
+
   } catch (error) {
     const response = error.response ? error.response.data : error;
     throw {

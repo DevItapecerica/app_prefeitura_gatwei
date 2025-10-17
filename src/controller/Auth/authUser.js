@@ -64,8 +64,6 @@ export const AlterPass = async (request, reply) => {
       new_password,
     });
 
-    console.log(data);
-
     reply.status(200).send(data);
   } catch (error) {
     const response = error.response?.data || error;

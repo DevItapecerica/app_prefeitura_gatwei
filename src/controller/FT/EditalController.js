@@ -148,12 +148,10 @@ export const getEditalWithBolsista = async (request, response) => {
 
     const { data } = await FT_API.get(`/ft/edital/${id}/bolsista?page=${page}&limit=${limit}&search=${search}`);
 
-    console.log(data)
-
     response.status(200).send(data);
   } catch (error) {
     const response = error.response ? error.response.data : error;
-    console.log(error);
+
     throw {
       code: error.status || response.code,
       message: response.message,
