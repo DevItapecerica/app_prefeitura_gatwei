@@ -1,7 +1,7 @@
 import iptuRouter from "./iptu/iptuRouter.js";
 import municipeRouter from "./iptu/municipeRouter.js";
-import bolsistaRouter from "./ft/bolsistaRouter.js";
-import editalRouter from "./ft/editalRouter.js";
+import bolsistaRouter from "./FT/bolsistaRouter.js";
+import editalRouter from "./FT/editalRouter.js";
 
 const Router = (fastify) => {
   fastify.register(import("./userRouter.js"), { prefix: "/user" });
