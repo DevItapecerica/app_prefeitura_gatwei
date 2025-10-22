@@ -1,8 +1,8 @@
-import * as BolsistaController from "../controller/FT/BolsistaController.js";
-import { getAuth } from "../controller/FT/FTAuth.js";
-import { authJWT } from "../middleware/authJWT.js";
+import * as BolsistaController from "../../controller/FT/BolsistaController.js";
+import { getAuth } from "../../controller/FT/FTAuth.js";
+import { authJWT } from "../../middleware/authJWT.js";
 
-import * as BolsistaSchema from "../schema/bolsistaSchema.js";
+import * as BolsistaSchema from "../../schema/bolsistaSchema.js";
 
 const bolsistaRouter = async (fastify, _options) => {
   // Protege todas as rotas do grupo com JWT
