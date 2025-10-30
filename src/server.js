@@ -64,13 +64,15 @@ fastify.register(import("@fastify/rate-limit"), {
   },
 });
 
-// rotas
-fastify.register(Router, { prefix: "/api" });
-
 // hooks
 fastify.register(notFound);
 fastify.register(errorHook)
 fastify.register(LoggerResponse)
+
+// rotas
+fastify.register(Router, { prefix: "/api" });
+
+
 
 // server
 const start = async () => {

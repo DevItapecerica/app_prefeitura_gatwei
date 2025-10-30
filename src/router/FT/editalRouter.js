@@ -1,6 +1,6 @@
-import * as Edital from "../controller/FT/EditalController.js";
-import { authJWT } from "../middleware/authJWT.js";
-import * as Schema from "../schema/editalSchema.js"
+import * as Edital from "../../controller/FT/EditalController.js";
+import { authJWT } from "../../middleware/authJWT.js";
+import * as Schema from "../../schema/editalSchema.js"
 
 const editalRouter = async (fastify, _options) => {
   // Protege todas as rotas do grupo com JWT
