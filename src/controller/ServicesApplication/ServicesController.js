@@ -86,35 +86,43 @@ const getUserServices = async (request, reply) => {
       permissions_api.get(`/visibility/setor/${user.setor_id}`),
     ]);
 
-    const roleId = user.role_id;
+    const roleId = user?.role_id;
 
     if (!roleId) {
-      const response = error.response ? error.response.data : error;
       throw {
-        code: error.status || response.code,
-        message: response.message,
+        code: 500,
+        message: "Erro o validar role de usuário dentro da rota de serviço",
         ok: false,
-        api: response.api,
+        api: "Gatwei API",
       };
     }
 
+    const UserPermissions = permissions.filter(
+      (permission) =>
+        permission.role_id === roleId &&
+        permission.read &&
+        services.find((service) => service.id === permission.service_id)
+        && visibility.find((v) => v.service_id === permission.service_id && v.visibility)
+    );
+
     const roleService = services.filter((service) => {
-      const userPermission = permissions.find(
-        (permission) =>
-          permission.role_id === roleId && permission.service_id === service.id
+      const roleServicePermission = UserPermissions.find(
+        (permission) => permission.service_id === service.id
       );
-      return userPermission?.read;
+
+      service.permission = {
+        role_id: roleServicePermission?.role_id,
+        service_id: roleServicePermission?.service_id,
+        read: roleServicePermission?.read,
+        write: roleServicePermission?.write,
+        edit: roleServicePermission?.edit,
+        del: roleServicePermission?.del,
+      };
+
+      return roleServicePermission;
     });
 
-    const visibleServiceIds = new Set(
-      visibility.filter((v) => v.visibility).map((v) => v.service_id)
-    );
-
-    const userServicesVisible = roleService.filter((service) =>
-      visibleServiceIds.has(service.id)
-    );
-
-    reply.status(200).send({ services: userServicesVisible });
+    reply.status(200).send({ services: roleService });
   } catch (error) {
     const response = error.response ? error.response.data : error;
     throw {
