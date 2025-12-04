@@ -40,6 +40,7 @@ export const Login = async (request, reply) => {
 
     const login = response.data;
 
+    // mudar para session cookie
     reply.status(200).send(login);
   } catch (error) {
     const data = error.response?.data || error;
