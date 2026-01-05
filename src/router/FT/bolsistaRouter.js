@@ -17,6 +17,13 @@ const bolsistaRouter = async (fastify, _options) => {
 
   fastify.route({
     method: "GET",
+    url: "/toexpire",
+    // schema: BolsistaSchema.getBolsistaSchema,
+    handler: BolsistaController.getToExpire,
+  });
+
+  fastify.route({
+    method: "GET",
     url: "/:id",
     // schema: BolsistaSchema.getOneBolsistaSchema,
     handler: BolsistaController.getOneBolsistas,

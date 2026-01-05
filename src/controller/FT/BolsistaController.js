@@ -163,3 +163,22 @@ export const toggleBolsistaEdital = async (request, reply) => {
     };
   }
 };
+
+export const getToExpire = async (request, reply) => {
+  try {
+    let user = request.user;
+    await verifyPermission(user, SERVICE, request.method);
+
+    const { data } = await ft_app_api.get(`/ft/bolsista/toExpire`);
+
+    reply.status(200).send(data);
+  } catch (error) {
+    const response = error.response ? error.response.data : error;
+    throw {
+      code: error.status || response.code,
+      message: response.message,
+      ok: false,
+      api: response.api,
+    };
+  }
+};
