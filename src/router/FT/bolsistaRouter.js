@@ -2,8 +2,6 @@ import * as BolsistaController from "../../controller/FT/BolsistaController.js";
 import { getAuth } from "../../controller/FT/FTAuth.js";
 import { authJWT } from "../../middleware/authJWT.js";
 
-import * as BolsistaSchema from "../../schema/bolsistaSchema.js";
-
 const bolsistaRouter = async (fastify, _options) => {
   // Protege todas as rotas do grupo com JWT
   fastify.addHook("preHandler", authJWT);
@@ -13,6 +11,20 @@ const bolsistaRouter = async (fastify, _options) => {
     url: "/",
     // schema: BolsistaSchema.getBolsistaSchema,
     handler: BolsistaController.getBolsistas,
+  });
+
+  fastify.route({
+    method: "GET",
+    url: "/toexpire",
+    // schema: BolsistaSchema.getBolsistaSchema,
+    handler: BolsistaController.getToExpire,
+  });
+
+  fastify.route({
+    method: "PUT",
+    url: "/prorrogate",
+    // schema: BolsistaSchema.getBolsistaSchema,
+    handler: BolsistaController.prorrogate,
   });
 
   fastify.route({
