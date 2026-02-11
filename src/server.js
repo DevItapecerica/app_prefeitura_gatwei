@@ -20,16 +20,7 @@ import errorHook from "./hooks/errorHook.js";
 
 const port = PORT;
 
-const logg =
-  NODE_ENV === "prod"
-    ? {
-        translateTime: "HH:MM:ss",
-        ignore: "hostname",
-        colorize: false,
-        destination: "logs/server.log",
-        mkdir: true,
-      }
-    : { translateTime: "HH:MM:ss", ignore: "hostname" };
+const logg = { translateTime: "HH:MM:ss", ignore: "hostname" };
 
 const fastify = Fastify({
   disableRequestLogging: true,
@@ -66,13 +57,11 @@ fastify.register(import("@fastify/rate-limit"), {
 
 // hooks
 fastify.register(notFound);
-fastify.register(errorHook)
-fastify.register(LoggerResponse)
+fastify.register(errorHook);
+fastify.register(LoggerResponse);
 
 // rotas
 fastify.register(Router, { prefix: "/api" });
-
-
 
 // server
 const start = async () => {
