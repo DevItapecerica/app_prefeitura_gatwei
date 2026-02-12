@@ -11,6 +11,7 @@ const veiculoRouter = (fastify) => {
       modelo: { type: "string" },
       cor: { type: "string" },
       ano: { type: "integer" },
+      status: { type: "string" },
       capacidade: { type: "integer" },
     },
     additionalProperties: false,
@@ -32,6 +33,7 @@ const veiculoRouter = (fastify) => {
       cor: { type: "string" },
       ano: { type: "integer" },
       capacidade: { type: "integer" },
+      status: { type: "string" },
       agendamentos: {
         type: "array",
         items: {
