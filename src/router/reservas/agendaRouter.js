@@ -95,6 +95,67 @@ const agendamentoSchema = {
     handler: AgendamentoController.getAgenda,
   });
 
+  
+    fastify.route({
+      method: "GET",
+      url: "/disponiveis",
+      schema: {
+        tags: ["Agendamento"],
+        summary: "Get motoristas e veiculos disponiveis",
+        description:
+          "Get motoristas e veiculos disponiveis em uma data e horário a partir de uma query. Ex: GET /disponiveis?data=2026-02-02&inicio=08:00&fim=10:00, por padrão a ordenação será do mais recente primeiro e posteriormente os mais antigos.",
+        querystring: {
+          type: "object",
+          required: ["data", "inicio", "fim"],
+          properties: {
+            data: {
+              type: "string",
+              description: "Data do agendamento (YYYY-MM-DD)",
+            },
+            inicio: {
+              type: "string",
+              pattern: "^([01]\\d|2[0-3]):([0-5]\\d):([0-5]\\d)$",
+              description: "Horário de início (HH:mm)",
+            },
+            fim: {
+              type: "string",
+              pattern: "^([01]\\d|2[0-3]):([0-5]\\d):([0-5]\\d)$",
+              description: "Horário de término (HH:mm)",
+            },
+          },
+        },
+        response: {
+          200: {
+            type: "object",
+            properties: {
+              ...genericResponse,
+              motorista: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    uuid: { type: "string" },
+                    nome: { type: "string" },
+                  },
+                },
+              },
+              veiculo: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    uuid: { type: "string" },
+                    placa: { type: "string" },
+                  },
+                },
+              },
+            },
+          },
+          ...errorResponseSchema,
+        },
+      },
+      handler: AgendamentoController.verificarDisponiveis,
+    });
 
 //   ====== by motorista e veiculo =======
 //   fastify.route({

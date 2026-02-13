@@ -62,7 +62,7 @@ export default class AgendamentoController {
       await verifyPermission(req.user, SERVICE, req.method);
 
       const { uuid } = req.params;
-      const { data } = await RESERVAS_API.put(`/agendamento/${uuid}`, req.body, {
+      const { data } = await RESERVAS_API.put(`/agendamento/${uuid}/confirmar`, req.body, {
         headers: {
           "x-user-id": req.user.id,
         },
@@ -95,6 +95,29 @@ export default class AgendamentoController {
         },
       );
       res.send(data);
+    } catch (error) {
+      const response = error.response ? error.response.data : error;
+      throw {
+        code: error.status || response.code,
+        message: response.message,
+        ok: false,
+        api: response.api,
+        validation: response.validation,
+      };
+    }
+  }
+
+  static async verificarDisponiveis (req, res) {
+    try {
+      await verifyPermission(req.user, SERVICE, req.method);
+      const { data, inicio, fim} = req.query
+
+      const response = await RESERVAS_API.get(`/agendamento/disponiveis?data=${data}&inicio=${inicio}&fim=${fim}`, {
+        headers: {
+          "x-user-id": req.user.id,
+        },
+      });
+      res.send(response.data);
     } catch (error) {
       const response = error.response ? error.response.data : error;
       throw {

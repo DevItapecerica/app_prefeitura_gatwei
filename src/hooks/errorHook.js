@@ -16,7 +16,7 @@ const ErrorHook = async (fastify) => {
       errorResponse = {
         ok: false,
         validation: validation,
-        message: "Confira o corpo da requisição e tente novamente",
+        message: message,
         api: api || "Gatwei",
       };
     } else {
