@@ -294,6 +294,13 @@ const agendamentoSchema = {
       tags: ["Agendamento"],
       summary: "Cancelar agendamento",
       description: "Update agendamento",
+      body: {
+        type: "object",
+        required: ["observacao"],
+        properties: {
+          observacao: { type: "string" },
+        },
+      },
       response: {
         200: {
           type: "object",

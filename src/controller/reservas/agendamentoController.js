@@ -84,10 +84,11 @@ export default class AgendamentoController {
     try {
       await verifyPermission(req.user, SERVICE, req.method);
 
+      const {observacao} = req.body
       const { uuid } = req.params;
       const { data } = await RESERVAS_API.put(
-        `/agendamento/${uuid}`,
-        { status: "cancelado" },
+        `/agendamento/${uuid}/cancelar`,
+        { observacao: observacao },
         {
           headers: {
             "x-user-id": req.user.id,
