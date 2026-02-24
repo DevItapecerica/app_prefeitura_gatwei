@@ -1,4 +1,5 @@
 import AgendamentoController from "../../controller/reservas/agendamentoController.js";
+import postAgendamento from "../../controller/reservas/postAgendamentoController.js";
 import { authJWT } from "../../middleware/authJWT.js";
 import errorResponseSchema from "../../schema/errorSchema.js";
 
@@ -255,6 +256,28 @@ const agendamentoSchema = {
       },
     },
     handler: AgendamentoController.postAgenda,
+  });
+
+  fastify.route({
+    method: "POST",
+    url: "/user",
+    schema: {
+      tags: ["Agendamento"],
+      summary: "Create new agendamento",
+      description: "Create new agendamento",
+      body: agendamentoRequired,
+      response: {
+        201: {
+          type: "object",
+          properties: {
+            ...genericResponse,
+            agendamento: agendamentoSchema,
+          },
+        },
+        ...errorResponseSchema,
+      },
+    },
+    handler: postAgendamento,
   });
 
   // ===================== UPDATE ======================
