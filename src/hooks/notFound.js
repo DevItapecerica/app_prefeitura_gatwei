@@ -1,3 +1,5 @@
+import fp from 'fastify-plugin'; // Importe o fastify-plugin
+
 const notFound = async (fastify, options) => {
   fastify.setNotFoundHandler(
     {
@@ -9,4 +11,4 @@ const notFound = async (fastify, options) => {
   );
 };
 
-export default notFound;
+export default fp(notFound);

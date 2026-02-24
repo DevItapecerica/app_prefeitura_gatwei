@@ -1,17 +1,12 @@
-import iptuRouter from "./iptu/iptuRouter.js";
-import municipeRouter from "./iptu/municipeRouter.js";
-import bolsistaRouter from "./FT/bolsistaRouter.js";
-import editalRouter from "./FT/editalRouter.js";
-
 const Router = (fastify) => {
   fastify.register(import("./userRouter.js"), { prefix: "/user" });
   fastify.register(import("./setorRouter.js"), { prefix: "/setor" });
   fastify.register(import("./serviceRouter.js"), { prefix: "/service" });
   fastify.register(import("./roleRouter.js"), { prefix: "/roles" });
-  fastify.register(bolsistaRouter, { prefix: "/ft/bolsista" });
-  fastify.register(editalRouter, { prefix: "/ft/edital" });
+  fastify.register(import("./FT/bolsistaRouter.js"), { prefix: "/ft/bolsista" });
+  fastify.register(import("./FT/editalRouter.js"), { prefix: "/ft/edital" });
   fastify.register(import("./authenticateRouter.js"), { prefix: "/auth" });
-  fastify.register(iptuRouter, { prefix: "/iptu" });
-  fastify.register(municipeRouter, { prefix: "/iptu" });
+
+  fastify.register(import("./reservas/reservasRouter.js"), { prefix: "/reservas" });
 };
 export default Router;

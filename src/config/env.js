@@ -37,6 +37,9 @@ export const FT_APP_API_KEY = must("FT_APP_API_KEY");
 export const IPTU_API_HOST = must("IPTU_API_HOST");
 export const IPTU_API_KEY = must("IPTU_API_KEY");
 
+export const RESERVAS_API_HOST = must("RESERVAS_API_HOST");
+export const RESERVAS_API_KEY = must("RESERVAS_API_KEY");
+
 export const PORT = must("APPLICATION_PORT");
 
 export const NODE_ENV = must("NODE_ENV");
