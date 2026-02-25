@@ -1,7 +1,7 @@
 import RESERVAS_API from "../../api/reservas_api.js";
 import { verifyPermission } from "../../utils/verifyPermission.js";
 
-const SERVICE = 10;
+const SERVICE = 9;
 
 export default class VeiculosController {
    static async getVeiculo(req, res) {
