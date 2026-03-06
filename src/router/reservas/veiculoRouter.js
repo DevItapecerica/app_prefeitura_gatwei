@@ -4,7 +4,7 @@ import VeiculoController from "../../controller/reservas/VeiculoController.js";
 const veiculoRouter = (fastify) => {
   const vehicleSchema = {
     type: "object",
-    required: ["placa", "marca", "modelo", "cor", "ano", "capacidade"],
+    required: ["placa", "marca", "modelo", "cor", "ano"],
     properties: {
       placa: { type: "string", pattern: "^([A-Za-z]{3}-\\d{4}|[A-Za-z]{3}[0-9][A-Za-z][0-9]{2})$"},
       marca: { type: "string" },
